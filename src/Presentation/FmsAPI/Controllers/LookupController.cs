@@ -1,7 +1,9 @@
 ﻿using ApplicationFMS.Handlers.LookUp.LookUpCity;
 using ApplicationFMS.Handlers.LookUp.LookUpCountry;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+//using FmsAPI.Helper;
 
 namespace FmsAPI.Controllers
 {
@@ -14,7 +16,8 @@ namespace FmsAPI.Controllers
             return base.Ok(vm);
         }
 
-        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public async Task<ActionResult<CityListVm>> City(int? countryId)
         {
             var vm = await Mediator.Send(new LookupCityListQuery { CountryId = countryId });
