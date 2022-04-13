@@ -1,4 +1,5 @@
 ﻿using Castle.Core.Resource;
+using CoreFMS.Entities;
 using InfrastructureFMSDB;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,6 +21,13 @@ namespace ApplicationFMSUnitTests.Arrange
             var context = new FMSDataContext(options);
 
             context.Database.EnsureCreated();
+
+            context.User.AddRange(new[]
+            {
+                new User {Id = 1, Email = "johnsmith@gmail.com", Salt = "FissGc6h4XFyzV6cCHluEg==", Hash = "PEP6JdkFF1uT6OmreCiEKN1uxYab+EjOESjZOGXzgcE=", FirstName = "John", LastName = "SMITH"}, // Password = P@ssw0rd
+                new User {Id = 2, Email = "janesmith@gmail.com", Salt = "CV512C//LYxtTNzgelc8lA==", Hash = "rdTyBMG3CHIYZNEUlX8Dmpi7sQrjMRiQEVPbxsvmixg=", FirstName = "Jane", LastName = "SMITH"}, // Password = P@ssw0rd
+            });
+
             //context.....AddRange(new[] {
             //    new ... { Id = "", Name = "" },
             //    new ... { Id = "", Name = "" },

@@ -1,8 +1,9 @@
 ﻿using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
-using CoreFMS.Models;
+using ApplicationFMS.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,11 +13,12 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
     public class UserLoginQueryHandler : IRequestHandler<UserLoginQuery, BaseResponse<string>>
     {
         private readonly IFMSDataContext _context;
+        private readonly JwtSetting _jwtSettings;
 
-
-        public UserLoginQueryHandler(IFMSDataContext context)
+        public UserLoginQueryHandler(IFMSDataContext context, IOptions<JwtSetting> jwtSettings)
         {
             _context = context;
+            _jwtSettings = jwtSettings.Value;
         }
 
         public async Task<BaseResponse<string>> Handle(UserLoginQuery request, CancellationToken cancellationToken)
@@ -33,7 +35,8 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
             }
             else
             {
-                string jwt = TokenHelper.generateJwtToken(currentUser);
+                TokenHelper tokenHelper = new TokenHelper(_jwtSettings);
+                string jwt = tokenHelper.GenerateJwtToken(currentUser);
                 return new BaseResponse<string>(jwt);
             }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoreFMS.Models
+namespace ApplicationFMS.Models
 {
     public class BaseResponse<T>
     {

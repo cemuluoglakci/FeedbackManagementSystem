@@ -10,16 +10,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ApplicationFMSUnitTests.Handlers
+namespace ApplicationFMSUnitTests.Handlers.Account
 {
-    public class AccountCommandsUnitTests : TestBase
+    public class RegisterAccountCommandsUnitTests : CommandTestBase
     {
         private RegisterUserCommandHandler _handler;
         private RegisterUserCommand _request;
         //private Mock<IFMSDataContext> _dataContextMock;
         //private Mock<IMediator> _mediatorMock;
 
-        public AccountCommandsUnitTests()
+        public RegisterAccountCommandsUnitTests()
         {
             //Arrange
             _request = new RegisterUserCommand()

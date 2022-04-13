@@ -1,8 +1,7 @@
 ﻿using ApplicationFMS.Handlers.Account.Commands.RegisterUser;
 using ApplicationFMS.Handlers.Account.Queries.UserLogin;
-using ApplicationFMS.Handlers.LookUp.LookUpCountry;
+using ApplicationFMS.Models;
 using CoreFMS.Entities;
-using CoreFMS.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -17,10 +16,10 @@ namespace FmsAPI.Controllers
             return base.Ok(vm);
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<ActionResult<BaseResponse<string>>> UserLogin(string email, string password)
         {
-            var loginResponse = await Mediator.Send(new UserLoginQuery {Email = email, Password = password });
+            var loginResponse = await Mediator.Send(new UserLoginQuery { Email = email, Password = password });
             return base.Ok(loginResponse);
         }
 

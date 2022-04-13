@@ -1,9 +1,10 @@
 ﻿using ApplicationFMS.Handlers.LookUp.LookUpCity;
 using ApplicationFMS.Handlers.LookUp.LookUpCountry;
-using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-//using FmsAPI.Helper;
+using FmsAPI.Helper;
+using CoreFMS.Entities;
 
 namespace FmsAPI.Controllers
 {
@@ -16,7 +17,7 @@ namespace FmsAPI.Controllers
             return base.Ok(vm);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize("System Administrator", "Company Manager")]
         [HttpGet]
         public async Task<ActionResult<CityListVm>> City(int? countryId)
         {

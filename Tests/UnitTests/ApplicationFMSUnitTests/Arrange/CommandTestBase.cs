@@ -1,17 +1,13 @@
 ﻿using InfrastructureFMSDB;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationFMSUnitTests.Arrange
 {
-    public class TestBase : IDisposable
+    public class CommandTestBase : IDisposable
     {
         protected readonly FMSDataContext _context;
 
-        public TestBase()
+        public CommandTestBase()
         {
             _context = FMSDBContextFactory.Create();
         }

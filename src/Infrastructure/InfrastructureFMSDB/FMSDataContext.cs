@@ -1,5 +1,6 @@
 ﻿using ApplicationFMS.Interfaces;
 using CoreFMS.Entities;
+using InfrastructureFMSDB.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace InfrastructureFMSDB
@@ -10,6 +11,10 @@ namespace InfrastructureFMSDB
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
         public DbSet<City> City { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Company> Company { get; set; }
@@ -30,7 +35,6 @@ namespace InfrastructureFMSDB
         public DbSet<SocialMedium> SocialMedia { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserCombined> UserCombined { get; set; }
-
     }
 
 }
