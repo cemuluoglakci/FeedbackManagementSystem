@@ -9,8 +9,8 @@ namespace CoreFMS.Entities
         public int FeedbackId { get; set; }
         public int UserId { get; set; }
         public string Text { get; set; } = null!;
-        public int IsActive { get; set; }
-        public int IsChecked { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsChecked { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public virtual Feedback Feedback { get; set; } = null!;

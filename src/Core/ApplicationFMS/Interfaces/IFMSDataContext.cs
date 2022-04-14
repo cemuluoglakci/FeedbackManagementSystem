@@ -14,10 +14,8 @@ namespace ApplicationFMS.Interfaces
         DbSet<Country> Country { get; set; }
         DbSet<Education> Education { get; set; }
         DbSet<Feedback> Feedback { get; set; }
-        DbSet<FeedbackCombined> FeedbackCombined { get; set; }
         DbSet<FeedbackSubType> FeedbackSubType { get; set; }
         DbSet<FeedbackType> FeedbackType { get; set; }
-        DbSet<LocationCombined> LocationCombined { get; set; }
         DbSet<OperationMode> OperationMode { get; set; }
         DbSet<Product> Product { get; set; }
         DbSet<Reaction> Reaction { get; set; }
@@ -27,7 +25,6 @@ namespace ApplicationFMS.Interfaces
         DbSet<Share> Share { get; set; }
         DbSet<SocialMedium> SocialMedia { get; set; }
         DbSet<User> User { get; set; }
-        DbSet<UserCombined> UserCombined { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

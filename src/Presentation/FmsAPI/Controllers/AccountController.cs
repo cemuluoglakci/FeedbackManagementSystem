@@ -10,7 +10,7 @@ namespace FmsAPI.Controllers
     public class AccountController : BaseController
     {
         [HttpPost]
-        public async Task<ActionResult<User>> RegisterUser([FromBody] RegisterUserCommand request)
+        public async Task<ActionResult<BaseResponse<User>>> RegisterUser([FromBody] RegisterUserCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);

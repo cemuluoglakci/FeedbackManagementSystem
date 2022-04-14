@@ -1,4 +1,5 @@
-﻿using CoreFMS.Entities;
+﻿using ApplicationFMS.Models;
+using CoreFMS.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
 {
-    public class RegisterUserCommand : IRequest<User>
+    public class RegisterUserCommand : IRequest<BaseResponse<User>>
     {
         public string Email { get; set; } = null!;
         public string? Phone { get; set; }

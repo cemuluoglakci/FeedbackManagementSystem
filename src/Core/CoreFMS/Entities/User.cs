@@ -30,8 +30,8 @@ namespace CoreFMS.Entities
         public int? EducationId { get; set; }
         public int RoleId { get; set; }
         public int? CompanyId { get; set; }
-        public int IsActive { get; set; }
-        public int IsTwoFactorAuth { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsTwoFactorAuth { get; set; }
 
         public virtual City? City { get; set; }
         public virtual Company? Company { get; set; }
