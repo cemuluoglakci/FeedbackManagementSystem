@@ -1,11 +1,9 @@
 ﻿using ApplicationFMS.Handlers.Account.Commands.RegisterUser;
-using ApplicationFMS.Interfaces;
 using ApplicationFMSUnitTests.Arrange;
-using CoreFMS.Entities;
-using MediatR;
-using Moq;
 using Shouldly;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -58,7 +56,16 @@ namespace ApplicationFMSUnitTests.Handlers.Account
             result.RoleId.ShouldBe(_request.RoleId);
             result.BirthDate.ShouldBe(_request.BirthDate);
             result.Phone.ShouldBe(_request.Phone);
+        }
+        [Theory]
+        [ClassData(typeof(RegisterUserCommandGenerator))]
+        public async Task RegisterUserCommandHandler_WhenUserRoleNotCustomer_ShouldSaveUserAsPassive(RegisterUserCommand request, bool isActive)
+        {
+            //Act
+            var result = await _handler.Handle(_request, CancellationToken.None);
 
+            //Assert
+            result.IsActive.ShouldBe(isActive);
         }
 
     }
