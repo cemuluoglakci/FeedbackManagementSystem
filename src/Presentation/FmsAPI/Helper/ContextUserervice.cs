@@ -32,7 +32,7 @@ namespace FmsAPI.Helper
 
         public ContextUser GetContextUser(int id)
         {
-            var currentUser = _context.User.Include(u => u.Role).FirstOrDefault(x => x.Id == id && x.IsActive == 1);
+            var currentUser = _context.User.Include(u => u.Role).FirstOrDefault(x => x.Id == id && x.IsActive);
             var currentContextUser = _mapper.Map<ContextUser>(currentUser);
             return currentContextUser;
         }

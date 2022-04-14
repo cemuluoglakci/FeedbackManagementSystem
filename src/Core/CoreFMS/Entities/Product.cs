@@ -13,7 +13,7 @@ namespace CoreFMS.Entities
         public int Id { get; set; }
         public int? CompanyId { get; set; }
         public string ProductName { get; set; } = null!;
-
+        public bool IsActive { get; set; } = true;
         public virtual Company? Company { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
     }

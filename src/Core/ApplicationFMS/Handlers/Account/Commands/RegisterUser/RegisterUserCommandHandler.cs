@@ -1,5 +1,6 @@
 ﻿using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
+using ApplicationFMS.Models;
 using AutoMapper;
 using CoreFMS.Entities;
 using MediatR;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, User>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, BaseResponse<User>>
     {
         private readonly IFMSDataContext _context;
 
@@ -22,7 +23,7 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
             _context = context;
         }
 
-        public async Task<User> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<User>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             string salt = Security.GenerateSalt();
             string hash = Security.SaltAndHashPassword(request.Password, salt);
@@ -42,16 +43,23 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
                 Salt = salt,
             };
 
-            if (request.RoleId == 2)
+            if (request.RoleId == 0)
             {
-                entity.IsActive = 1;
+                return new BaseResponse<User>(null, "User can not register without 'Role' information.");
             }
+
+            string roleName = _context.Role.Find(request.RoleId).RoleName;
+            if (roleName == "Customer")
+            {
+                entity.IsActive = true;
+            }
+            else { entity.IsActive = false; }
 
             _context.User.Add(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return entity;
+            return new BaseResponse<User>(entity);
         }
 
 

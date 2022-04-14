@@ -25,11 +25,11 @@ namespace CoreFMS.Entities
         public int? Shared { get; set; }
         public int? LikeCount { get; set; }
         public int? DislikeCount { get; set; }
-        public int IsAnonym { get; set; }
-        public int IsActive { get; set; }
-        public int IsChecked { get; set; }
-        public int IsReplied { get; set; }
-        public int IsSolved { get; set; }
+        public bool IsAnonym { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsChecked { get; set; }
+        public bool IsReplied { get; set; }
+        public bool IsSolved { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public virtual Company? Company { get; set; }

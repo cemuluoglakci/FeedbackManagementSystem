@@ -1,16 +1,12 @@
 ﻿using ApplicationFMS.Handlers.Account.Queries.UserLogin;
-using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
 using ApplicationFMSUnitTests.Arrange;
 using AutoMapper;
 using InfrastructureFMSDB;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-using System.Security.Claims;
 using Shouldly;
-using System.Buffers.Text;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -49,6 +45,7 @@ namespace ApplicationFMSUnitTests.Handlers.Account
             //Assert
             result.ShouldNotBeNull();
             result.ShouldBeOfType<BaseResponse<string>>();
+            result.Meta.SuccessStatus.ShouldBeTrue();
             result.data.ShouldNotBeNull();
             result.data.ShouldBeOfType<string>();
             result.data.Split(".").Length.ShouldBe(3);
@@ -65,6 +62,44 @@ namespace ApplicationFMSUnitTests.Handlers.Account
             jwtSecurityToken.GetType().Name.ToString().ShouldBe("JwtSecurityToken");
             var test = jwtSecurityToken.Claims;
             jwtSecurityToken.Claims.First(claim => claim.Type == "email").Value.ShouldBe(_userLoginQuery.Email);
+        }
+
+        [Fact]
+        public async Task LoginUserCommandHandler_WhenAccountPassive_ShouldRejectLogin()
+        {
+            //Arrange
+            UserLoginQuery userLoginQuery = new UserLoginQuery()
+            {
+                Email = "rdcosta3@theatlantic.com",
+                Password = "P@ssw0rd"
+            };
+
+            //Act
+            var result = await _sut.Handle(userLoginQuery, CancellationToken.None);
+
+            //Assert
+            result.data.ShouldBeNull();
+            result.Meta.SuccessStatus.ShouldBeFalse();
+            result.Meta.Message.ShouldBe("This E-mail is not registered to the system!");
+        }
+
+        [Fact]
+        public async Task LoginUserCommandHandler_WhenAccountLocked_ShouldRejectLogin()
+        {
+            //Arrange
+            UserLoginQuery userLoginQuery = new UserLoginQuery()
+            {
+                Email = "cloveredge@imgur.com",
+                Password = "P@ssw0rd"
+            };
+
+            //Act
+            var result = await _sut.Handle(userLoginQuery, CancellationToken.None);
+
+            //Assert
+            result.data.ShouldBeNull();
+            result.Meta.SuccessStatus.ShouldBeFalse();
+            result.Meta.Message.ShouldBe("Your account is locked, please try again later.");
         }
 
     }

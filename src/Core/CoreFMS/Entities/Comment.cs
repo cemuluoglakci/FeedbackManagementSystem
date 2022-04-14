@@ -16,9 +16,9 @@ namespace CoreFMS.Entities
         public int UserId { get; set; }
         public int? CommentId { get; set; }
         public string Text { get; set; } = null!;
-        public int IsAnonym { get; set; }
-        public int IsActive { get; set; }
-        public int IsChecked { get; set; }
+        public bool IsAnonym { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsChecked { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public virtual Comment? CommentNavigation { get; set; }

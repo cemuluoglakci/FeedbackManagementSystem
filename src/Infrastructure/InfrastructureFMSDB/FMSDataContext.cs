@@ -21,10 +21,8 @@ namespace InfrastructureFMSDB
         public DbSet<Country> Country { get; set; }
         public DbSet<Education> Education { get; set; }
         public DbSet<Feedback> Feedback { get; set; }
-        public DbSet<FeedbackCombined> FeedbackCombined { get; set; }
         public DbSet<FeedbackSubType> FeedbackSubType { get; set; }
         public DbSet<FeedbackType> FeedbackType { get; set; }
-        public DbSet<LocationCombined> LocationCombined { get; set; }
         public DbSet<OperationMode> OperationMode { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<Reaction> Reaction { get; set; }
@@ -34,7 +32,6 @@ namespace InfrastructureFMSDB
         public DbSet<Share> Share { get; set; }
         public DbSet<SocialMedium> SocialMedia { get; set; }
         public DbSet<User> User { get; set; }
-        public DbSet<UserCombined> UserCombined { get; set; }
     }
 
 }

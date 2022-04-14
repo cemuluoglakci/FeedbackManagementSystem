@@ -47,25 +47,25 @@ namespace ApplicationFMSUnitTests.Handlers.Account
             //Assert
             //_dataContextMock.Verify(d => d.User.Add(It.IsAny<User>()), Times.Once);
             //_dataContextMock.Verify(d => d.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-            result.Email.ShouldBe(_request.Email);
-            result.FirstName.ShouldBe(_request.FirstName);
-            result.LastName.ShouldBe(_request.LastName);
-            result.CompanyId.ShouldBe(_request.CompanyId);
-            result.EducationId.ShouldBe(_request.EducationId);
-            result.CityId.ShouldBe(_request.CityId);
-            result.RoleId.ShouldBe(_request.RoleId);
-            result.BirthDate.ShouldBe(_request.BirthDate);
-            result.Phone.ShouldBe(_request.Phone);
+            result.data.Email.ShouldBe(_request.Email);
+            result.data.FirstName.ShouldBe(_request.FirstName);
+            result.data.LastName.ShouldBe(_request.LastName);
+            result.data.CompanyId.ShouldBe(_request.CompanyId);
+            result.data.EducationId.ShouldBe(_request.EducationId);
+            result.data.CityId.ShouldBe(_request.CityId);
+            result.data.RoleId.ShouldBe(_request.RoleId);
+            result.data.BirthDate.ShouldBe(_request.BirthDate);
+            result.data.Phone.ShouldBe(_request.Phone);
         }
         [Theory]
         [ClassData(typeof(RegisterUserCommandGenerator))]
         public async Task RegisterUserCommandHandler_WhenUserRoleNotCustomer_ShouldSaveUserAsPassive(RegisterUserCommand request, bool isActive)
         {
             //Act
-            var result = await _handler.Handle(_request, CancellationToken.None);
+            var result = await _handler.Handle(request, CancellationToken.None);
 
             //Assert
-            result.IsActive.ShouldBe(isActive);
+            result.data.IsActive.ShouldBe(isActive);
         }
 
     }

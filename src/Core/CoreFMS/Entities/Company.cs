@@ -15,7 +15,7 @@ namespace CoreFMS.Entities
         public int Id { get; set; }
         public int? SectorId { get; set; }
         public string CompanyName { get; set; } = null!;
-
+        public bool IsActive { get; set; } = true;
         public virtual Sector? Sector { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Product> Products { get; set; }

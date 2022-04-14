@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-#nullable disable
-
 namespace InfrastructureFMSDB.Migrations
 {
     [DbContext(typeof(FMSDataContext))]
@@ -16,8 +14,8 @@ namespace InfrastructureFMSDB.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.15");
 
             modelBuilder.Entity("CoreFMS.Entities.City", b =>
                 {
@@ -53,14 +51,14 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<int>("FeedbackId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IsAnonym")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsAnonym")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IsChecked")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -89,6 +87,9 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int?>("SectorId")
                         .HasColumnType("int");
@@ -161,20 +162,20 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<int?>("DislikeCount")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IsAnonym")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsAnonym")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IsChecked")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IsReplied")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsReplied")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IsSolved")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsSolved")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int?>("LikeCount")
                         .HasColumnType("int");
@@ -222,97 +223,6 @@ namespace InfrastructureFMSDB.Migrations
                     b.ToTable("Feedback");
                 });
 
-            modelBuilder.Entity("CoreFMS.Entities.FeedbackCombined", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("DislikeCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IsAnonym")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IsChecked")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IsReplied")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IsSolved")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("LikeCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductName")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("SectorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SectorName")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("Shared")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SubTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SubTypeName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TypeName")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FeedbackCombined");
-                });
-
             modelBuilder.Entity("CoreFMS.Entities.FeedbackSubType", b =>
                 {
                     b.Property<int>("Id")
@@ -343,35 +253,6 @@ namespace InfrastructureFMSDB.Migrations
                     b.ToTable("FeedbackType");
                 });
 
-            modelBuilder.Entity("CoreFMS.Entities.LocationCombined", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("CityName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CountryName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Iso")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Iso3")
-                        .HasColumnType("longtext");
-
-                    b.Property<short?>("Numcode")
-                        .HasColumnType("smallint");
-
-                    b.Property<int?>("Phonecode")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LocationCombined");
-                });
-
             modelBuilder.Entity("CoreFMS.Entities.OperationMode", b =>
                 {
                     b.Property<int>("Id")
@@ -395,6 +276,9 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.Property<int?>("CompanyId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -421,6 +305,9 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.Property<int?>("FeedbackId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("Sentiment")
                         .HasColumnType("int");
@@ -451,11 +338,11 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<int>("FeedbackId")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IsChecked")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -579,11 +466,11 @@ namespace InfrastructureFMSDB.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("IsTwoFactorAuth")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsTwoFactorAuth")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("LastFailedLoginAt")
                         .HasColumnType("datetime");
@@ -618,92 +505,6 @@ namespace InfrastructureFMSDB.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("CoreFMS.Entities.UserCombined", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CityName")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("CountryName")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("EducationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EducationName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("FailedLoginAttemptCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Hash")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Iso")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Iso3")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("LastFailedLoginAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime?>("LastLoginAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("longtext");
-
-                    b.Property<short?>("Numcode")
-                        .HasColumnType("smallint");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("Phonecode")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("RegisteredAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RoleName")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Salt")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserCombined");
                 });
 
             modelBuilder.Entity("CoreFMS.Entities.City", b =>
