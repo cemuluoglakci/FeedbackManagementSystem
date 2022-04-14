@@ -2,6 +2,7 @@
 using ApplicationFMS.Models;
 using AutoMapper;
 using InfrastructureFMSDB;
+using Microsoft.Extensions.Options;
 using System;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace ApplicationFMSUnitTests.Arrange
     {
         public FMSDataContext Context { get; private set; }
         public IMapper Mapper { get; private set; }
-        public JwtSetting JwtSettings;
+        public IOptions<JwtSetting> JwtSettingOptions;
 
         public QueryTestBase()
         {
@@ -21,7 +22,8 @@ namespace ApplicationFMSUnitTests.Arrange
                 cfg.AddProfile<MappingProfile>();
             });
             Mapper = configurationProvider.CreateMapper();
-            JwtSettings = new JwtSetting { Secret = "PXgDHjN7DkRWP3ZiSFh0K9N0u2hLI6ZhP1nJZMkBbi6hwUmmsnkqUP8S1hcgYgrAfqmMgXdkvyL3VaWzFEL9qXFNGCB5gL9By7FRevf65U0b6PxIzUa3hlFVRPkukCgu" };
+            JwtSettingOptions = Options.Create(new JwtSetting() { Secret = "PXgDHjN7DkRWP3ZiSFh0K9N0u2hLI6ZhP1nJZMkBbi6hwUmmsnkqUP8S1hcgYgrAfqmMgXdkvyL3VaWzFEL9qXFNGCB5gL9By7FRevf65U0b6PxIzUa3hlFVRPkukCgu" });
+            //new JwtSetting 
         }
 
         public void Dispose()

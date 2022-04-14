@@ -27,4 +27,8 @@
     <ProjectReference Include="..\..\..\src\Infrastructure\InfrastructureFMSDB\InfrastructureFMSDB.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\Lookup\" />
+  </ItemGroup>
+
 </Project>

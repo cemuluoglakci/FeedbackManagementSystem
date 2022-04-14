@@ -15,10 +15,10 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
         private readonly IFMSDataContext _context;
         private readonly JwtSetting _jwtSettings;
 
-        public UserLoginQueryHandler(IFMSDataContext context, IOptions<JwtSetting> jwtSettings)
+        public UserLoginQueryHandler(IFMSDataContext context, IOptions<JwtSetting> JwtSettingOptions)
         {
             _context = context;
-            _jwtSettings = jwtSettings.Value;
+            _jwtSettings = JwtSettingOptions.Value;
         }
 
         public async Task<BaseResponse<string>> Handle(UserLoginQuery request, CancellationToken cancellationToken)
@@ -38,6 +38,7 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
                 TokenHelper tokenHelper = new TokenHelper(_jwtSettings);
                 string jwt = tokenHelper.GenerateJwtToken(currentUser);
                 return new BaseResponse<string>(jwt);
+                 
             }
 
         }
