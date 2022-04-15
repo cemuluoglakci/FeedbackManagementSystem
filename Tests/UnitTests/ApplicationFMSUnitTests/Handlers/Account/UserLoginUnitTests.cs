@@ -17,18 +17,15 @@ namespace ApplicationFMSUnitTests.Handlers.Account
     public class UserLoginUnitTests
     {
         private readonly FMSDataContext _context;
-        private readonly IMapper _mapper;
         private readonly IOptions<JwtSetting> _jwtSettings;
         private readonly UserLoginQueryHandler _sut;
         private readonly UserLoginQuery _userLoginQuery;
 
         public UserLoginUnitTests(QueryTestBase testBase)
         {
-            _context = testBase.Context;
-            _mapper = testBase.Mapper;
-            _jwtSettings = testBase.JwtSettingOptions;
-
             //Arrange
+            _context = testBase.Context;
+            _jwtSettings = testBase.JwtSettingOptions;
             _sut = new UserLoginQueryHandler(_context, _jwtSettings);
             _userLoginQuery = new UserLoginQuery()
             {

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -35,26 +34,6 @@ namespace FmsAPI
 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options))
 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
 
-            //services.AddIdentity<ApplicationUser, IdentityRole>()..AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-            //// Adding Authentication
-            //services.AddAuthentication(options => {
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //    // Adding Jwt Bearer
-            //    .AddJwtBearer(options => {
-            //        options.SaveToken = true;
-            //        options.RequireHttpsMetadata = false;
-            //        options.TokenValidationParameters = new TokenValidationParameters()
-            //        {
-            //            ValidateIssuer = false,
-            //            ValidateAudience = false,
-            //            ValidAudience = Configuration["JWT:ValidAudience"],
-            //            ValidIssuer = Configuration["JWT:ValidIssuer"],
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
-            //        };
-            //    });
 
             services.AddSwaggerGen(c =>
             {
@@ -83,13 +62,14 @@ namespace FmsAPI
             new string[] {}
         }
 });
-});
+            });
 
 
             services.Configure<JwtSetting>(Configuration.GetSection("JwtSetting"));
 
             services.AddScoped<ITokenHelper, TokenHelper>();
             services.AddScoped<IContextUserService, ContextUserService>();
+            services.AddScoped<ICurrentUser, CurrentUserService>();
 
             services.AddInfrastructureServices(Configuration);
             services.AddApplicationServices();
