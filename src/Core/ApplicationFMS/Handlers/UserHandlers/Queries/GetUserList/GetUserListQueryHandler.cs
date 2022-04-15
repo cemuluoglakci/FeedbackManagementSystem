@@ -5,11 +5,10 @@ using AutoMapper.QueryableExtensions;
 using CoreFMS.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-//using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,7 +48,7 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
 
             // Instance count that current user is authorized to display
             int totalCount = userQuery.Count();
-            
+
             // Filter accourding to every query
             if (!String.IsNullOrEmpty(request.EmailQuery))
             {
@@ -59,11 +58,11 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
             {
                 userQuery = userQuery.Where(x => (x.FirstName ?? "").Contains(request.FirstNameQuery));
             }
-            if(!String.IsNullOrEmpty(request.LastNameQuery))
+            if (!String.IsNullOrEmpty(request.LastNameQuery))
             {
-                userQuery= userQuery.Where(x => (x.LastName ??"").Contains(request.LastNameQuery));
+                userQuery = userQuery.Where(x => (x.LastName ?? "").Contains(request.LastNameQuery));
             }
-            if(request.BirthDateBefore != null)
+            if (request.BirthDateBefore != null)
             {
                 userQuery = userQuery.Where(x => (x.BirthDate ?? null) < request.BirthDateBefore);
             }
@@ -83,15 +82,15 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
             {
                 userQuery = userQuery.Where(x => x.CityId == request.CityId);
             }
-            if ((request.EducationId ?? 0) != 0) 
+            if ((request.EducationId ?? 0) != 0)
             {
                 userQuery = userQuery.Where(x => x.EducationId == request.EducationId);
             }
-            if ((request.CompanyId ?? 0) != 0) 
+            if ((request.CompanyId ?? 0) != 0)
             {
                 userQuery = userQuery.Where(x => x.CompanyId == request.CompanyId);
             }
-            if(request.IsActive != null)
+            if (request.IsActive != null)
             {
                 userQuery = userQuery.Where(x => x.IsActive == request.IsActive);
             }
@@ -102,12 +101,17 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
 
             int filteredCount = userQuery.Count();
 
-            //Pagination
+            //Transfering type to Data Transfer Object
+            var dtoQuery = userQuery.ProjectTo<UserDTO>(_mapper.ConfigurationProvider);
+
+            //Ordering
+            string sortColumnDirection = request.IsAscending ? "ascending" : "descending";
+            dtoQuery = dtoQuery.OrderBy(request.SortColumn + " " + sortColumnDirection);
+
+            //Pagination and Calling the query
             int take = request.ObjectsPerPage;
             int skip = (request.PageNumber - 1) * take;
-            var users = await userQuery.Skip(skip).Take(take)
-                .ProjectTo<UserDTO>(_mapper.ConfigurationProvider)
-                .ToListAsync(cancellationToken);
+            var users = await dtoQuery.Skip(skip).Take(take).ToListAsync(cancellationToken);
 
             var viewModel = new UserListVm
             {
