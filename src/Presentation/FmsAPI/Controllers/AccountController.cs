@@ -17,11 +17,10 @@ namespace FmsAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<string>>> UserLogin(string email, string password)
+        public async Task<ActionResult<BaseResponse<string>>> UserLogin([FromBody] UserLoginQuery request)
         {
-            var loginResponse = await Mediator.Send(new UserLoginQuery { Email = email, Password = password });
+            var loginResponse = await Mediator.Send(request);
             return base.Ok(loginResponse);
         }
-
     }
 }

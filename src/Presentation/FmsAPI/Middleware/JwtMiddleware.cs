@@ -27,16 +27,8 @@ namespace FmsAPI.Middleware
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var userId = tokenHelper.ValidateJwtToken(token);
 
-            //var currentContextUser = tokenHelper.ValidateJwtToken(token);
             if (userId != null)
             {
-                // attach user to context on successful jwt validation
-                //will be refactored later
-
-                //context.Items["User"] = userService.GetById(userId.Value);
-                //var currentUser = _context.User.FirstOrDefault(x => x.Id == userId && x.IsActive == 1);
-                //var currentContextUser = _mapper.Map<ContextUser>(currentUser);
-                //context.Items["User"] = currentContextUser;
                 context.Items["User"] = contextUserService.GetContextUser(userId.Value);
             }
 

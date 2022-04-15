@@ -22,25 +22,33 @@ namespace ApplicationFMSUnitTests.Arrange
                 new User
                 {
                     Id = 1,
-                    Email = "johnsmith@gmail.com", 
-                    Salt = "FissGc6h4XFyzV6cCHluEg==", 
+                    Email = "johnsmith@gmail.com",
+                    Salt = "FissGc6h4XFyzV6cCHluEg==",
                     Hash = "PEP6JdkFF1uT6OmreCiEKN1uxYab+EjOESjZOGXzgcE=", // Password = P@ssw0rd
-                    FirstName = "John", 
-                    LastName = "SMITH", 
-                    IsActive = true
+                    FirstName = "John",
+                    LastName = "SMITH",
+                    IsActive = true,
+                    RoleId = 1,
+                    CityId = 1,
+                    EducationId = 1,
+                    CompanyId = 1,
                 },
 
-                new User 
+                new User
                 {
-                    Id = 2, 
-                    Email = "janesmith@gmail.com", 
-                    Salt = "CV512C//LYxtTNzgelc8lA==", 
+                    Id = 2,
+                    Email = "janesmith@gmail.com",
+                    Salt = "CV512C//LYxtTNzgelc8lA==",
                     Hash = "rdTyBMG3CHIYZNEUlX8Dmpi7sQrjMRiQEVPbxsvmixg=", // Password = P@ssw0rd
-                    FirstName = "Jane", 
-                    LastName = "SMITH", 
-                    IsActive = true
+                    FirstName = "Jane",
+                    LastName = "SMITH",
+                    IsActive = true,
+                    RoleId = 2,
+                    CityId = 2,
+                    EducationId = 2,
+                    CompanyId = 2,
                 },
-                
+
                 new User
                 {
                     Id = 3,
@@ -49,7 +57,11 @@ namespace ApplicationFMSUnitTests.Arrange
                     Hash = "PEP6JdkFF1uT6OmreCiEKN1uxYab+EjOESjZOGXzgcE=", // Password = P@ssw0rd
                     FirstName = "John",
                     LastName = "SMITH",
-                    IsActive = false
+                    IsActive = false,
+                    RoleId = 3,
+                    CityId = 3,
+                    EducationId = 3,
+                    CompanyId = 3,
                 },
 
                 new User
@@ -62,7 +74,11 @@ namespace ApplicationFMSUnitTests.Arrange
                     LastName = "Loveredge",
                     LastFailedLoginAt = DateTime.Now,
                     FailedLoginAttemptCount = 3,
-                    IsActive = true
+                    IsActive = true,
+                    RoleId = 4,
+                    CityId = 4,
+                    EducationId = 4,
+                    CompanyId = 4,
                 },
 
             });
@@ -75,16 +91,29 @@ namespace ApplicationFMSUnitTests.Arrange
                 new Role { Id = 5, RoleName = "Company Employee" },
             });
 
-            //context.....AddRange(new[] {
-            //    new ... { Id = "", Name = "" },
-            //    new ... { Id = "", Name = "" },
-            //    new ... { Id = "", Name = "" },
-            //});
+            context.City.AddRange(new[] {
+                new City { Id = 1, CityName = "İstanbul" },
+                new City { Id = 2, CityName = "Ankara" },
+                new City { Id = 3, CityName = "İzmir" },
+                new City { Id = 4, CityName = "Konya" },
+                new City { Id = 5, CityName = "Antalya" },
+            });
 
-            //context.///.Add(new ...
-            //{
-            //    ... = ""
-            //});
+            context.Company.AddRange(new[] {
+                new Company { Id = 1, CompanyName = "Kunze Inc" },
+                new Company { Id = 2, CompanyName = "Flatley-Schoen" },
+                new Company { Id = 3, CompanyName = "Stokes Group" },
+                new Company { Id = 4, CompanyName = "Grant LLC" },
+                new Company { Id = 5, CompanyName = "Considine-Dooley" },
+            });
+
+            context.Education.AddRange(new[] {
+                new Education { Id = 1, EducationName = "No formal education" },
+                new Education { Id = 2, EducationName = "High school diploma" },
+                new Education { Id = 3, EducationName = "College degree" },
+                new Education { Id = 4, EducationName = "Vocational training" },
+                new Education { Id = 5, EducationName = "Bachelor’s degree" },
+            });
 
             context.SaveChanges();
 
