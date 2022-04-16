@@ -39,4 +39,8 @@
     <ProjectReference Include="..\CoreFMS\CoreFMS.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\Feedbacks\Commands\" />
+  </ItemGroup>
+
 </Project>
