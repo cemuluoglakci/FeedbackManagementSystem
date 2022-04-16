@@ -12,6 +12,8 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
     {
         public int ObjectsPerPage { get; set; } = 10;
         public int PageNumber { get; set; } = 1;
+        public string SortColumn { get; set; } = "Id";
+        public bool IsAscending { get; set; } = true;
         public string? EmailQuery { get; set; } = string.Empty;
         public string? FirstNameQuery { get; set; } = string.Empty;
         public string? LastNameQuery { get; set; } = string.Empty;

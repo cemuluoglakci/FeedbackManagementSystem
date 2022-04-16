@@ -272,3 +272,5 @@ __pycache__/
 # Cake - Uncomment if you are using it
 # tools/
 
+/src/Presentation/FmsAPI/Controllers/TestPurposesController.cs
+/src/Core/ApplicationFMS/Handlers/TestPurposesHandler.cs
