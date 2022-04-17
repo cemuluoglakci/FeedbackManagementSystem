@@ -38,7 +38,7 @@ namespace ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility
                 return new BaseResponse<int>(0, "User was not found.");
             }
 
-            //Company representatives will be allowed to display only users related to their company.
+            //Company representatives will be allowed to display and manipulate only users related to their company.
             if (_currentUser.UserDetail.RoleName == "Company Representative")
             {
                 if (user.CompanyId != _currentUser.UserDetail.CompanyId)

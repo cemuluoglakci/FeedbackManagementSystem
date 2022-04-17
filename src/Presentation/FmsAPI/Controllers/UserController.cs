@@ -25,11 +25,11 @@ namespace FmsAPI.Controllers
             return base.Ok(await Mediator.Send(request));
         }
 
-        [HttpPost]
+        [HttpGet("{id}")]
         [Authorize("System Administrator", "Company Representative")]
-        public async Task<ActionResult<BaseResponse<int>>> ToggleUserAbility([FromBody] ToggleUserAbilityCommand request)
+        public async Task<ActionResult<BaseResponse<int>>> ToggleUserAbility(int id)
         {
-            return base.Ok(await Mediator.Send(request));
+            return base.Ok(await Mediator.Send(new ToggleUserAbilityCommand { Id = id}));
         }
     }
 }
