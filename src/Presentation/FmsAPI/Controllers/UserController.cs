@@ -18,7 +18,7 @@ namespace FmsAPI.Controllers
             return base.Ok(await Mediator.Send(request));
         }
 
-        [HttpPost]
+        [HttpPut]
         [Authorize]
         public async Task<ActionResult<BaseResponse<int>>> UpdateUser([FromBody] UpdateUserCommand request)
         {

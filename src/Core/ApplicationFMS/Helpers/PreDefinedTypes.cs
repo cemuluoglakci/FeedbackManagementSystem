@@ -9,6 +9,7 @@ namespace ApplicationFMS.Helpers
     public static class PreDefinedTypes
     {
         public static readonly string _adminRole = "System Administrator";
+        public static readonly string _customerRole = "Customer";
         public static readonly List<string> _companyRoles = new List<string> { "Company Representative", "Company Manager", "Company Employee" };
 
 
