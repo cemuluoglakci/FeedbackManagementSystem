@@ -57,6 +57,7 @@ namespace ApplicationFMS.Helpers
             claims.Add(new Claim("Id", account.Id.ToString()));
             claims.Add(new Claim("name", account.FirstName));
             claims.Add(new Claim("email", account.Email));
+            claims.Add(new Claim("RoleName", account.Role.RoleName));
             return claims;
         }
         public int? ValidateJwtToken(string token)

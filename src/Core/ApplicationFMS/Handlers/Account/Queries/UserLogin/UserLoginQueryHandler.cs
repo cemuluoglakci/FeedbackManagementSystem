@@ -29,7 +29,7 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
                 return new BaseResponse<string>(null, "This E-mail is not registered to the system!");
             }
 
-            var currentUser = await _context.User.FirstOrDefaultAsync(x => x.Email == request.Email && x.IsActive);
+            var currentUser = await _context.User.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == request.Email && x.IsActive);
 
             if (currentUser.LastFailedLoginAt < DateTime.Now.AddMinutes(30) && currentUser.FailedLoginAttemptCount >= 3)
             {

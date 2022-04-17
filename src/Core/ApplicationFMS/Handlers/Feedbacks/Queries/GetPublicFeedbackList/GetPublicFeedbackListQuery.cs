@@ -2,9 +2,9 @@
 using MediatR;
 using System;
 
-namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetFeedbackList
+namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {
-    public class GetFeedbackListQuery : IRequest<BaseResponse<FeedbackListVm>>
+    public class GetPublicFeedbackListQuery : IRequest<BaseResponse<PublicFeedbackListVm>>
     {
         public int ObjectsPerPage { get; set; } = 10;
         public int PageNumber { get; set; } = 1;
@@ -22,11 +22,11 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetFeedbackList
         public int? SubTypeId { get; set; }
 
         //Only for admins
-        public bool IsAnonym { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsChecked { get; set; }
-        public bool IsReplied { get; set; }
-        public bool IsSolved { get; set; }
+        ////public bool IsAnonym { get; set; }
+        ////public bool IsActive { get; set; }
+        ////public bool IsChecked { get; set; }
+        ////public bool IsReplied { get; set; }
+        ////public bool IsSolved { get; set; }
 
     }
 }
