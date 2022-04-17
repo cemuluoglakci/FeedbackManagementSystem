@@ -159,6 +159,9 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("DirectedToEmploteeId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("DislikeCount")
                         .HasColumnType("int");
 
@@ -166,6 +169,9 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsAnonym")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("IsArchived")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("IsChecked")

@@ -1,42 +1,24 @@
-﻿using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList;
-using ApplicationFMS.Helpers.Mappings;
+﻿using ApplicationFMS.Helpers.Mappings;
 using AutoMapper;
 using CoreFMS.Entities;
-using System;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {
-    public class PublicFeedbackDTO : IMapFrom<Feedback>
+    public class CompanyFeedbackDTO : PublicFeedbackDTO, IMapFrom<Feedback>
     {
-
-        public int Id { get; set; }
-        public string? CustomerFirstName { get; set; }
-        public string Title { get; set; } = null!;
-        public string Text { get; set; } = null!;
-        public int? SectorId { get; set; }
-        public string SectorName { get; set; }
-        public int? CompanyId { get; set; }
-        public string CompanyName { get; set; }
-        public int? ProductId { get; set; }
-        public string ProductName { get; set; }
-        public int TypeId { get; set; }
-        public string TypeName { get; set; }
-        public int? SubTypeId { get; set; }
-        public string SubTypeName { get; set; }
-
-        public DateTime CreatedAt { get; set; }
-        public bool IsAnonym { get; set; }
-        public bool? IsReplied { get; set; }
-        public bool? IsSolved { get; set; }
-
+        public string CustomerEmail { get; set; } = null!;
+        public string? CustomerPhone { get; set; }
+        public string? CustomerLastName { get; set; }
+        public int? DirectedToEmploteeId { get; set; }
+        public bool IsArchived { get; set; } = false;
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Feedback, PublicFeedbackDTO>()
+            profile.CreateMap<Feedback, CompanyFeedbackDTO>()
+                .ForMember(d => d.CustomerFirstName, opt => opt.MapFrom(s => s.User.FirstName))
+                .ForMember(d => d.CustomerEmail, opt => opt.MapFrom(s => s.User.Email))
+                .ForMember(d => d.CustomerPhone, opt => opt.MapFrom(s => s.User.Phone))
+                .ForMember(d => d.CustomerLastName, opt => opt.MapFrom(s => s.User.LastName))
 
-                .ForMember(d => d.CustomerFirstName, opt =>
-                {
-                    opt.MapFrom(s => s.IsAnonym ? "Anonym" : s.User.FirstName);
-                })
                 .ForMember(d => d.SectorName, opt =>
                 {
                     opt.PreCondition(s => (s.Sector != null));
@@ -63,6 +45,5 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 })
                 ;
         }
-
     }
 }

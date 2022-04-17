@@ -30,7 +30,9 @@ namespace CoreFMS.Entities
         public bool IsChecked { get; set; }
         public bool IsReplied { get; set; }
         public bool IsSolved { get; set; }
+        public bool IsArchived { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int? DirectedToEmploteeId { get; set; }
 
         public virtual Company? Company { get; set; }
         public virtual Product? Product { get; set; }
