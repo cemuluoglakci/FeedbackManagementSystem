@@ -27,7 +27,6 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             _context = context;
             _mapper = mapper;
             _currentUser = currentUser;
-
         }
 
         public async Task<BaseResponse<FeedbackListVm>> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
@@ -36,6 +35,13 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 
             // Instance count that current user is authorized to display
             int totalCount = feedbackQuery.Count();
+            int activeCount = feedbackQuery.Where(x => x.IsActive == true).Count();
+            if (_currentUser.UserDetail.RoleName == PreDefinedTypes._companyEmployee)
+            {
+                activeCount = feedbackQuery.Where(x =>
+                x.IsActive == true &&
+                x.DirectedToEmploteeId == _currentUser.UserDetail.Id).Count();
+            }
 
             // Filter accourding to every query
             if (!String.IsNullOrEmpty(request.TitleQuery))
@@ -83,18 +89,14 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 feedbackQuery = feedbackQuery.Where(x => x.IsSolved == request.IsSolved);
             }
 
-            int filteredCount = feedbackQuery.Count();
-
             var viewModel = new FeedbackListVm
             {
-                TotalCount = totalCount,
-                FilteredCount = filteredCount,
+                TotalCount = activeCount,
                 ObjectsPerPage = request.ObjectsPerPage,
                 PageNumber = request.PageNumber,
             };
 
-
-            //Adjusting filters and data tpes according to current user's role
+            //Adjusting filters and data types according to current user's role
 
             //Apply common filters between Admin and company users
             if (_currentUser.UserDetail.RoleName == PreDefinedTypes._adminRole || PreDefinedTypes._companyRoles.Contains(_currentUser.UserDetail.RoleName))
@@ -139,6 +141,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 {
                     feedbackQuery = feedbackQuery.Where(x => x.IsArchived == request.IsArchived);
                 }
+                viewModel.TotalCount = totalCount;
                 viewModel.FilteredCount = feedbackQuery.Count();
 
                 //Project to DTO type
@@ -150,6 +153,13 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             }
             else if (PreDefinedTypes._companyRoles.Contains(_currentUser.UserDetail.RoleName))
             {
+                feedbackQuery = feedbackQuery.Where(x => x.IsActive == request.IsActive);
+
+                //Company Employees can only display feedbacks directed to them
+                if (_currentUser.UserDetail.RoleName == PreDefinedTypes._companyEmployee)
+                {
+                    feedbackQuery = feedbackQuery.Where(x => x.DirectedToEmploteeId == _currentUser.UserDetail.Id);
+                }
                 viewModel.FilteredCount = feedbackQuery.Count();
 
                 //Project to DTO type
@@ -161,15 +171,15 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             }
             else
             {
+                feedbackQuery = feedbackQuery.Where(x => x.IsActive == request.IsActive);
+                viewModel.FilteredCount = feedbackQuery.Count();
+
                 var dtoQuery = feedbackQuery.ProjectTo<PublicFeedbackDTO>(_mapper.ConfigurationProvider);
                 //Pagination and ordering
                 dtoQuery = Tools.ArrangeList(dtoQuery, request.SortColumn, request.IsAscending, request.ObjectsPerPage, request.PageNumber);
                 var feedbackList = await dtoQuery.ToListAsync();
                 viewModel.PublicFeedbackList = feedbackList;
             }
-
-
-
 
             return new BaseResponse<FeedbackListVm>(viewModel);
         }

@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Feedbacks.Commands
+namespace ApplicationFMS.Handlers.Feedbacks.Commands.PostFeedback
 {
     public class PostFeedbackCommandHandler : IRequestHandler<PostFeedbackCommand, BaseResponse<int>>
     {

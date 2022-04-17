@@ -15,6 +15,7 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
     {
         private readonly IFMSDataContext _context;
         private readonly JwtSetting _jwtSettings;
+        private readonly int accountLockPeriod = 30;
 
         public UserLoginQueryHandler(IFMSDataContext context, IOptions<JwtSetting> JwtSettingOptions)
         {
@@ -31,7 +32,7 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
 
             var currentUser = await _context.User.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == request.Email && x.IsActive);
 
-            if (currentUser.LastFailedLoginAt < DateTime.Now.AddMinutes(30) && currentUser.FailedLoginAttemptCount >= 3)
+            if (currentUser.LastFailedLoginAt > DateTime.Now.AddMinutes(accountLockPeriod) && currentUser.FailedLoginAttemptCount >= 3)
             {
                 return new BaseResponse<string>(null, "Your account is locked, please try again later.");
             }

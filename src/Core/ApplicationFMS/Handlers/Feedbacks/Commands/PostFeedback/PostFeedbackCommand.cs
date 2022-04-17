@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Feedbacks.Commands
+namespace ApplicationFMS.Handlers.Feedbacks.Commands.PostFeedback
 {
     public class PostFeedbackCommand : IRequest<BaseResponse<int>>
     {
