@@ -13,7 +13,7 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize("System Administrator", "Company Representative")]
-        public async Task<ActionResult<BaseResponse<UserListVm>>> UserList([FromBody] GetUserListQuery request)
+        public async Task<ActionResult<BaseResponse<UserListVm>>> GetList([FromBody] GetUserListQuery request)
         {
             return base.Ok(await Mediator.Send(request));
         }
