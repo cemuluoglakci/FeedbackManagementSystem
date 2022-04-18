@@ -7,20 +7,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked
+namespace ApplicationFMS.Handlers.Replies.Commands.ToggleChecked
 {
-    public class ToggleCheckedFeedbackCommandHandler : IRequestHandler<ToggleCheckedFeedbackCommand, BaseResponse<int>>
+    public class ToggleCheckedReplyCommandHandler : IRequestHandler<ToggleCheckedReplyCommand, BaseResponse<int>>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
 
-        public ToggleCheckedFeedbackCommandHandler(IFMSDataContext context, ICurrentUser? currentUser)
+        public ToggleCheckedReplyCommandHandler (IFMSDataContext context, ICurrentUser? currentUser)
         {
             _context = context;
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(ToggleCheckedFeedbackCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<int>> Handle(ToggleCheckedReplyCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
@@ -28,19 +28,21 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked
             }
             if (_currentUser.UserDetail.RoleName != PreDefinedTypes._adminRole)
             {
-                return new BaseResponse<int>(0, "Only administrators are allowed to activate / deactivate feedbacks.");
+                return new BaseResponse<int>(0, "Only administrators are allowed to activate / deactivate replies.");
             }
 
-            Feedback? feedback = _context.Feedback.FirstOrDefault(x => x.Id == request.Id);
-            if (feedback == null)
+            Reply? reply = _context.Reply.FirstOrDefault(x => x.Id == request.Id);
+            if (reply == null)
             {
                 return new BaseResponse<int>(0, "Feedback was not found.");
             }
 
-            feedback.IsChecked = !feedback.IsChecked;
+            reply.IsChecked = !reply.IsChecked;
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<int>(feedback.Id);
+            return new BaseResponse<int>(reply.Id);
         }
+
+
     }
 }
