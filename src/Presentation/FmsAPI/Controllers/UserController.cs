@@ -29,7 +29,7 @@ namespace FmsAPI.Controllers
         [Authorize("System Administrator", "Company Representative")]
         public async Task<ActionResult<BaseResponse<int>>> ToggleUserAbility(int id)
         {
-            return base.Ok(await Mediator.Send(new ToggleUserAbilityCommand { Id = id}));
+            return base.Ok(await Mediator.Send(new ToggleUserAbilityCommand { Id = id }));
         }
     }
 }

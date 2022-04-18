@@ -7,20 +7,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive
+namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked
 {
-    public class ToggleActiveFeedbackCommandHandler : IRequestHandler<ToggleActiveFeedbackCommand, BaseResponse<int>>
+    public class ToggleCheckedFeedbackCommandHandler : IRequestHandler<ToggleCheckedFeedbackCommand, BaseResponse<int>>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
 
-        public ToggleActiveFeedbackCommandHandler(IFMSDataContext context, ICurrentUser? currentUser)
+        public ToggleCheckedFeedbackCommandHandler(IFMSDataContext context, ICurrentUser? currentUser)
         {
             _context = context;
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(ToggleActiveFeedbackCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<int>> Handle(ToggleCheckedFeedbackCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
@@ -37,14 +37,10 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive
                 return new BaseResponse<int>(0, "Feedback was not found.");
             }
 
-            feedback.IsActive = !feedback.IsActive;
+            feedback.IsChecked = !feedback.IsChecked;
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<int>(feedback.Id);
+            return new BaseResponse<int>(feedback.Id); ;
         }
-
-
-
-
     }
 }
