@@ -1,14 +1,13 @@
 ﻿using ApplicationFMS.Handlers.Feedbacks.Commands.PostFeedback;
-using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
-using ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility;
-using ApplicationFMS.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using FmsAPI.Helper;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive;
+using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleSolved;
-using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
+using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
+using ApplicationFMS.Models;
+using FmsAPI.Helper;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace FmsAPI.Controllers
 {
