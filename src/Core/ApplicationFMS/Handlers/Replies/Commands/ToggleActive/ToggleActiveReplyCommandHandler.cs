@@ -7,20 +7,20 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Replies.Commands.ToggleChecked
+namespace ApplicationFMS.Handlers.Replies.Commands.ToggleActive
 {
-    public class ToggleCheckedReplyCommandHandler : IRequestHandler<ToggleCheckedReplyCommand, BaseResponse<int>>
+    public class ToggleActiveReplyCommandHandler : IRequestHandler<ToggleActiveReplyCommand, BaseResponse<int>>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
 
-        public ToggleCheckedReplyCommandHandler(IFMSDataContext context, ICurrentUser? currentUser)
+        public ToggleActiveReplyCommandHandler (IFMSDataContext context, ICurrentUser? currentUser)
         {
             _context = context;
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(ToggleCheckedReplyCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<int>> Handle(ToggleActiveReplyCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
@@ -37,7 +37,7 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ToggleChecked
                 return new BaseResponse<int>(0, "Reply was not found.");
             }
 
-            reply.IsChecked = !reply.IsChecked;
+            reply.IsActive = !reply.IsActive;
             await _context.SaveChangesAsync(cancellationToken);
 
             return new BaseResponse<int>(reply.Id);
