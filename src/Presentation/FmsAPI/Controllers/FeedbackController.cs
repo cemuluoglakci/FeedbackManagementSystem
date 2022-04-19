@@ -1,4 +1,5 @@
-﻿using ApplicationFMS.Handlers.Feedbacks.Commands.PostFeedback;
+﻿using ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback;
+using ApplicationFMS.Handlers.Feedbacks.Commands.PostFeedback;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
@@ -23,6 +24,14 @@ namespace FmsAPI.Controllers
         [HttpPost]
         [Authorize("Customer")]
         public async Task<ActionResult<BaseResponse<int>>> PostFeedback([FromBody] PostFeedbackCommand request)
+        {
+            var vm = await Mediator.Send(request);
+            return base.Ok(vm);
+        }
+
+        [HttpPut]
+        [Authorize("Company Representative")]
+        public async Task<ActionResult<BaseResponse<int>>> DirectFeedback([FromBody] DirectFeedbackCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);

@@ -171,7 +171,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             }
             else
             {
-                feedbackQuery = feedbackQuery.Where(x => x.IsActive == request.IsActive);
+                feedbackQuery = feedbackQuery.Where(x => x.IsActive == true);
                 viewModel.FilteredCount = feedbackQuery.Count();
 
                 var dtoQuery = feedbackQuery.ProjectTo<PublicFeedbackDTO>(_mapper.ConfigurationProvider);
