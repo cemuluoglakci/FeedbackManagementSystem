@@ -2,6 +2,7 @@
 using ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser;
 using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList;
 using ApplicationFMS.Models;
+using ApplicationFMS.Helpers;
 using FmsAPI.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace FmsAPI.Controllers
     public class UserController : BaseController
     {
         [HttpPost]
-        [Authorize("System Administrator", "Company Representative")]
+        [Authorize(Constants.AdminRole, Constants.CompanyRepresentativeRole)]
         public async Task<ActionResult<BaseResponse<UserListVm>>> GetList([FromBody] GetUserListQuery request)
         {
             return base.Ok(await Mediator.Send(request));
@@ -26,7 +27,7 @@ namespace FmsAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize("System Administrator", "Company Representative")]
+        [Authorize(Constants.AdminRole, Constants.CompanyRepresentativeRole)]
         public async Task<ActionResult<BaseResponse<int>>> ToggleUserAbility(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleUserAbilityCommand { Id = id }));

@@ -26,7 +26,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.PostFeedback
             {
                 return new BaseResponse<int>(0, "User Identity could not defined.");
             }
-            if (_currentUser.UserDetail.RoleName != PreDefinedTypes._customerRole)
+            if (_currentUser.UserDetail.RoleName != Constants.CustomerRole)
             {
                 return new BaseResponse<int>(0, "If you want to contribute to the system with feedbacks please create a 'Customer' account with a dedicated E-mail address.");
             }

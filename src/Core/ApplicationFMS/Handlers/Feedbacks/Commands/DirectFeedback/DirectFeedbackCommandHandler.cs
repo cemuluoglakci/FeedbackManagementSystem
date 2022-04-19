@@ -33,7 +33,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback
                 return new BaseResponse<int>(0, "Feedback was not found.");
             }
 
-            if(_currentUser.UserDetail.CompanyId != feedback.CompanyId || _currentUser.UserDetail.RoleName != PreDefinedTypes._companyRepresentative)
+            if(_currentUser.UserDetail.CompanyId != feedback.CompanyId || _currentUser.UserDetail.RoleName != Constants.CompanyRepresentativeRole)
             {
                 return new BaseResponse<int>(0, "Only related company representatives can direct feedbacks.");
             }
@@ -43,7 +43,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback
             {
                 return new BaseResponse<int>(0, "Company employee was not found.");
             }
-            if (companyEmployee.CompanyId != feedback.CompanyId || companyEmployee.Role.RoleName != PreDefinedTypes._companyEmployee)
+            if (companyEmployee.CompanyId != feedback.CompanyId || companyEmployee.Role.RoleName != Constants.CompanyEmployeeRole)
             {
                 return new BaseResponse<int>(0, "User is not authorized to reply feedbacks in the name of the company");
             }

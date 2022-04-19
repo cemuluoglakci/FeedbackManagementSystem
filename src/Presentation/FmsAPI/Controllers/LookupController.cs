@@ -8,6 +8,7 @@ using CoreFMS.Entities;
 
 namespace FmsAPI.Controllers
 {
+    [Authorize]
     public class LookupController : BaseController
     {
         [HttpGet]
@@ -17,7 +18,7 @@ namespace FmsAPI.Controllers
             return base.Ok(vm);
         }
 
-        [Authorize("System Administrator", "Company Manager")]
+        
         [HttpGet]
         public async Task<ActionResult<CityListVm>> City(int? countryId)
         {

@@ -30,7 +30,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleSolved
             {
                 return new BaseResponse<int>(0, "Current User Identity was not defined.");
             }
-            if (_currentUser.UserDetail.RoleName != PreDefinedTypes._customerRole)
+            if (_currentUser.UserDetail.RoleName != Constants.CustomerRole)
             {
                 return new BaseResponse<int>(0, "Only customers are allowed to label feedbacks as solved.");
             }

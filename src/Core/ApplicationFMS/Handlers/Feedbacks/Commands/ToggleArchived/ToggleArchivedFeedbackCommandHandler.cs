@@ -30,7 +30,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived
             {
                 return new BaseResponse<int>(0, "Current User Identity was not defined.");
             }
-            if (_currentUser.UserDetail.RoleName != PreDefinedTypes._companyEmployee)
+            if (_currentUser.UserDetail.RoleName != Constants.CompanyEmployeeRole)
             {
                 return new BaseResponse<int>(0, "Only Company Employees are allowed to label feedbacks as archived.");
             }
