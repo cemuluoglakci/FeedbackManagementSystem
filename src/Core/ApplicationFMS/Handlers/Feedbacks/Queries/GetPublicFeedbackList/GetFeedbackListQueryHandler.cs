@@ -36,7 +36,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             // Instance count that current user is authorized to display
             int totalCount = feedbackQuery.Count();
             int activeCount = feedbackQuery.Where(x => x.IsActive == true).Count();
-            if (_currentUser.UserDetail.RoleName == PreDefinedTypes._companyEmployee)
+            if (_currentUser.UserDetail.RoleName == Constants.CompanyEmployeeRole)
             {
                 activeCount = feedbackQuery.Where(x =>
                 x.IsActive == true &&
@@ -99,7 +99,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             //Adjusting filters and data types according to current user's role
 
             //Apply common filters between Admin and company users
-            if (_currentUser.UserDetail.RoleName == PreDefinedTypes._adminRole || PreDefinedTypes._companyRoles.Contains(_currentUser.UserDetail.RoleName))
+            if (_currentUser.UserDetail.RoleName == Constants.AdminRole || Constants.CompanyRoles.Contains(_currentUser.UserDetail.RoleName))
             {
                 if (request.IsArchived != null)
                 {
@@ -119,7 +119,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 }
             }
 
-            if (_currentUser.UserDetail.RoleName == PreDefinedTypes._adminRole)
+            if (_currentUser.UserDetail.RoleName == Constants.AdminRole)
             {
                 //Apply extra filters which are only specific to Admins
                 if (request.IsActive != null)
@@ -151,12 +151,12 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 var feedbackList = await dtoQuery.ToListAsync();
                 viewModel.AdminFeedbackList = feedbackList;
             }
-            else if (PreDefinedTypes._companyRoles.Contains(_currentUser.UserDetail.RoleName))
+            else if (Constants.CompanyRoles.Contains(_currentUser.UserDetail.RoleName))
             {
                 feedbackQuery = feedbackQuery.Where(x => x.IsActive == request.IsActive);
 
                 //Company Employees can only display feedbacks directed to them
-                if (_currentUser.UserDetail.RoleName == PreDefinedTypes._companyEmployee)
+                if (_currentUser.UserDetail.RoleName == Constants.CompanyEmployeeRole)
                 {
                     feedbackQuery = feedbackQuery.Where(x => x.DirectedToEmploteeId == _currentUser.UserDetail.Id);
                 }

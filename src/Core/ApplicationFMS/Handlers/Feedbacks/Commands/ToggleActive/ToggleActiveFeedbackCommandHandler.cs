@@ -26,7 +26,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive
             {
                 return new BaseResponse<int>(0, "Current User Identity was not defined.");
             }
-            if (_currentUser.UserDetail.RoleName != PreDefinedTypes._adminRole)
+            if (_currentUser.UserDetail.RoleName != Constants.AdminRole)
             {
                 return new BaseResponse<int>(0, "Only administrators are allowed to activate / deactivate feedbacks.");
             }

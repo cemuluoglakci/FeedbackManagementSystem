@@ -5,6 +5,7 @@ using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleSolved;
 using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
+using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
 using FmsAPI.Helper;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace FmsAPI.Controllers
         }
 
         [HttpPost]
-        [Authorize("Customer")]
+        [Authorize(Constants.CustomerRole)]
         public async Task<ActionResult<BaseResponse<int>>> PostFeedback([FromBody] PostFeedbackCommand request)
         {
             var vm = await Mediator.Send(request);
@@ -30,7 +31,7 @@ namespace FmsAPI.Controllers
         }
 
         [HttpPut]
-        [Authorize("Company Representative")]
+        [Authorize(Constants.CompanyRepresentativeRole)]
         public async Task<ActionResult<BaseResponse<int>>> DirectFeedback([FromBody] DirectFeedbackCommand request)
         {
             var vm = await Mediator.Send(request);
@@ -38,28 +39,28 @@ namespace FmsAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize("System Administrator")]
+        [Authorize(Constants.AdminRole)]
         public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackAbility(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleActiveFeedbackCommand { Id = id }));
         }
 
         [HttpGet("{id}")]
-        [Authorize("System Administrator")]
+        [Authorize(Constants.AdminRole)]
         public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackChecked(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleCheckedFeedbackCommand { Id = id }));
         }
 
         [HttpGet("{id}")]
-        [Authorize("Customer")]
+        [Authorize(Constants.CustomerRole)]
         public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackSolved(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleSolvedFeedbackCommand { Id = id }));
         }
 
         [HttpGet("{id}")]
-        [Authorize("Company Employee")]
+        [Authorize(Constants.CompanyEmployeeRole)]
         public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackArchived(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleArchivedFeedbackCommand { Id = id }));
