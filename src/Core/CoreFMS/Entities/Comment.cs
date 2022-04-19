@@ -8,7 +8,7 @@ namespace CoreFMS.Entities
         public Comment()
         {
             InverseCommentNavigation = new HashSet<Comment>();
-            Reactions = new HashSet<Reaction>();
+            Reactions = new HashSet<ReactionComment>();
         }
 
         public int Id { get; set; }
@@ -16,6 +16,8 @@ namespace CoreFMS.Entities
         public int UserId { get; set; }
         public int? ParentCommentId { get; set; }
         public string Text { get; set; } = null!;
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
         public bool IsAnonym { get; set; }
         public bool IsActive { get; set; }
         public bool IsChecked { get; set; }
@@ -25,6 +27,6 @@ namespace CoreFMS.Entities
         public virtual Feedback Feedback { get; set; } = null!;
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Comment> InverseCommentNavigation { get; set; }
-        public virtual ICollection<Reaction> Reactions { get; set; }
+        public virtual ICollection<ReactionComment> Reactions { get; set; }
     }
 }

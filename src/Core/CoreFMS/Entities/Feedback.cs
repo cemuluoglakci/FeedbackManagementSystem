@@ -8,7 +8,7 @@ namespace CoreFMS.Entities
         public Feedback()
         {
             Comments = new HashSet<Comment>();
-            Reactions = new HashSet<Reaction>();
+            Reactions = new HashSet<ReactionFeedback>();
             Replies = new HashSet<Reply>();
             Shares = new HashSet<Share>();
         }
@@ -23,8 +23,8 @@ namespace CoreFMS.Entities
         public int TypeId { get; set; }
         public int? SubTypeId { get; set; }
         public int? Shared { get; set; }
-        public int? LikeCount { get; set; }
-        public int? DislikeCount { get; set; }
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
         public bool IsAnonym { get; set; }
         public bool IsActive { get; set; }
         public bool IsChecked { get; set; }
@@ -41,7 +41,7 @@ namespace CoreFMS.Entities
         public virtual FeedbackType Type { get; set; } = null!;
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Comment> Comments { get; set; }
-        public virtual ICollection<Reaction> Reactions { get; set; }
+        public virtual ICollection<ReactionFeedback> Reactions { get; set; }
         public virtual ICollection<Reply> Replies { get; set; }
         public virtual ICollection<Share> Shares { get; set; }
     }

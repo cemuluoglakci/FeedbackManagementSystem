@@ -18,7 +18,8 @@ namespace ApplicationFMS.Interfaces
         DbSet<FeedbackType> FeedbackType { get; set; }
         DbSet<OperationMode> OperationMode { get; set; }
         DbSet<Product> Product { get; set; }
-        DbSet<Reaction> Reaction { get; set; }
+        DbSet<ReactionFeedback> ReactionFeedback { get; set; }
+        DbSet<ReactionComment> ReactionComment { get; set; }
         DbSet<Reply> Reply { get; set; }
         DbSet<Role> Role { get; set; }
         DbSet<Sector> Sector { get; set; }
