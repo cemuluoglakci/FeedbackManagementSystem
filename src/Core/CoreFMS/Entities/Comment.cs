@@ -14,7 +14,7 @@ namespace CoreFMS.Entities
         public int Id { get; set; }
         public int FeedbackId { get; set; }
         public int UserId { get; set; }
-        public int? CommentId { get; set; }
+        public int? ParentCommentId { get; set; }
         public string Text { get; set; } = null!;
         public bool IsAnonym { get; set; }
         public bool IsActive { get; set; }

@@ -42,7 +42,7 @@ namespace InfrastructureFMSDB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CommentId")
+                    b.Property<int?>("CommentNavigationId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -60,6 +60,9 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<bool>("IsChecked")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int?>("ParentCommentId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -69,7 +72,7 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentId");
+                    b.HasIndex("CommentNavigationId");
 
                     b.HasIndex("FeedbackId");
 
@@ -526,7 +529,7 @@ namespace InfrastructureFMSDB.Migrations
                 {
                     b.HasOne("CoreFMS.Entities.Comment", "CommentNavigation")
                         .WithMany("InverseCommentNavigation")
-                        .HasForeignKey("CommentId");
+                        .HasForeignKey("CommentNavigationId");
 
                     b.HasOne("CoreFMS.Entities.Feedback", "Feedback")
                         .WithMany("Comments")
