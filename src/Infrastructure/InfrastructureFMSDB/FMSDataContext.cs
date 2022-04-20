@@ -25,7 +25,8 @@ namespace InfrastructureFMSDB
         public DbSet<FeedbackType> FeedbackType { get; set; }
         public DbSet<OperationMode> OperationMode { get; set; }
         public DbSet<Product> Product { get; set; }
-        public DbSet<Reaction> Reaction { get; set; }
+        public DbSet<ReactionFeedback> ReactionFeedback { get; set; }
+        public DbSet<ReactionComment> ReactionComment { get; set; }
         public DbSet<Reply> Reply { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<Sector> Sector { get; set; }

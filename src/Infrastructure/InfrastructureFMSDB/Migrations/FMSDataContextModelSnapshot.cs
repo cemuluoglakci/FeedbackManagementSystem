@@ -48,6 +48,9 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
+                    b.Property<int>("DislikeCount")
+                        .HasColumnType("int");
+
                     b.Property<int>("FeedbackId")
                         .HasColumnType("int");
 
@@ -59,6 +62,9 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.Property<bool>("IsChecked")
                         .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("LikeCount")
+                        .HasColumnType("int");
 
                     b.Property<int?>("ParentCommentId")
                         .HasColumnType("int");
@@ -165,7 +171,7 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<int?>("DirectedToEmploteeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DislikeCount")
+                    b.Property<int>("DislikeCount")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -186,7 +192,7 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<bool>("IsSolved")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("LikeCount")
+                    b.Property<int>("LikeCount")
                         .HasColumnType("int");
 
                     b.Property<int?>("ProductId")
@@ -300,26 +306,23 @@ namespace InfrastructureFMSDB.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("CoreFMS.Entities.Reaction", b =>
+            modelBuilder.Entity("CoreFMS.Entities.ReactionComment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CommentId")
+                    b.Property<int>("CommentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("FeedbackId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("Sentiment")
-                        .HasColumnType("int");
+                    b.Property<bool>("Sentiment")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -328,11 +331,39 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.HasIndex("CommentId");
 
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReactionComment");
+                });
+
+            modelBuilder.Entity("CoreFMS.Entities.ReactionFeedback", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("FeedbackId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<bool>("Sentiment")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("FeedbackId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reaction");
+                    b.ToTable("ReactionFeedback");
                 });
 
             modelBuilder.Entity("CoreFMS.Entities.Reply", b =>
@@ -611,23 +642,38 @@ namespace InfrastructureFMSDB.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("CoreFMS.Entities.Reaction", b =>
+            modelBuilder.Entity("CoreFMS.Entities.ReactionComment", b =>
                 {
                     b.HasOne("CoreFMS.Entities.Comment", "Comment")
                         .WithMany("Reactions")
-                        .HasForeignKey("CommentId");
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
+                    b.HasOne("CoreFMS.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CoreFMS.Entities.ReactionFeedback", b =>
+                {
                     b.HasOne("CoreFMS.Entities.Feedback", "Feedback")
                         .WithMany("Reactions")
-                        .HasForeignKey("FeedbackId");
+                        .HasForeignKey("FeedbackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CoreFMS.Entities.User", "User")
                         .WithMany("Reactions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Comment");
 
                     b.Navigation("Feedback");
 
