@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace FmsAPI.Controllers
 {
+    [Authorize]
     public class CommentController : BaseController
     {
         [HttpPost]
