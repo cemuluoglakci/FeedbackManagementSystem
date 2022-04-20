@@ -1,4 +1,6 @@
-﻿using ApplicationFMS.Handlers.Reactions.Commands.ReactComment;
+﻿using ApplicationFMS.Handlers.Reactions.Commands.DeleteCommentReaction;
+using ApplicationFMS.Handlers.Reactions.Commands.DeleteFeedbackReaction;
+using ApplicationFMS.Handlers.Reactions.Commands.ReactComment;
 using ApplicationFMS.Handlers.Reactions.Commands.ReactFeedback;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
@@ -25,5 +27,22 @@ namespace FmsAPI.Controllers
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
         }
+
+        [HttpDelete]
+        [Authorize(Constants.CustomerRole)]
+        public async Task<ActionResult<BaseResponse<int>>> DeleteFeedbackReaction ([FromBody] DeleteFeedbackReactionCommand request)
+        {
+            var vm = await Mediator.Send(request);
+            return base.Ok(vm);
+        }
+
+        [HttpDelete]
+        [Authorize(Constants.CustomerRole)]
+        public async Task<ActionResult<BaseResponse<int>>> DeleteCommentReaction([FromBody] DeleteCommentReactionCommand request)
+        {
+            var vm = await Mediator.Send(request);
+            return base.Ok(vm);
+        }
+
     }
 }
