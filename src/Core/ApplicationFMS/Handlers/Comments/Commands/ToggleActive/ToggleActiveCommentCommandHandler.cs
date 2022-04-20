@@ -33,7 +33,7 @@ namespace ApplicationFMS.Handlers.Comments.Commands.ToggleActive
                 return BaseResponse<int>.ReturnFailureResponse("Comment was not found.");
             }
 
-            comment.IsChecked = !comment.IsChecked;
+            comment.IsActive = !comment.IsActive;
             await _context.SaveChangesAsync(cancellationToken);
 
             return new BaseResponse<int>(comment.Id);
