@@ -40,4 +40,8 @@
     <ProjectReference Include="..\CoreFMS\CoreFMS.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handlers\Reactions\Commands\DeleteFeedbackReaction\" />
+  </ItemGroup>
+
 </Project>
