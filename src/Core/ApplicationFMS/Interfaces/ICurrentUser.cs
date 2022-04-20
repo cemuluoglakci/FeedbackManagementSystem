@@ -15,5 +15,16 @@ namespace ApplicationFMS.Interfaces
         string RequestHost { get; }
         string RequestPath { get; }
         string RequestQueryString { get; }
+
+        public bool IsInRole(string roleName)
+        {
+            if (this.UserDetail.RoleName == roleName) { return true; }
+            else { return false; }
+        }
+        public bool HasSameId(int id)
+        {
+            if (this.UserDetail.Id == id) { return true; }
+            else { return false; }
+        }
     }
 }
