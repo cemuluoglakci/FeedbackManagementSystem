@@ -474,6 +474,24 @@ namespace InfrastructureFMSDB.Migrations
                     b.ToTable("SocialMedia");
                 });
 
+            modelBuilder.Entity("CoreFMS.Entities.System", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("SystemVariable")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("System");
+                });
+
             modelBuilder.Entity("CoreFMS.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -512,6 +530,9 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<bool>("IsTwoFactorAuth")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<DateTime?>("LastFailedLoginAt")
                         .HasColumnType("datetime");
 
@@ -523,6 +544,9 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.Property<string>("Phone")
                         .HasColumnType("longtext");
+
+                    b.Property<int>("PhoneCode")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("RegisteredAt")
                         .HasColumnType("datetime");

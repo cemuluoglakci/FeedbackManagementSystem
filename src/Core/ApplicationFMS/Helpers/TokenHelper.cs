@@ -39,12 +39,15 @@ namespace ApplicationFMS.Helpers
 
         public  string GenerateJwtToken(User account)
         {
+            var systemVariable = _context.System.FirstOrDefault(x => x.SystemVariable == Constants.SystemVariableModeName);
+            int timeoutDuration = systemVariable?.Value ?? 30;
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSetting.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(SetClaims(account)),
-                Expires = DateTime.UtcNow.AddMinutes(30),
+                Expires = DateTime.UtcNow.AddMinutes(timeoutDuration),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

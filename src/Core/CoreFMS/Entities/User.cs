@@ -16,6 +16,7 @@ namespace CoreFMS.Entities
 
         public int Id { get; set; }
         public string Email { get; set; } = null!;
+        public int PhoneCode { get; set; }
         public string? Phone { get; set; }
         public string Salt { get; set; } = null!;
         public string Hash { get; set; } = null!;
@@ -32,6 +33,7 @@ namespace CoreFMS.Entities
         public int? CompanyId { get; set; }
         public bool IsActive { get; set; }
         public bool IsTwoFactorAuth { get; set; }
+        public bool IsVerified { get; set; }
 
         public virtual City? City { get; set; }
         public virtual Company? Company { get; set; }
