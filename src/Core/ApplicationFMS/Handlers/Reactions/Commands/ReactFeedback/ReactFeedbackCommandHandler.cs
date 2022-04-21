@@ -38,8 +38,8 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.ReactFeedback
                 return new BaseResponse<int>(0, "Feedback was not found.");
             }
 
-            ReactionFeedback? possibleReaction = _context.ReactionFeedback.FirstOrDefault(x 
-                => x.FeedbackId ==feedback.Id && x.UserId == _currentUser.UserDetail.Id && x.IsActive);
+            ReactionFeedback? possibleReaction = _context.ReactionFeedback.FirstOrDefault(x
+                => x.FeedbackId == feedback.Id && x.UserId == _currentUser.UserDetail.Id && x.IsActive);
 
             if (possibleReaction != null && possibleReaction.Sentiment == request.Sentiment)
             {

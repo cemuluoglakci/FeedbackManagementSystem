@@ -1,13 +1,9 @@
-﻿using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive;
-using ApplicationFMS.Helpers;
+﻿using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
 using CoreFMS.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,7 +36,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived
             {
                 return new BaseResponse<int>(0, "Feedback was not found.");
             }
-            if(_currentUser.UserDetail.CompanyId != feedback.CompanyId)
+            if (_currentUser.UserDetail.CompanyId != feedback.CompanyId)
             {
                 return new BaseResponse<int>(0, "Users are aloowed to olny manipulate feedbacks related to their company.");
             }

@@ -33,7 +33,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback
                 return new BaseResponse<int>(0, "Feedback was not found.");
             }
 
-            if(_currentUser.UserDetail.CompanyId != feedback.CompanyId || _currentUser.UserDetail.RoleName != Constants.CompanyRepresentativeRole)
+            if (_currentUser.UserDetail.CompanyId != feedback.CompanyId || _currentUser.UserDetail.RoleName != Constants.CompanyRepresentativeRole)
             {
                 return new BaseResponse<int>(0, "Only related company representatives can direct feedbacks.");
             }

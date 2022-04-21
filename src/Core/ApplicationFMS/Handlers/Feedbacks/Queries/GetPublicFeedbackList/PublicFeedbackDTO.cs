@@ -1,5 +1,4 @@
-﻿using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList;
-using ApplicationFMS.Helpers.Mappings;
+﻿using ApplicationFMS.Helpers.Mappings;
 using AutoMapper;
 using CoreFMS.Entities;
 using System;

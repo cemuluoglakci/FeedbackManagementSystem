@@ -1,4 +1,5 @@
-﻿using ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback;
+﻿using ApplicationFMS.Handlers.Feedbacks.Commands.DeleteFeedback;
+using ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
@@ -64,6 +65,13 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackArchived(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleArchivedFeedbackCommand { Id = id }));
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Constants.CustomerRole)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return base.Ok(await Mediator.Send(new DeleteFeedbackCommand { Id = id }));
         }
     }
 }
