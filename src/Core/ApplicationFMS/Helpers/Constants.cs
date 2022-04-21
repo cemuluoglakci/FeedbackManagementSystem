@@ -10,5 +10,7 @@ namespace ApplicationFMS.Helpers
         public const string CompanyRepresentativeRole = "Company Representative";
         public const string CompanyManagerRole = "Company Manager";
         public readonly static List<string> CompanyRoles = new List<string> { "Company Representative", "Company Manager", "Company Employee" };
+
+        public const string SystemVariableModeName = "ModeOfOperation";
     }
 }

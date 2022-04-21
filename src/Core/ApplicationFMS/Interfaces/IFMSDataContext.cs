@@ -25,6 +25,7 @@ namespace ApplicationFMS.Interfaces
         DbSet<Sector> Sector { get; set; }
         DbSet<Share> Share { get; set; }
         DbSet<SocialMedium> SocialMedia { get; set; }
+        DbSet<CoreFMS.Entities.System> System { get; set; }
         DbSet<User> User { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);

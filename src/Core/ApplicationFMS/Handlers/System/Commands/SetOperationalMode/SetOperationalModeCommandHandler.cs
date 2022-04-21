@@ -25,23 +25,24 @@ namespace ApplicationFMS.Handlers.System.Commands.SetOperationalMode
         public async Task<BaseResponse<string>> Handle(SetOperationalModeCommand request, CancellationToken cancellationToken)
         {
             string operationalModeName = _context.OperationMode.Find(request.Value).ModeName;
+            
             if (string.IsNullOrEmpty(operationalModeName))
             {
                 return BaseResponse<string>.ReturnFailureResponse("Operation mode not found!");
             }
 
-            System systemVariable = _context.System
+            CoreFMS.Entities.System? systemVariable = _context.System.FirstOrDefault(x => x.SystemVariable == Constants.SystemVariableModeName);
 
-            Comment? comment = _context.Comment.FirstOrDefault(x => x.Id == request.Id);
-            if (comment == null)
+            if (systemVariable == null)
             {
-                return BaseResponse<int>.ReturnFailureResponse("Comment was not found.");
+                return BaseResponse<string>.ReturnFailureResponse("System error!");
             }
 
-            comment.IsActive = !comment.IsActive;
+            systemVariable.Value= request.Value;
+
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<string>(comment.Id);
+            return new BaseResponse<string>("Operational mode set as " + operationalModeName);
         }
     }
 }
