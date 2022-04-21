@@ -16,7 +16,7 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize(Constants.CustomerRole, Constants.CompanyEmployeeRole)]
-        public async Task<ActionResult<BaseResponse<int>>> PostReply ([FromBody] ReplyFeedbackCommand request)
+        public async Task<ActionResult<BaseResponse<int>>> UpsertReply ([FromBody] ReplyFeedbackCommand request)
         {
             return base.Ok(await Mediator.Send(request));
         }

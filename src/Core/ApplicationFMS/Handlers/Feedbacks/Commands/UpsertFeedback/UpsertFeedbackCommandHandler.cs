@@ -7,20 +7,20 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Feedbacks.Commands.PostFeedback
+namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
 {
-    public class PostFeedbackCommandHandler : IRequestHandler<PostFeedbackCommand, BaseResponse<int>>
+    public class UpsertFeedbackCommandHandler : IRequestHandler<UpsertFeedbackCommand, BaseResponse<int>>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
 
-        public PostFeedbackCommandHandler(IFMSDataContext context, ICurrentUser? currentUser)
+        public UpsertFeedbackCommandHandler(IFMSDataContext context, ICurrentUser? currentUser)
         {
             _context = context;
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(PostFeedbackCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse<int>> Handle(UpsertFeedbackCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {

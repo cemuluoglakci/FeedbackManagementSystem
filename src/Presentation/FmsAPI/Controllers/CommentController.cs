@@ -16,7 +16,7 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> PostComment([FromBody] PostCommentCommand request)
+        public async Task<ActionResult<BaseResponse<int>>> UpsertComment([FromBody] PostCommentCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);

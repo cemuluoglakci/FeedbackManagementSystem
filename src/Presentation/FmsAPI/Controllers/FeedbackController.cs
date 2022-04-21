@@ -4,6 +4,7 @@ using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleSolved;
+using ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback;
 using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
@@ -24,7 +25,7 @@ namespace FmsAPI.Controllers
 
         [HttpPost]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> PostFeedback([FromBody] PostFeedbackCommand request)
+        public async Task<ActionResult<BaseResponse<int>>> UpsertFeedback([FromBody] UpsertFeedbackCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
