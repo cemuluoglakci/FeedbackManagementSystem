@@ -1,6 +1,7 @@
 ﻿using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
+using CoreFMS.Entities;
 using MediatR;
 using System.Linq;
 using System.Threading;
@@ -19,9 +20,9 @@ namespace ApplicationFMS.Handlers.System.Commands.SetOperationalMode
 
         public async Task<BaseResponse<string>> Handle(SetOperationalModeCommand request, CancellationToken cancellationToken)
         {
-            string operationalModeName = _context.OperationMode.Find(request.ModeId).ModeName;
+            OperationMode? operationalMode = _context.OperationMode.Find(request.ModeId);
 
-            if (string.IsNullOrEmpty(operationalModeName))
+            if (operationalMode == null)
             {
                 return BaseResponse<string>.ReturnFailureResponse("Operation mode not found!");
             }
@@ -37,7 +38,7 @@ namespace ApplicationFMS.Handlers.System.Commands.SetOperationalMode
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<string>("Operational mode set as " + operationalModeName);
+            return new BaseResponse<string>("Operational mode set as " + operationalMode.ModeName);
         }
     }
 }
