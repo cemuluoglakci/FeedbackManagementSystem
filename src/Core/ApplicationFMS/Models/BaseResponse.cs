@@ -22,8 +22,22 @@ namespace ApplicationFMS.Models
                 SuccessStatus = false
             };
         }
+        public BaseResponse(string message)
+        {
+            this.data = default;
+            this.Meta = new Meta
+            {
+                Message = message,
+                SuccessStatus = false
+            };
+        }
         public Meta Meta { get; set; }
-        public T data { get; set; }
+        public T? data { get; set; }
+
+        public static BaseResponse<T> ReturnFailureResponse(string failureMessage)
+        {
+            return new BaseResponse<T>(failureMessage);
+        }
     }
 
     public class Meta

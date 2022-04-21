@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FmsAPI.Controllers
 {
+    [Authorize]
     public class ReactionController : BaseController
     {
         [HttpPost]
