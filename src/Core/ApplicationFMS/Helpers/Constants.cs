@@ -12,5 +12,6 @@ namespace ApplicationFMS.Helpers
         public readonly static List<string> CompanyRoles = new List<string> { "Company Representative", "Company Manager", "Company Employee" };
 
         public const string SystemVariableModeName = "ModeOfOperation";
+        public const string SystemVariableTimeoutName = "TimeoutDuration";
     }
 }

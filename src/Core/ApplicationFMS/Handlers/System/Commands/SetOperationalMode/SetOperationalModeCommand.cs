@@ -5,6 +5,6 @@ namespace ApplicationFMS.Handlers.System.Commands.SetOperationalMode
 {
     public class SetOperationalModeCommand : IRequest<BaseResponse<string>>
     {
-        public int Value { get; set; }
+        public int ModeId { get; set; }
     }
 }

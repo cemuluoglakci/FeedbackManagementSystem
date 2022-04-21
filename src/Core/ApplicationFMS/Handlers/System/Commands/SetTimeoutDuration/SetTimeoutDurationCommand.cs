@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationFMS.Models;
+using MediatR;
 
 namespace ApplicationFMS.Handlers.System.Commands.SetTimeoutDuration
 {
-    internal class SetTimeoutDurationCommand
+    public class SetTimeoutDurationCommand : IRequest<BaseResponse<string>>
     {
+        public int Value { get; set; }
     }
 }
