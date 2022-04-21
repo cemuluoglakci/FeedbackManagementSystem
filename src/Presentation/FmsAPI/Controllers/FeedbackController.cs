@@ -5,10 +5,12 @@ using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleSolved;
 using ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback;
+using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail;
 using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
 using FmsAPI.Helper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -16,6 +18,12 @@ namespace FmsAPI.Controllers
 {
     public class FeedbackController : BaseController
     {
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BaseResponse<GetPublicFeedbackDetailVm>>> Get(int id)
+        {
+            return Ok(await Mediator.Send(new GetPublicFeedbackDetailQuery { Id = id }));
+        }
+
         [HttpPost]
         public async Task<ActionResult<BaseResponse<FeedbackListVm>>> GetList([FromBody] GetFeedbackListQuery request)
         {
