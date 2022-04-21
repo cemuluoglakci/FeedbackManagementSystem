@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CoreFMS.Entities
+﻿namespace CoreFMS.Entities
 {
     public partial class OperationMode
     {

@@ -32,6 +32,7 @@ namespace InfrastructureFMSDB
         public DbSet<Sector> Sector { get; set; }
         public DbSet<Share> Share { get; set; }
         public DbSet<SocialMedium> SocialMedia { get; set; }
+        public DbSet<CoreFMS.Entities.System> System { get; set; }
         public DbSet<User> User { get; set; }
     }
 
