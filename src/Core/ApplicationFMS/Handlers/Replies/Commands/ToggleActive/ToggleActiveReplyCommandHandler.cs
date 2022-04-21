@@ -14,7 +14,7 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ToggleActive
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
 
-        public ToggleActiveReplyCommandHandler (IFMSDataContext context, ICurrentUser? currentUser)
+        public ToggleActiveReplyCommandHandler(IFMSDataContext context, ICurrentUser? currentUser)
         {
             _context = context;
             _currentUser = currentUser;

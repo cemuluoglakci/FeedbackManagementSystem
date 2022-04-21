@@ -12,7 +12,6 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
-using static ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser.UpdateUserCommandHandler;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {

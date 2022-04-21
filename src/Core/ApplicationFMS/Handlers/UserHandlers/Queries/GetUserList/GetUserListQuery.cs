@@ -1,14 +1,10 @@
 ﻿using ApplicationFMS.Models;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
 {
-    public  class GetUserListQuery : IRequest<BaseResponse<UserListVm>>
+    public class GetUserListQuery : IRequest<BaseResponse<UserListVm>>
     {
         public int ObjectsPerPage { get; set; } = 10;
         public int PageNumber { get; set; } = 1;

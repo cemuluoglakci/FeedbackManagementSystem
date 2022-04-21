@@ -31,7 +31,7 @@ namespace FmsAPI.Controllers
 
         [HttpDelete]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> DeleteFeedbackReaction ([FromBody] DeleteFeedbackReactionCommand request)
+        public async Task<ActionResult<BaseResponse<int>>> DeleteFeedbackReaction([FromBody] DeleteFeedbackReactionCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);

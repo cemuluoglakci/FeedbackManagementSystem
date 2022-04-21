@@ -1,12 +1,8 @@
-﻿using ApplicationFMS.Helpers;
-using ApplicationFMS.Interfaces;
+﻿using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
 using CoreFMS.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,16 +27,16 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.DeleteFeedbackReaction
             }
 
             ReactionFeedback? reactionFeedback = _context.ReactionFeedback
-                .FirstOrDefault(x => 
+                .FirstOrDefault(x =>
                 x.FeedbackId == request.FeedbackId &&
                 x.UserId == _currentUser.UserDetail.Id &&
                 x.IsActive);
 
-            if (reactionFeedback == null) 
-            { 
+            if (reactionFeedback == null)
+            {
                 return new BaseResponse<int>(0, "No active feedback reaction found.");
             }
-            if(reactionFeedback.UserId != _currentUser.UserDetail.Id)
+            if (reactionFeedback.UserId != _currentUser.UserDetail.Id)
             {
                 return new BaseResponse<int>(0, "Only owner of the reaction can delete it.");
             }

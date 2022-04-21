@@ -1,5 +1,4 @@
-﻿using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
-using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
+﻿using ApplicationFMS.Handlers.Replies.Commands.DeleteReply;
 using ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback;
 using ApplicationFMS.Handlers.Replies.Commands.ToggleActive;
 using ApplicationFMS.Handlers.Replies.Commands.ToggleChecked;
@@ -16,7 +15,7 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize(Constants.CustomerRole, Constants.CompanyEmployeeRole)]
-        public async Task<ActionResult<BaseResponse<int>>> PostReply ([FromBody] ReplyFeedbackCommand request)
+        public async Task<ActionResult<BaseResponse<int>>> UpsertReply([FromBody] UpsertReplyCommand request)
         {
             return base.Ok(await Mediator.Send(request));
         }
@@ -35,5 +34,11 @@ namespace FmsAPI.Controllers
             return base.Ok(await Mediator.Send(new ToggleActiveReplyCommand { Id = id }));
         }
 
+        [HttpDelete("{id}")]
+        [Authorize(Constants.CustomerRole, Constants.CompanyEmployeeRole)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return base.Ok(await Mediator.Send(new DeleteReplyCommand { Id = id }));
+        }
     }
 }

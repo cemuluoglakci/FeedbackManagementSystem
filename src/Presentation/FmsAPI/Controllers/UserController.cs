@@ -1,8 +1,8 @@
 ﻿using ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility;
 using ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser;
 using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList;
-using ApplicationFMS.Models;
 using ApplicationFMS.Helpers;
+using ApplicationFMS.Models;
 using FmsAPI.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

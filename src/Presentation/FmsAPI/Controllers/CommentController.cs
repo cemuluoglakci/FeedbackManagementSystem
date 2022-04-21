@@ -1,8 +1,7 @@
-﻿using ApplicationFMS.Handlers.Comments.Commands.PostComment;
+﻿using ApplicationFMS.Handlers.Comments.Commands.DeleteComment;
+using ApplicationFMS.Handlers.Comments.Commands.PostComment;
 using ApplicationFMS.Handlers.Comments.Commands.ToggleActive;
 using ApplicationFMS.Handlers.Comments.Commands.ToggleChecked;
-using ApplicationFMS.Handlers.Replies.Commands.ToggleActive;
-using ApplicationFMS.Handlers.Replies.Commands.ToggleChecked;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
 using FmsAPI.Helper;
@@ -16,7 +15,7 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> PostComment([FromBody] PostCommentCommand request)
+        public async Task<ActionResult<BaseResponse<int>>> UpsertComment([FromBody] UpsertCommentCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
@@ -34,6 +33,13 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<BaseResponse<int>>> ToggleCommentAbility(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleActiveCommentCommand { Id = id }));
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Constants.CustomerRole)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return base.Ok(await Mediator.Send(new DeleteCommentCommand { Id = id }));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using ApplicationFMS.Helpers.Mappings;
-using ApplicationFMS.Models;
 using AutoMapper;
 using CoreFMS.Entities;
 using System;

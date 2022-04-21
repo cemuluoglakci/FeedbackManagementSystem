@@ -1,9 +1,10 @@
-﻿using ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback;
-using ApplicationFMS.Handlers.Feedbacks.Commands.PostFeedback;
+﻿using ApplicationFMS.Handlers.Feedbacks.Commands.DeleteFeedback;
+using ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleActive;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleSolved;
+using ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback;
 using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
@@ -24,7 +25,7 @@ namespace FmsAPI.Controllers
 
         [HttpPost]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> PostFeedback([FromBody] PostFeedbackCommand request)
+        public async Task<ActionResult<BaseResponse<int>>> UpsertFeedback([FromBody] UpsertFeedbackCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
@@ -64,6 +65,13 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackArchived(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleArchivedFeedbackCommand { Id = id }));
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Constants.CustomerRole)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return base.Ok(await Mediator.Send(new DeleteFeedbackCommand { Id = id }));
         }
     }
 }

@@ -1,13 +1,8 @@
-﻿using ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser;
-using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList;
-using ApplicationFMS.Interfaces;
+﻿using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
 using CoreFMS.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

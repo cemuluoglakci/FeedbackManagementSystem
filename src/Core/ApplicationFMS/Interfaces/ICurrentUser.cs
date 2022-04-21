@@ -1,4 +1,5 @@
 ﻿using ApplicationFMS.Models;
+using CoreFMS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,10 +22,24 @@ namespace ApplicationFMS.Interfaces
             if (this.UserDetail.RoleName == roleName) { return true; }
             else { return false; }
         }
+
+        public bool NotInRole(string roleName)
+        {
+            return !this.IsInRole(roleName);
+        }
         public bool HasSameId(int id)
         {
             if (this.UserDetail.Id == id) { return true; }
             else { return false; }
+        }
+
+        public bool IsEligibleToReplyFeedback(Feedback feedback)
+        {
+            if(this.UserDetail.Id == feedback.DirectedToEmploteeId || (this.UserDetail.Id == feedback.UserId && feedback.IsReplied))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
