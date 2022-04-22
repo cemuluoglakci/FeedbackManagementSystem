@@ -1,12 +1,8 @@
-﻿using ApplicationFMS.Helpers;
-using ApplicationFMS.Helpers.Mappings;
+﻿using ApplicationFMS.Helpers.Mappings;
 using AutoMapper;
 using CoreFMS.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 {
@@ -25,13 +21,10 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Comment, CommentDto>()
-                .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
-                .ForMember(d => d.UserId, opts => opts.MapFrom(s => s.UserId))
                 .ForMember(d => d.UserName, opt =>
                 {
                     opt.MapFrom(s => s.IsAnonym ? "Anonym" : s.User.FirstName);
-                })
-                .ForMember(d => d.Text, opts => opts.MapFrom(s => s.Text));
+                });
         }
     }
 }

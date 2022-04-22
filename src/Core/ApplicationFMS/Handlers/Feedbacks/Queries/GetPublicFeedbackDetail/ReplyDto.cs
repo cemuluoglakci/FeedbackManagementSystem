@@ -20,8 +20,6 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Reply, ReplyDto>()
-                .ForMember(d => d.Id, opts => opts.MapFrom(s => s.Id))
-                .ForMember(d => d.UserId, opts => opts.MapFrom(s => s.UserId))
                 .ForMember(d => d.UserName, opt =>
                 {
                     opt.MapFrom(s => 
@@ -31,7 +29,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
                 .ForMember(d => d.UserRoleId, opts => opts.MapFrom(s => s.User.RoleId))
                 .ForMember(d => d.UserRole, opts => opts.MapFrom(s => s.User.Role.RoleName))
                 .ForMember(d => d.CompanyName, opts => opts.MapFrom(s => s.User.Company.CompanyName))
-                .ForMember(d => d.Text, opts => opts.MapFrom(s => s.Text));
+                ;
         }
     }
 }

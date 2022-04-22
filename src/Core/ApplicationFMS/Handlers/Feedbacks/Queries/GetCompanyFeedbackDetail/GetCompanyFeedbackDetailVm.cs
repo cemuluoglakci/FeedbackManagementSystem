@@ -1,27 +1,26 @@
-﻿using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
+﻿using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail;
+using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
 using ApplicationFMS.Helpers.Mappings;
 using AutoMapper;
 using CoreFMS.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
+namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetCompanyFeedbackDetail
 {
-    public class GetPublicFeedbackDetailVm : PublicFeedbackDTO, IMapFrom<Feedback>
+    public class GetCompanyFeedbackDetailVm : CompanyFeedbackDTO, IMapFrom<Feedback>
     {
-        //public virtual ICollection<Comment> Comments { get; set; }
-        //public virtual List<Reply> Replies { get; set; }
-        //public virtual List<Reply> Reply { get; set; }
         public virtual List<ReplyDto> ReplyList { get; set; }
         public virtual List<CommentDto> CommentList { get; set; }
+
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Feedback, GetPublicFeedbackDetailVm>()
+            profile.CreateMap<Feedback, GetCompanyFeedbackDetailVm>()
+                .ForMember(d => d.CustomerFirstName, opt => opt.MapFrom(s => s.User.FirstName))
+                .ForMember(d => d.CustomerEmail, opt => opt.MapFrom(s => s.User.Email))
+                .ForMember(d => d.CustomerPhone, opt => opt.MapFrom(s => s.User.Phone))
+                .ForMember(d => d.CustomerLastName, opt => opt.MapFrom(s => s.User.LastName))
 
-                .ForMember(d => d.CustomerFirstName, opt =>
-                {
-                    opt.MapFrom(s => s.IsAnonym ? "Anonym" : s.User.FirstName);
-                })
                 .ForMember(d => d.SectorName, opt =>
                 {
                     opt.PreCondition(s => (s.Sector != null));
