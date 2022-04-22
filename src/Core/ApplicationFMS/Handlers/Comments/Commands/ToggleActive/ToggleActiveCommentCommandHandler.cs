@@ -24,13 +24,13 @@ namespace ApplicationFMS.Handlers.Comments.Commands.ToggleActive
         {
             if (!_currentUser.IsInRole(Constants.AdminRole))
             {
-                return BaseResponse<int>.ReturnFailureResponse("Only administrators are allowed to activate / deactivate comments.");
+                return BaseResponse<int>.Fail("Only administrators are allowed to activate / deactivate comments.");
             }
 
             Comment? comment = _context.Comment.FirstOrDefault(x => x.Id == request.Id);
             if (comment == null)
             {
-                return BaseResponse<int>.ReturnFailureResponse("Comment was not found.");
+                return BaseResponse<int>.Fail("Comment was not found.");
             }
 
             comment.IsActive = !comment.IsActive;

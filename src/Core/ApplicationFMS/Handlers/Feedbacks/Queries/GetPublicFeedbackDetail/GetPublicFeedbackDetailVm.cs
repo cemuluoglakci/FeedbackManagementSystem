@@ -3,6 +3,7 @@ using ApplicationFMS.Helpers.Mappings;
 using AutoMapper;
 using CoreFMS.Entities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 {
@@ -10,7 +11,9 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
     {
         //public virtual ICollection<Comment> Comments { get; set; }
         //public virtual List<Reply> Replies { get; set; }
-        public virtual List<ReplyDto> Replies { get; set; }
+        //public virtual List<Reply> Reply { get; set; }
+        public virtual List<ReplyDto> ReplyList { get; set; }
+        public virtual List<Comment> CommentList { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Feedback, GetPublicFeedbackDetailVm>()
@@ -43,7 +46,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
                     opt.PreCondition(s => (s.SubType != null));
                     opt.MapFrom(s => s.SubType.SubTypeName);
                 })
-                //.ForMember(d => d.Comments, opt => opt.MapFrom(s => s.Comments))
+                .ForMember(d => d.ReplyList, opts => opts.MapFrom(s => s.Reply.Where(i =>i.IsActive)))
                 ;
         }
     }

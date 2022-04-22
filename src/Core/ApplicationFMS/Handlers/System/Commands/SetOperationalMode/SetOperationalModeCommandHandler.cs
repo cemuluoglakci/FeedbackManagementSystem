@@ -24,14 +24,14 @@ namespace ApplicationFMS.Handlers.System.Commands.SetOperationalMode
 
             if (operationalMode == null)
             {
-                return BaseResponse<string>.ReturnFailureResponse("Operation mode not found!");
+                return BaseResponse<string>.Fail("Operation mode not found!");
             }
 
             CoreFMS.Entities.System? systemVariable = _context.System.FirstOrDefault(x => x.SystemVariable == Constants.SystemVariableModeName);
 
             if (systemVariable == null)
             {
-                return BaseResponse<string>.ReturnFailureResponse("System error!");
+                return BaseResponse<string>.Fail("System error!");
             }
 
             systemVariable.Value = request.ModeId;

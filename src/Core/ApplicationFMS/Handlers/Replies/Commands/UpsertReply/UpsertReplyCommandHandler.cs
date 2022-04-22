@@ -32,7 +32,7 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
                     entity = await _context.Reply.FindAsync(request.Id.Value);
                     if (!_currentUser.HasSameId(entity.UserId))
                     {
-                        return BaseResponse<int>.ReturnFailureResponse("Users can only edit their own posts");
+                        return BaseResponse<int>.Fail("Users can only edit their own posts");
                     }
                 }
                 else
@@ -55,7 +55,7 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
             }
             else
             {
-                return BaseResponse<int>.ReturnFailureResponse("Appointed company employees should reply feedbacks. Once feedback is replied, also original poster can post reply.");
+                return BaseResponse<int>.Fail("Appointed company employees should reply feedbacks. Once feedback is replied, also original poster can post reply.");
             }
         }
     }

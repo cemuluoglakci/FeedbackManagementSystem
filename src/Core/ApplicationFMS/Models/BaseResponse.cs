@@ -34,7 +34,7 @@ namespace ApplicationFMS.Models
         public Meta Meta { get; set; }
         public T? data { get; set; }
 
-        public static BaseResponse<T> ReturnFailureResponse(string failureMessage)
+        public static BaseResponse<T> Fail(string failureMessage)
         {
             return new BaseResponse<T>(failureMessage);
         }

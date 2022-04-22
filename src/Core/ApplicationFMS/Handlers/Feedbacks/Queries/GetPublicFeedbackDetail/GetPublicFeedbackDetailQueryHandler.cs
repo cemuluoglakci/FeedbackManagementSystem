@@ -25,11 +25,22 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 
         public async Task<BaseResponse<GetPublicFeedbackDetailVm>> Handle(GetPublicFeedbackDetailQuery request, CancellationToken cancellationToken)
         {
+            //_context.Configuration.LazyLoadingEnabled = false;
+            var test = _context.Feedback
+                .Include(x => x.Reply.Where(r => r.Id == 4))
+                .Where(e => e.Id == request.Id && e.IsActive).SingleOrDefault();
+
             var vm = await _context.Feedback
-                .Include(x => x.Replies)
-                .Where(e => e.Id == request.Id)
+                .Where(e => e.Id == request.Id && e.IsActive)
                 .ProjectTo<GetPublicFeedbackDetailVm>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
+
+            //var replyList = _context
+
+            if (vm == null)
+            {
+                return BaseResponse<GetPublicFeedbackDetailVm>.Fail("No active feedback found.");
+            }
 
             return new BaseResponse<GetPublicFeedbackDetailVm>(vm);
 

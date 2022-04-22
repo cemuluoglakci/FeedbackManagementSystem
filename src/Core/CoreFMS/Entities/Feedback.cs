@@ -9,7 +9,7 @@ namespace CoreFMS.Entities
         {
             Comments = new HashSet<Comment>();
             Reactions = new HashSet<ReactionFeedback>();
-            Replies = new HashSet<Reply>();
+            Reply = new HashSet<Reply>();
             Shares = new HashSet<Share>();
         }
 
@@ -42,7 +42,7 @@ namespace CoreFMS.Entities
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<ReactionFeedback> Reactions { get; set; }
-        public virtual ICollection<Reply> Replies { get; set; }
+        public virtual ICollection<Reply> Reply { get; set; }
         public virtual ICollection<Share> Shares { get; set; }
     }
 }
