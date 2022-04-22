@@ -5,6 +5,9 @@ using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleChecked;
 using ApplicationFMS.Handlers.Feedbacks.Commands.ToggleSolved;
 using ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback;
+using ApplicationFMS.Handlers.Feedbacks.Queries.GetAdminFeedbackDetail;
+using ApplicationFMS.Handlers.Feedbacks.Queries.GetCompanyFeedbackDetail;
+using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail;
 using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
@@ -16,6 +19,26 @@ namespace FmsAPI.Controllers
 {
     public class FeedbackController : BaseController
     {
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BaseResponse<GetPublicFeedbackDetailVm>>> GetDetail(int id)
+        {
+            return Ok(await Mediator.Send(new GetPublicFeedbackDetailQuery { Id = id }));
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Constants.CompanyRepresentativeRole, Constants.CompanyEmployeeRole)]
+        public async Task<ActionResult<BaseResponse<GetCompanyFeedbackDetailVm>>> GetCompanyFeedbackDetail(int id)
+        {
+            return Ok(await Mediator.Send(new GetCompanyFeedbackDetailQuery { Id = id }));
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Constants.AdminRole)]
+        public async Task<ActionResult<BaseResponse<GetAdminFeedbackDetailVm>>> GetAdminFeedbackDetail(int id)
+        {
+            return Ok(await Mediator.Send(new GetAdminFeedbackDetailQuery { Id = id }));
+        }
+
         [HttpPost]
         public async Task<ActionResult<BaseResponse<FeedbackListVm>>> GetList([FromBody] GetFeedbackListQuery request)
         {

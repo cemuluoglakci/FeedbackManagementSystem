@@ -25,11 +25,11 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.DeleteFeedback
                 var entity = await _context.Feedback.FindAsync(request.Id);
                 if (entity == null)
                 {
-                    return BaseResponse<int>.ReturnFailureResponse("Related entity was not found.");
+                    return BaseResponse<int>.Fail("Related entity was not found.");
                 }
                 if (!_currentUser.HasSameId(entity.UserId))
                 {
-                    return BaseResponse<int>.ReturnFailureResponse("Users can only delete their own posts");
+                    return BaseResponse<int>.Fail("Users can only delete their own posts");
                 }
 
                 entity.IsActive = false;

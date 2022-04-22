@@ -41,5 +41,15 @@ namespace ApplicationFMS.Interfaces
             }
             return false;
         }
+
+        bool NotInCompany(int? companyId)
+        {
+            if (companyId == null) { return true; }
+            if (this.UserDetail.CompanyId != companyId)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

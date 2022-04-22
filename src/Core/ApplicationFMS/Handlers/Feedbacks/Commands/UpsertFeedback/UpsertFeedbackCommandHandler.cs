@@ -34,7 +34,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
                 entity = await _context.Feedback.FindAsync(request.Id.Value);
                 if (!_currentUser.HasSameId(entity.UserId))
                 {
-                    return BaseResponse<int>.ReturnFailureResponse("Users can only edit their own posts");
+                    return BaseResponse<int>.Fail("Users can only edit their own posts");
                 }
             }
             else

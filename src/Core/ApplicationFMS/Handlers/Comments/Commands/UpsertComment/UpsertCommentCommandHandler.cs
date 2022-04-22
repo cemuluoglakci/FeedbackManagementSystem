@@ -24,18 +24,18 @@ namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
         {
             if (_currentUser.NotInRole(Constants.CustomerRole))
             {
-                return BaseResponse<int>.ReturnFailureResponse("If you want to contribute to the system with comments please create a 'Customer' account with a dedicated E-mail address.");
+                return BaseResponse<int>.Fail("If you want to contribute to the system with comments please create a 'Customer' account with a dedicated E-mail address.");
             }
 
             Feedback feedback = _context.Feedback.Find(request.FeedbackId);
             if (feedback == null)
             {
-                return BaseResponse<int>.ReturnFailureResponse("Related feedback was not found.");
+                return BaseResponse<int>.Fail("Related feedback was not found.");
             }
 
             if (ParentCommentIdIsInvalid(request.ParentCommentId, feedback.Id))
             {
-                BaseResponse<int>.ReturnFailureResponse("Invalid parent comment");
+                BaseResponse<int>.Fail("Invalid parent comment");
             }
 
             Comment entity;
@@ -45,7 +45,7 @@ namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
                 entity = await _context.Comment.FindAsync(request.Id.Value);
                 if (!_currentUser.HasSameId(entity.UserId))
                 {
-                    return BaseResponse<int>.ReturnFailureResponse("Users can only edit their own posts");
+                    return BaseResponse<int>.Fail("Users can only edit their own posts");
                 }
             }
             else

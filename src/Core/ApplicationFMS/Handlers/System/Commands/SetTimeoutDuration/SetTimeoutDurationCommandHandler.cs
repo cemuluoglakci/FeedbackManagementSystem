@@ -24,7 +24,7 @@ namespace ApplicationFMS.Handlers.System.Commands.SetTimeoutDuration
 
             if (systemVariable == null)
             {
-                return BaseResponse<string>.ReturnFailureResponse("System error!");
+                return BaseResponse<string>.Fail("System error!");
             }
 
             systemVariable.Value = request.Value;
