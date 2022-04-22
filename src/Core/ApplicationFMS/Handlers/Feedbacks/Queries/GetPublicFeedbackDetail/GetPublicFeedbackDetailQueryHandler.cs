@@ -27,7 +27,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
         {
             //_context.Configuration.LazyLoadingEnabled = false;
             var test = _context.Feedback
-                .Include(x => x.Reply.Where(r => r.Id == 4))
+                .Include(x => x.Comments)
                 .Where(e => e.Id == request.Id && e.IsActive).SingleOrDefault();
 
             var vm = await _context.Feedback

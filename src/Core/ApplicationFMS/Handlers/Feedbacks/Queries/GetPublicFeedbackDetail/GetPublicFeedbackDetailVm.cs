@@ -13,7 +13,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
         //public virtual List<Reply> Replies { get; set; }
         //public virtual List<Reply> Reply { get; set; }
         public virtual List<ReplyDto> ReplyList { get; set; }
-        public virtual List<Comment> CommentList { get; set; }
+        public virtual List<CommentDto> CommentList { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Feedback, GetPublicFeedbackDetailVm>()
@@ -47,6 +47,8 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
                     opt.MapFrom(s => s.SubType.SubTypeName);
                 })
                 .ForMember(d => d.ReplyList, opts => opts.MapFrom(s => s.Reply.Where(i =>i.IsActive)))
+                .ForMember(d => d.CommentList, opts => 
+                    opts.MapFrom(s => s.Comments.Where(i =>i.IsActive && i.ParentComment == null)))
                 ;
         }
     }
