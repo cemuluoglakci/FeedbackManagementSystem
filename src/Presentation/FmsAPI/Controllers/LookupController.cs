@@ -1,7 +1,9 @@
 ﻿using ApplicationFMS.Handlers.LookUp.LookUpCity;
 using ApplicationFMS.Handlers.LookUp.LookupCompany;
 using ApplicationFMS.Handlers.LookUp.LookUpCountry;
+using ApplicationFMS.Handlers.LookUp.LookupEducation;
 using ApplicationFMS.Handlers.LookUp.LookupProduct;
+using ApplicationFMS.Handlers.LookUp.LookupRole;
 using ApplicationFMS.Handlers.LookUp.LookupSector;
 using FmsAPI.Helper;
 //using Microsoft.AspNetCore.Authorization;
@@ -45,6 +47,19 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<ProductListVm>> Product(int? companyId)
         {
             var vm = await Mediator.Send(new LookupProductListQuery { CompanyId = companyId });
+            return base.Ok(vm);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<RoleListVm>> Role()
+        {
+            var vm = await Mediator.Send(new LookupRoleListQuery());
+            return base.Ok(vm);
+        }
+        [HttpGet]
+        public async Task<ActionResult<EducationListVm>> Education()
+        {
+            var vm = await Mediator.Send(new LookupEducationListQuery());
             return base.Ok(vm);
         }
 
