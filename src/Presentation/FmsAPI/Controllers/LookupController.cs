@@ -2,6 +2,7 @@
 using ApplicationFMS.Handlers.LookUp.LookupCompany;
 using ApplicationFMS.Handlers.LookUp.LookUpCountry;
 using ApplicationFMS.Handlers.LookUp.LookupEducation;
+using ApplicationFMS.Handlers.LookUp.LookupFeedbackType;
 using ApplicationFMS.Handlers.LookUp.LookupProduct;
 using ApplicationFMS.Handlers.LookUp.LookupRole;
 using ApplicationFMS.Handlers.LookUp.LookupSector;
@@ -62,6 +63,14 @@ namespace FmsAPI.Controllers
             var vm = await Mediator.Send(new LookupEducationListQuery());
             return base.Ok(vm);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<FeedbackTypeListVm>> FeedbackType()
+        {
+            var vm = await Mediator.Send(new LookupFeedbackTypeListQuery());
+            return base.Ok(vm);
+        }
+
 
     }
 }
