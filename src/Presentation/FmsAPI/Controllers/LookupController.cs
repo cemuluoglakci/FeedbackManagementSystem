@@ -3,11 +3,13 @@ using ApplicationFMS.Handlers.LookUp.LookupCompany;
 using ApplicationFMS.Handlers.LookUp.LookupComplaintType;
 using ApplicationFMS.Handlers.LookUp.LookUpCountry;
 using ApplicationFMS.Handlers.LookUp.LookupEducation;
+using ApplicationFMS.Handlers.LookUp.LookupEmployees;
 using ApplicationFMS.Handlers.LookUp.LookupFeedbackType;
 using ApplicationFMS.Handlers.LookUp.LookupProduct;
 using ApplicationFMS.Handlers.LookUp.LookupRole;
 using ApplicationFMS.Handlers.LookUp.LookupSector;
 using ApplicationFMS.Handlers.LookUp.LookupSocialMedia;
+using ApplicationFMS.Helpers;
 using FmsAPI.Helper;
 //using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -84,6 +86,14 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<SocialMediaListVm>> SocialMedia()
         {
             var vm = await Mediator.Send(new LookupSocialMediaListQuery());
+            return base.Ok(vm);
+        }
+
+        [HttpGet]
+        [Authorize(Constants.CompanyEmployeeRole)]
+        public async Task<ActionResult<EmployeeListVm>> Employee()
+        {
+            var vm = await Mediator.Send(new LookupEmployeeListQuery());
             return base.Ok(vm);
         }
 
