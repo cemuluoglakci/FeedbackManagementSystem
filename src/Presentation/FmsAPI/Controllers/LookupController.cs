@@ -1,5 +1,6 @@
 ﻿using ApplicationFMS.Handlers.LookUp.LookUpCity;
 using ApplicationFMS.Handlers.LookUp.LookupCompany;
+using ApplicationFMS.Handlers.LookUp.LookupComplaintType;
 using ApplicationFMS.Handlers.LookUp.LookUpCountry;
 using ApplicationFMS.Handlers.LookUp.LookupEducation;
 using ApplicationFMS.Handlers.LookUp.LookupFeedbackType;
@@ -71,6 +72,12 @@ namespace FmsAPI.Controllers
             return base.Ok(vm);
         }
 
+        [HttpGet]
+        public async Task<ActionResult<ComplaintTypeListVm>> ComplaintType()
+        {
+            var vm = await Mediator.Send(new LookupComplaintTypeListQuery());
+            return base.Ok(vm);
+        }
 
     }
 }
