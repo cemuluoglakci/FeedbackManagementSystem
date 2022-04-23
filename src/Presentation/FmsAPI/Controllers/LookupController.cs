@@ -7,6 +7,7 @@ using ApplicationFMS.Handlers.LookUp.LookupFeedbackType;
 using ApplicationFMS.Handlers.LookUp.LookupProduct;
 using ApplicationFMS.Handlers.LookUp.LookupRole;
 using ApplicationFMS.Handlers.LookUp.LookupSector;
+using ApplicationFMS.Handlers.LookUp.LookupSocialMedia;
 using FmsAPI.Helper;
 //using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,13 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<ComplaintTypeListVm>> ComplaintType()
         {
             var vm = await Mediator.Send(new LookupComplaintTypeListQuery());
+            return base.Ok(vm);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<SocialMediaListVm>> SocialMedia()
+        {
+            var vm = await Mediator.Send(new LookupSocialMediaListQuery());
             return base.Ok(vm);
         }
 

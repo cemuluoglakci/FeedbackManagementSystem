@@ -1,9 +1,4 @@
-﻿using ApplicationFMS.Handlers.LookUp.LookupFeedbackType;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ApplicationFMS.Handlers.LookUp.LookupComplaintType
 {
