@@ -5,6 +5,7 @@ using ApplicationFMS.Handlers.LookUp.LookUpCountry;
 using ApplicationFMS.Handlers.LookUp.LookupEducation;
 using ApplicationFMS.Handlers.LookUp.LookupEmployees;
 using ApplicationFMS.Handlers.LookUp.LookupFeedbackType;
+using ApplicationFMS.Handlers.LookUp.LookupMode;
 using ApplicationFMS.Handlers.LookUp.LookupProduct;
 using ApplicationFMS.Handlers.LookUp.LookupRole;
 using ApplicationFMS.Handlers.LookUp.LookupSector;
@@ -97,5 +98,12 @@ namespace FmsAPI.Controllers
             return base.Ok(vm);
         }
 
+        [HttpGet]
+        [Authorize(Constants.AdminRole)]
+        public async Task<ActionResult<ModeListVm>> Mode()
+        {
+            var vm = await Mediator.Send(new LookupModeListQuery());
+            return base.Ok(vm);
+        }
     }
 }
