@@ -32,6 +32,11 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
 
             var currentUser = await _context.User.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == request.Email && x.IsActive);
 
+            if (!currentUser.IsVerified)
+            {
+                return BaseResponse<string>.Fail("Please verify your email.");
+            }
+
             if (currentUser.LastFailedLoginAt > DateTime.Now.AddMinutes(accountLockPeriod) && currentUser.FailedLoginAttemptCount >= 3)
             {
                 return new BaseResponse<string>(null, "Your account is locked, please try again later.");

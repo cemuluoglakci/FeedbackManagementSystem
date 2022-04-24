@@ -36,7 +36,7 @@ namespace ApplicationFMSUnitTests.Handlers.Account
 
             //_dataContextMock = new Mock<IFMSDataContext>();
             //_mediatorMock = new Mock<IMediator>();
-            _handler = new RegisterUserCommandHandler(_context);
+            _handler = new RegisterUserCommandHandler(_context, null);
         }
         [Fact]
         public async Task RegisterUserCommandHandler_WhenRequestValid_ShouldSaveUser()

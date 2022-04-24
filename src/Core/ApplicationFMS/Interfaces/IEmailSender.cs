@@ -1,4 +1,5 @@
 ﻿using ApplicationFMS.Models;
+using CoreFMS.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace ApplicationFMS.Interfaces
     {
         void SendEmail(Message message);
         Task SendEmailAsync(Message message);
+        Task SendRegistrationMail(User user);
     }
 }
