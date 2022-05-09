@@ -27,7 +27,7 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
         {
             if (!_context.User.Any(x => x.Email == request.Email && x.IsActive))
             {
-                return new BaseResponse<string>(null, "This E-mail is not registered to the system!");
+                return BaseResponse<string>.Fail("This E-mail is not registered to the system!");
             }
 
             var currentUser = await _context.User.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == request.Email && x.IsActive);
@@ -39,7 +39,7 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
 
             if (currentUser.LastFailedLoginAt > DateTime.Now.AddMinutes(accountLockPeriod) && currentUser.FailedLoginAttemptCount >= 3)
             {
-                return new BaseResponse<string>(null, "Your account is locked, please try again later.");
+                return BaseResponse<string>.Fail("Your account is locked, please try again later.");
             }
 
             if (!Security.CheckPassword(request.Password, currentUser.Salt, currentUser.Hash))
@@ -48,11 +48,11 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
                 currentUser.FailedLoginAttemptCount ++;
 
                 await _context.SaveChangesAsync(cancellationToken);
-                return new BaseResponse<string>(null, "Incorrect password!");
+                return BaseResponse<string>.Fail("Incorrect password!");
             }
             else
             {
-                TokenHelper tokenHelper = new TokenHelper(_jwtSettings);
+                TokenHelper tokenHelper = new TokenHelper(_context, _jwtSettings);
                 string jwt = tokenHelper.GenerateJwtToken(currentUser);
 
                 currentUser.LastLoginAt = DateTime.Now;

@@ -30,16 +30,15 @@ namespace ApplicationFMS.Helpers
             _jwtSetting = jwtSetting;
 
         }
-        public TokenHelper(IFMSDataContext context, JwtSetting jwtSetting, IMapper mapper)
+        public TokenHelper(IFMSDataContext context, JwtSetting jwtSetting)
         {
             _jwtSetting = jwtSetting;
             _context = context;
-            _mapper = mapper;
         }
 
         public  string GenerateJwtToken(User account)
         {
-            var systemVariable = _context.System.FirstOrDefault(x => x.SystemVariable == Constants.SystemVariableModeName);
+            var systemVariable = _context.System.FirstOrDefault(x => x.SystemVariable == Constants.SystemVariableTimeoutName);
             int timeoutDuration = systemVariable?.Value ?? 30;
 
             var tokenHandler = new JwtSecurityTokenHandler();

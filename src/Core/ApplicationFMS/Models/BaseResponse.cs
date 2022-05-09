@@ -8,6 +8,11 @@ namespace ApplicationFMS.Models
 {
     public class BaseResponse<T>
     {
+        public BaseResponse(Meta meta)
+        {
+            this.data = default(T);
+            this.Meta = meta;
+        }
         public BaseResponse(T data)
         {
             this.data = data;
@@ -22,21 +27,18 @@ namespace ApplicationFMS.Models
                 SuccessStatus = false
             };
         }
-        public BaseResponse(string message)
-        {
-            this.data = default;
-            this.Meta = new Meta
-            {
-                Message = message,
-                SuccessStatus = false
-            };
-        }
+
         public Meta Meta { get; set; }
         public T? data { get; set; }
 
         public static BaseResponse<T> Fail(string failureMessage)
         {
-            return new BaseResponse<T>(failureMessage);
+            Meta meta = new Meta() 
+            { 
+                Message = failureMessage,
+                SuccessStatus = false
+            };
+            return new BaseResponse<T>(meta);
         }
     }
 
