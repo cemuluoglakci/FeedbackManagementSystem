@@ -1,13 +1,9 @@
 ﻿using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
-using AutoMapper;
 using CoreFMS.Entities;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,11 +12,13 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, BaseResponse<User>>
     {
         private readonly IFMSDataContext _context;
+        private readonly IEmailSender _emailSender;
 
 
-        public RegisterUserCommandHandler(IFMSDataContext context)
+        public RegisterUserCommandHandler(IFMSDataContext context, IEmailSender emailSender)
         {
             _context = context;
+            _emailSender = emailSender;
         }
 
         public async Task<BaseResponse<User>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -37,11 +35,15 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
+                PhoneCode = request.PhoneCode,
                 Phone = request.Phone,
                 RoleId = request.RoleId,
                 Hash = hash,
                 Salt = salt,
+                IsVerified = false,
+                VerificationCode = Guid.NewGuid().ToString()
             };
+            entity.RegisteredAt = DateTime.Now;
 
             if (request.RoleId == 0)
             {
@@ -58,7 +60,7 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
             _context.User.Add(entity);
 
             await _context.SaveChangesAsync(cancellationToken);
-
+            await _emailSender.SendRegistrationMail(entity);
             return new BaseResponse<User>(entity);
         }
 

@@ -1,4 +1,5 @@
 ﻿using ApplicationFMS.Handlers.Account.Commands.RegisterUser;
+using ApplicationFMS.Handlers.Account.Commands.VerifyEmail;
 using ApplicationFMS.Handlers.Account.Queries.UserLogin;
 using ApplicationFMS.Models;
 using CoreFMS.Entities;
@@ -21,6 +22,13 @@ namespace FmsAPI.Controllers
         {
             var loginResponse = await Mediator.Send(request);
             return base.Ok(loginResponse);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<string>> VerifyEmail(string email, string verificationCode)
+        {
+            var command = new VerifyEmailCommand() { Email = email, VerificationCode = verificationCode };
+            return base.Ok(await Mediator.Send(command));
         }
     }
 }

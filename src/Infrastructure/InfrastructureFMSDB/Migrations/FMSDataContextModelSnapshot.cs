@@ -42,9 +42,6 @@ namespace InfrastructureFMSDB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("CommentNavigationId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
@@ -78,9 +75,9 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentNavigationId");
-
                     b.HasIndex("FeedbackId");
+
+                    b.HasIndex("ParentCommentId");
 
                     b.HasIndex("UserId");
 
@@ -558,6 +555,10 @@ namespace InfrastructureFMSDB.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("VerificationCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CityId");
@@ -582,15 +583,15 @@ namespace InfrastructureFMSDB.Migrations
 
             modelBuilder.Entity("CoreFMS.Entities.Comment", b =>
                 {
-                    b.HasOne("CoreFMS.Entities.Comment", "CommentNavigation")
-                        .WithMany("InverseCommentNavigation")
-                        .HasForeignKey("CommentNavigationId");
-
                     b.HasOne("CoreFMS.Entities.Feedback", "Feedback")
                         .WithMany("Comments")
                         .HasForeignKey("FeedbackId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CoreFMS.Entities.Comment", "ParentComment")
+                        .WithMany("ChildComment")
+                        .HasForeignKey("ParentCommentId");
 
                     b.HasOne("CoreFMS.Entities.User", "User")
                         .WithMany("Comments")
@@ -598,9 +599,9 @@ namespace InfrastructureFMSDB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("CommentNavigation");
-
                     b.Navigation("Feedback");
+
+                    b.Navigation("ParentComment");
 
                     b.Navigation("User");
                 });
@@ -707,7 +708,7 @@ namespace InfrastructureFMSDB.Migrations
             modelBuilder.Entity("CoreFMS.Entities.Reply", b =>
                 {
                     b.HasOne("CoreFMS.Entities.Feedback", "Feedback")
-                        .WithMany("Replies")
+                        .WithMany("Reply")
                         .HasForeignKey("FeedbackId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -786,7 +787,7 @@ namespace InfrastructureFMSDB.Migrations
 
             modelBuilder.Entity("CoreFMS.Entities.Comment", b =>
                 {
-                    b.Navigation("InverseCommentNavigation");
+                    b.Navigation("ChildComment");
 
                     b.Navigation("Reactions");
                 });
@@ -816,7 +817,7 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.Navigation("Reactions");
 
-                    b.Navigation("Replies");
+                    b.Navigation("Reply");
 
                     b.Navigation("Shares");
                 });

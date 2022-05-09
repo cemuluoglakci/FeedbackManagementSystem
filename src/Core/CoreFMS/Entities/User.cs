@@ -34,6 +34,7 @@ namespace CoreFMS.Entities
         public bool IsActive { get; set; }
         public bool IsTwoFactorAuth { get; set; }
         public bool IsVerified { get; set; }
+        public string VerificationCode { get; set; }
 
         public virtual City? City { get; set; }
         public virtual Company? Company { get; set; }

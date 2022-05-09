@@ -1,9 +1,6 @@
-﻿using ApplicationFMS.Helpers;
-using ApplicationFMS.Interfaces;
+﻿using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
-using AutoMapper;
 using FmsAPI.Helper;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Linq;
