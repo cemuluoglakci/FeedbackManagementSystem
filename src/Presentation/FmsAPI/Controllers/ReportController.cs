@@ -1,4 +1,5 @@
-﻿using ApplicationFMS.Handlers.Report.EmployeeReport;
+﻿using ApplicationFMS.Handlers.Report.CustomerStatistics;
+using ApplicationFMS.Handlers.Report.EmployeeReport;
 using ApplicationFMS.Handlers.Report.FeedbackCounts;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
@@ -21,6 +22,12 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<BaseResponse<EmployeeReportVm>>> EmployeeReport()
         {
             return base.Ok(await Mediator.Send(new EmployeeReportQuery { }));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<BaseResponse<CustomerStatisticsVm>>> CustomerStatistics(int productId, int typeId)
+        {
+            return base.Ok(await Mediator.Send(new CustomerStatisticsQuery { ProductId = productId, TypeId = typeId }));
         }
 
     }

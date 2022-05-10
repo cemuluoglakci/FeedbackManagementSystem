@@ -43,6 +43,10 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             }
 
             // Filter accourding to every query
+            if (String.IsNullOrEmpty(request.SortColumn))
+            {
+                request.SortColumn = "Id";
+            }
             if (!String.IsNullOrEmpty(request.TitleQuery))
             {
                 feedbackQuery = feedbackQuery.Where(x => x.Title.Contains(request.TitleQuery));

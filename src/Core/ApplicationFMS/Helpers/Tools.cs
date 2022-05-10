@@ -6,10 +6,10 @@ namespace ApplicationFMS.Helpers
     public class Tools
     {
 
-        public static IQueryable<T> ArrangeList<T>(IQueryable<T> query, string SortColumn, bool IsAscending, int take, int PageNumber) where T : class
+        public static IQueryable<T> ArrangeList<T>(IQueryable<T> query, string SortColumn, bool? IsAscending, int take, int PageNumber) where T : class
         {
             //Ordering
-            string sortColumnDirection = IsAscending ? "ascending" : "descending";
+            string sortColumnDirection = IsAscending.HasValue ? (bool)IsAscending ? "ascending" : "descending": "descending";
             //check for errors make first latter capital
             query = query.OrderBy(SortColumn + " " + sortColumnDirection);
 

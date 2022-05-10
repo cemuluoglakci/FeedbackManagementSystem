@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ApplicationFMS.Models;
+using System.Collections.Generic;
 
 namespace ApplicationFMS.Handlers.Report.FeedbackCounts
 {
@@ -13,14 +14,8 @@ namespace ApplicationFMS.Handlers.Report.FeedbackCounts
         public int TotalSharedCount { get; set; }
         public int TotalLikeCount { get; set; }
         public int TotalDislikeCount { get; set; }
-        public List<SubListDto>? FeedbacksPerProduct { get; set; }
-        public List<SubListDto>? FeedbacksPerType { get; set; }
+        public List<StatisticalSubList>? FeedbacksPerProduct { get; set; }
+        public List<StatisticalSubList>? FeedbacksPerType { get; set; }
     }
 
-    public class SubListDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public int Count { get; set; }
-    }
 }

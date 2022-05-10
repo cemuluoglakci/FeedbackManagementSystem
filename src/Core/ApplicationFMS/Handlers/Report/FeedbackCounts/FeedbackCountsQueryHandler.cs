@@ -33,7 +33,8 @@ namespace ApplicationFMS.Handlers.Report.FeedbackCounts
                 return BaseResponse<FeedbackCountsVm>.Fail("User role is not authorized.");
             }
 
-            IQueryable<Feedback>? feedbackQuery = _context.Feedback.Where(x => x.CompanyId == _currentUser.UserDetail.CompanyId);
+            IQueryable<Feedback>? feedbackQuery = _context.Feedback
+                .Where(x => x.CompanyId == _currentUser.UserDetail.CompanyId && x.IsActive);
 
             // Filter accourding to every query
             if (request.ProductId > 0)
@@ -60,7 +61,7 @@ namespace ApplicationFMS.Handlers.Report.FeedbackCounts
 
             viewModel.FeedbacksPerProduct = await feedbackQuery
                 .GroupBy(x => new { x.ProductId, x.Product.ProductName })
-                .Select(x => new SubListDto
+                .Select(x => new StatisticalSubList
                 {
                     Id = (int)x.Key.ProductId,
                     Name = x.Key.ProductName.ToString(),
@@ -69,7 +70,7 @@ namespace ApplicationFMS.Handlers.Report.FeedbackCounts
 
             viewModel.FeedbacksPerType = await feedbackQuery
                 .GroupBy(x => new { x.TypeId, x.Type.TypeName })
-                .Select(x => new SubListDto
+                .Select(x => new StatisticalSubList
                 {
                     Id = x.Key.TypeId,
                     Name = x.Key.TypeName.ToString(),
