@@ -48,7 +48,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.DirectFeedback
                 return new BaseResponse<int>(0, "User is not authorized to reply feedbacks in the name of the company");
             }
 
-            feedback.DirectedToEmploteeId = request.EmployeeId;
+            feedback.DirectedToEmployeeId = request.EmployeeId;
 
             await _context.SaveChangesAsync(cancellationToken);
             return new BaseResponse<int>(feedback.Id);

@@ -12,6 +12,7 @@ namespace CoreFMS.Entities
             Reactions = new HashSet<ReactionFeedback>();
             Replies = new HashSet<Reply>();
             Shares = new HashSet<Share>();
+            DirectedFeedbacks = new HashSet<Feedback>();
         }
 
         public int Id { get; set; }
@@ -42,6 +43,7 @@ namespace CoreFMS.Entities
         public virtual Role Role { get; set; } = null!;
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Feedback> Feedbacks { get; set; }
+        public virtual ICollection<Feedback> DirectedFeedbacks { get; set; }
         public virtual ICollection<ReactionFeedback> Reactions { get; set; }
         public virtual ICollection<Reply> Replies { get; set; }
         public virtual ICollection<Share> Shares { get; set; }

@@ -1,10 +1,5 @@
 ﻿using ApplicationFMS.Models;
 using CoreFMS.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ApplicationFMS.Interfaces
 {
@@ -35,7 +30,7 @@ namespace ApplicationFMS.Interfaces
 
         public bool IsEligibleToReplyFeedback(Feedback feedback)
         {
-            if(this.UserDetail.Id == feedback.DirectedToEmploteeId || (this.UserDetail.Id == feedback.UserId && feedback.IsReplied))
+            if (this.UserDetail.Id == feedback.DirectedToEmployeeId || (this.UserDetail.Id == feedback.UserId && feedback.IsReplied))
             {
                 return true;
             }

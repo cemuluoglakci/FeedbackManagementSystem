@@ -1,5 +1,5 @@
-﻿using ApplicationFMS.Handlers.Report.FeedbackCounts;
-using ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility;
+﻿using ApplicationFMS.Handlers.Report.EmployeeReport;
+using ApplicationFMS.Handlers.Report.FeedbackCounts;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
 using FmsAPI.Helper;
@@ -16,5 +16,12 @@ namespace FmsAPI.Controllers
         {
             return base.Ok(await Mediator.Send(new FeedbackCountsQuery { ProductId = productId, TypeId = typeId }));
         }
+
+        [HttpGet]
+        public async Task<ActionResult<BaseResponse<EmployeeReportVm>>> EmployeeReport()
+        {
+            return base.Ok(await Mediator.Send(new EmployeeReportQuery { }));
+        }
+
     }
 }

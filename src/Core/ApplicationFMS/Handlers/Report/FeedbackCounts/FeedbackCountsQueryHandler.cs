@@ -49,7 +49,7 @@ namespace ApplicationFMS.Handlers.Report.FeedbackCounts
             {
                 TotalFeedbackCount = await feedbackQuery.CountAsync(),
                 AnonymFeedbackCount = feedbackQuery.Where(x => x.IsAnonym).Count(),
-                DirectedFeedbackCount = feedbackQuery.Where(x => x.DirectedToEmploteeId > 0).Count(),
+                DirectedFeedbackCount = feedbackQuery.Where(x => x.DirectedToEmployeeId > 0).Count(),
                 RepliedFeedbackCount = feedbackQuery.Where(x => x.IsReplied).Count(),
                 SolvedFeedbackCount = feedbackQuery.Where(x => x.IsSolved).Count(),
                 ArchivedFeedbackCount = feedbackQuery.Where(x => x.IsArchived).Count(),
