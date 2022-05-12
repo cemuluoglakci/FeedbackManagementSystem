@@ -5,7 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Product.Commands.DeleteProduct
+namespace ApplicationFMS.Handlers.Products.Commands.DeleteProduct
 {
     public class DeleteProductCommand : IRequest<BaseResponse<int>>
     {
