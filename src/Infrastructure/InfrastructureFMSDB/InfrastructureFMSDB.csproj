@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="localMigration\**" />
+    <Compile Remove="remoteMigration\**" />
+    <EmbeddedResource Remove="localMigration\**" />
+    <EmbeddedResource Remove="remoteMigration\**" />
+    <None Remove="localMigration\**" />
+    <None Remove="remoteMigration\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Configurations\FMSDBConfiguration.cs" />
   </ItemGroup>
 
@@ -37,6 +46,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\ApplicationFMS\ApplicationFMS.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="remoteMigration\" />
   </ItemGroup>
 
 </Project>
