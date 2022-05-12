@@ -27,6 +27,7 @@ namespace ApplicationFMS.Interfaces
         DbSet<SocialMedium> SocialMedia { get; set; }
         DbSet<CoreFMS.Entities.System> System { get; set; }
         DbSet<User> User { get; set; }
+        DbSet<Log> Log { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

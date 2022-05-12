@@ -19,5 +19,6 @@ namespace FmsAPI.Helper
         public string RequestHost => _httpContext.Request.Host.Value;
         public string RequestPath => _httpContext.Request.Path;
         public string RequestQueryString => _httpContext.Request.QueryString.Value;
+        public string RequestRemoteIp => _httpContext.Connection.RemoteIpAddress.ToString();
     }
 }

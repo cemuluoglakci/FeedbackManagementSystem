@@ -11,6 +11,7 @@ namespace ApplicationFMS.Interfaces
         string RequestHost { get; }
         string RequestPath { get; }
         string RequestQueryString { get; }
+        string RequestRemoteIp { get; }
 
         public bool IsInRole(string roleName)
         {

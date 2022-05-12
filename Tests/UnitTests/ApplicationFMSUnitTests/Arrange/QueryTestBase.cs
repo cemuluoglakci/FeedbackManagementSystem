@@ -41,6 +41,8 @@ namespace ApplicationFMSUnitTests.Arrange
             public string RequestHost => throw new NotImplementedException();
             public string RequestPath => throw new NotImplementedException();
             public string RequestQueryString => throw new NotImplementedException();
+
+            public string RequestRemoteIp => throw new NotImplementedException();
         }
 
         public void Dispose()
