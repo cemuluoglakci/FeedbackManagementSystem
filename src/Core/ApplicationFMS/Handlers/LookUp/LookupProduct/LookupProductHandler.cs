@@ -24,7 +24,7 @@ namespace ApplicationFMS.Handlers.LookUp.LookupProduct
         public async Task<ProductListVm> Handle(LookupProductListQuery request, CancellationToken cancellationToken)
         {
             var lookupList = await _context.Product
-                .Where(x => x.CompanyId == request.CompanyId || request.CompanyId == null)
+                .Where(x => x.IsActive && (x.CompanyId == request.CompanyId || request.CompanyId == null))
                 .ProjectTo<ProductDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 

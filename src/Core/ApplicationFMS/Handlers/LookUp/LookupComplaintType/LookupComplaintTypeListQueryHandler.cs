@@ -4,6 +4,7 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,6 +24,7 @@ namespace ApplicationFMS.Handlers.LookUp.LookupComplaintType
         public async Task<ComplaintTypeListVm> Handle(LookupComplaintTypeListQuery request, CancellationToken cancellationToken)
         {
             var lookupList = await _context.FeedbackSubType
+                .Where(x => x.IsActive)
                 .ProjectTo<ComplaintTypeDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
