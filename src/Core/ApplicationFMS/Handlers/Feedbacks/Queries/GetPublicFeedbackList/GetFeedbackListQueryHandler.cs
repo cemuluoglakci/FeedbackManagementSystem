@@ -83,6 +83,14 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             {
                 feedbackQuery = feedbackQuery.Where(x => x.SubTypeId == request.SubTypeId);
             }
+            if (request.UserId > 0)
+            {
+                feedbackQuery = feedbackQuery.Where(x => x.UserId == request.UserId);
+                if (_currentUser.UserDetail.Id != request.UserId)
+                {
+                    feedbackQuery = feedbackQuery.Where(x => x.IsAnonym == false);
+                }
+            }
             if (request.IsReplied != null)
             {
                 feedbackQuery = feedbackQuery.Where(x => x.IsReplied == request.IsReplied);
@@ -156,7 +164,8 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             }
             else if (Constants.CompanyRoles.Contains(_currentUser.UserDetail.RoleName))
             {
-                feedbackQuery = feedbackQuery.Where(x => x.IsActive == request.IsActive);
+                feedbackQuery = feedbackQuery.Where(x => x.IsActive && 
+                    x.CompanyId == _currentUser.UserDetail.CompanyId);
 
                 //Company Employees can only display feedbacks directed to them
                 if (_currentUser.UserDetail.RoleName == Constants.CompanyEmployeeRole)

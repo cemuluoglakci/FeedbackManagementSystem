@@ -23,6 +23,9 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
         public int? SubTypeId { get; set; }
         public string SubTypeName { get; set; }
 
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public bool IsAnonym { get; set; }
         public bool? IsReplied { get; set; }

@@ -20,6 +20,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
         public int? ProductId { get; set; }
         public int? TypeId { get; set; }
         public int? SubTypeId { get; set; }
+        public int? UserId { get; set; }
 
         //For Admins and Company Users
         public bool? IsDirected { get; set; }
