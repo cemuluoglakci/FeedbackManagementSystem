@@ -11,6 +11,7 @@ namespace CoreFMS.Entities
 
         public int Id { get; set; }
         public string SubTypeName { get; set; } = null!;
+        public bool IsActive { get; set; } = true;
 
         public virtual ICollection<Feedback> Feedbacks { get; set; }
     }

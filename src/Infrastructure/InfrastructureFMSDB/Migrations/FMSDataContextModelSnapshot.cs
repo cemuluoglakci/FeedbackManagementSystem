@@ -21,9 +21,11 @@ namespace InfrastructureFMSDB.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     b.Property<string>("CityName")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int?>("CountryId")
@@ -49,7 +51,7 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("FeedbackId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
@@ -71,7 +73,7 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.HasKey("Id");
 
@@ -111,7 +113,8 @@ namespace InfrastructureFMSDB.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("Id");
 
                     b.Property<string>("CountryName")
                         .IsRequired()
@@ -157,80 +160,89 @@ namespace InfrastructureFMSDB.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("DirectedToEmploteeId")
-                        .HasColumnType("int");
+                    b.Property<int?>("DirectedToEmployeeId")
+                        .HasColumnType("int(11)");
 
                     b.Property<int>("DislikeCount")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int(1)")
+                        .HasDefaultValueSql("'1'");
 
-                    b.Property<bool>("IsAnonym")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("IsAnonym")
+                        .HasColumnType("int(1)");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("IsChecked")
+                        .HasColumnType("int(1)");
 
-                    b.Property<bool>("IsReplied")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("IsReplied")
+                        .HasColumnType("int(1)");
 
-                    b.Property<bool>("IsSolved")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("IsSolved")
+                        .HasColumnType("int(1)");
 
                     b.Property<int>("LikeCount")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<int?>("ProductId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<int?>("SectorId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(5)");
 
                     b.Property<int?>("Shared")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<int?>("SubTypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(5)");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(400)
+                        .HasColumnType("varchar(400)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
 
                     b.Property<int>("TypeId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(5)");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex(new[] { "Id" }, "Id_UNIQUE")
+                        .IsUnique();
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex(new[] { "CompanyId" }, "fk_feedback_company");
 
-                    b.HasIndex("SectorId");
+                    b.HasIndex(new[] { "DirectedToEmployeeId" }, "fk_feedback_companyEmployee");
 
-                    b.HasIndex("SubTypeId");
+                    b.HasIndex(new[] { "SubTypeId" }, "fk_feedback_feedbackSubType");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex(new[] { "TypeId" }, "fk_feedback_feedbackType");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex(new[] { "ProductId" }, "fk_feedback_product");
+
+                    b.HasIndex(new[] { "SectorId" }, "fk_feedback_sector");
+
+                    b.HasIndex(new[] { "UserId" }, "fk_feedback_user");
 
                     b.ToTable("Feedback");
                 });
@@ -240,6 +252,9 @@ namespace InfrastructureFMSDB.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("SubTypeName")
                         .IsRequired()
@@ -322,7 +337,7 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.HasKey("Id");
 
@@ -343,7 +358,7 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<int>("FeedbackId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
@@ -352,7 +367,7 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.HasKey("Id");
 
@@ -373,7 +388,7 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<int>("FeedbackId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
@@ -386,7 +401,7 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.HasKey("Id");
 
@@ -401,13 +416,18 @@ namespace InfrastructureFMSDB.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<string>("RoleName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex(new[] { "Id" }, "Id_UNIQUE")
+                        .IsUnique()
+                        .HasDatabaseName("Id_UNIQUE1");
 
                     b.ToTable("Role");
                 });
@@ -437,13 +457,13 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<int>("FeedbackId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<int>("SocialMediaId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.HasKey("Id");
 
@@ -493,39 +513,44 @@ namespace InfrastructureFMSDB.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime");
 
                     b.Property<int?>("CityId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<int?>("CompanyId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<int?>("EducationId")
-                        .HasColumnType("int");
+                        .HasColumnType("int(11)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
 
                     b.Property<int?>("FailedLoginAttemptCount")
-                        .HasColumnType("int");
+                        .HasColumnType("int(3)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
 
                     b.Property<string>("Hash")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int(1)")
+                        .HasDefaultValueSql("'1'");
 
-                    b.Property<bool>("IsTwoFactorAuth")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("IsTwoFactorAuth")
+                        .HasColumnType("int(1)");
 
                     b.Property<bool>("IsVerified")
                         .HasColumnType("tinyint(1)");
@@ -537,23 +562,30 @@ namespace InfrastructureFMSDB.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
 
                     b.Property<int>("PhoneCode")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("RegisteredAt")
-                        .HasColumnType("datetime");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<int>("RoleId")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int(11)")
+                        .HasDefaultValueSql("'2'");
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(45)
+                        .HasColumnType("varchar(45)");
 
                     b.Property<string>("VerificationCode")
                         .IsRequired()
@@ -561,13 +593,20 @@ namespace InfrastructureFMSDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId");
+                    b.HasIndex(new[] { "Email" }, "Email_UNIQUE")
+                        .IsUnique();
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex(new[] { "Id" }, "Id_UNIQUE")
+                        .IsUnique()
+                        .HasDatabaseName("Id_UNIQUE2");
 
-                    b.HasIndex("EducationId");
+                    b.HasIndex(new[] { "RoleId" }, "RoleId");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex(new[] { "CityId" }, "fk_user_city");
+
+                    b.HasIndex(new[] { "CompanyId" }, "fk_user_company");
+
+                    b.HasIndex(new[] { "EducationId" }, "fk_user_education");
 
                     b.ToTable("User");
                 });
@@ -619,33 +658,44 @@ namespace InfrastructureFMSDB.Migrations
                 {
                     b.HasOne("CoreFMS.Entities.Company", "Company")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .HasConstraintName("fk_feedback_company");
+
+                    b.HasOne("CoreFMS.Entities.User", "DirectedCompanyEmployee")
+                        .WithMany("DirectedFeedbacks")
+                        .HasForeignKey("DirectedToEmployeeId")
+                        .HasConstraintName("fk_feedback_companyEmployee");
 
                     b.HasOne("CoreFMS.Entities.Product", "Product")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .HasConstraintName("fk_feedback_product");
 
                     b.HasOne("CoreFMS.Entities.Sector", "Sector")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("SectorId");
+                        .HasForeignKey("SectorId")
+                        .HasConstraintName("fk_feedback_sector");
 
                     b.HasOne("CoreFMS.Entities.FeedbackSubType", "SubType")
                         .WithMany("Feedbacks")
-                        .HasForeignKey("SubTypeId");
+                        .HasForeignKey("SubTypeId")
+                        .HasConstraintName("fk_feedback_feedbackSubType");
 
                     b.HasOne("CoreFMS.Entities.FeedbackType", "Type")
                         .WithMany("Feedbacks")
                         .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("fk_feedback_feedbackType")
                         .IsRequired();
 
                     b.HasOne("CoreFMS.Entities.User", "User")
                         .WithMany("Feedbacks")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("fk_feedback_user")
                         .IsRequired();
 
                     b.Navigation("Company");
+
+                    b.Navigation("DirectedCompanyEmployee");
 
                     b.Navigation("Product");
 
@@ -755,20 +805,23 @@ namespace InfrastructureFMSDB.Migrations
                 {
                     b.HasOne("CoreFMS.Entities.City", "City")
                         .WithMany("Users")
-                        .HasForeignKey("CityId");
+                        .HasForeignKey("CityId")
+                        .HasConstraintName("fk_user_city");
 
                     b.HasOne("CoreFMS.Entities.Company", "Company")
                         .WithMany("Users")
-                        .HasForeignKey("CompanyId");
+                        .HasForeignKey("CompanyId")
+                        .HasConstraintName("fk_user_company");
 
                     b.HasOne("CoreFMS.Entities.Education", "Education")
                         .WithMany("Users")
-                        .HasForeignKey("EducationId");
+                        .HasForeignKey("EducationId")
+                        .HasConstraintName("fk_user_education");
 
                     b.HasOne("CoreFMS.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("fk_user_role")
                         .IsRequired();
 
                     b.Navigation("City");
@@ -857,6 +910,8 @@ namespace InfrastructureFMSDB.Migrations
             modelBuilder.Entity("CoreFMS.Entities.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("DirectedFeedbacks");
 
                     b.Navigation("Feedbacks");
 
