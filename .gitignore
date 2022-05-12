@@ -274,3 +274,5 @@ __pycache__/
 
 /src/Presentation/FmsAPI/Controllers/TestPurposesController.cs
 /src/Core/ApplicationFMS/Handlers/TestPurposesHandler.cs
+/src/Infrastructure/InfrastructureFMSDB/remoteMigration
+/src/Infrastructure/InfrastructureFMSDB/localMigration

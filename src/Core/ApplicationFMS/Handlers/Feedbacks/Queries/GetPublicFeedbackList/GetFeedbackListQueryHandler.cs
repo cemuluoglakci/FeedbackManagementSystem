@@ -39,10 +39,14 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             {
                 activeCount = feedbackQuery.Where(x =>
                 x.IsActive == true &&
-                x.DirectedToEmploteeId == _currentUser.UserDetail.Id).Count();
+                x.DirectedToEmployeeId == _currentUser.UserDetail.Id).Count();
             }
 
             // Filter accourding to every query
+            if (String.IsNullOrEmpty(request.SortColumn))
+            {
+                request.SortColumn = "Id";
+            }
             if (!String.IsNullOrEmpty(request.TitleQuery))
             {
                 feedbackQuery = feedbackQuery.Where(x => x.Title.Contains(request.TitleQuery));
@@ -108,11 +112,11 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 {
                     if ((bool)request.IsDirected)
                     {
-                        feedbackQuery = feedbackQuery.Where(x => x.DirectedToEmploteeId != null);
+                        feedbackQuery = feedbackQuery.Where(x => x.DirectedToEmployeeId != null);
                     }
                     else
                     {
-                        feedbackQuery = feedbackQuery.Where(x => x.DirectedToEmploteeId == null);
+                        feedbackQuery = feedbackQuery.Where(x => x.DirectedToEmployeeId == null);
                     }
 
                 }
@@ -157,7 +161,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 //Company Employees can only display feedbacks directed to them
                 if (_currentUser.UserDetail.RoleName == Constants.CompanyEmployeeRole)
                 {
-                    feedbackQuery = feedbackQuery.Where(x => x.DirectedToEmploteeId == _currentUser.UserDetail.Id);
+                    feedbackQuery = feedbackQuery.Where(x => x.DirectedToEmployeeId == _currentUser.UserDetail.Id);
                 }
                 viewModel.FilteredCount = feedbackQuery.Count();
 

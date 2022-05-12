@@ -51,7 +51,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
                     IsSolved = false,
                     IsArchived = false,
                     CreatedAt = DateTime.Now,
-                    DirectedToEmploteeId = null
+                    DirectedToEmployeeId = null
                 };
                 _context.Feedback.Add(entity);
             }

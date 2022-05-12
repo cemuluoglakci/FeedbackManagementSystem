@@ -32,7 +32,7 @@ namespace CoreFMS.Entities
         public bool IsSolved { get; set; }
         public bool IsArchived { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int? DirectedToEmploteeId { get; set; }
+        public int? DirectedToEmployeeId { get; set; }
 
         public virtual Company? Company { get; set; }
         public virtual Product? Product { get; set; }
@@ -40,6 +40,7 @@ namespace CoreFMS.Entities
         public virtual FeedbackSubType? SubType { get; set; }
         public virtual FeedbackType Type { get; set; } = null!;
         public virtual User User { get; set; } = null!;
+        public virtual User? DirectedCompanyEmployee { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<ReactionFeedback> Reactions { get; set; }
         public virtual ICollection<Reply> Reply { get; set; }

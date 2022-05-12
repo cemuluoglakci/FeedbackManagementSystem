@@ -8,8 +8,8 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
     {
         public int ObjectsPerPage { get; set; } = 10;
         public int PageNumber { get; set; } = 1;
-        public string SortColumn { get; set; } = "Id";
-        public bool IsAscending { get; set; } = true;
+        public string? SortColumn { get; set; } = "Id";
+        public bool? IsAscending { get; set; } = true;
         public string? TitleQuery { get; set; } = string.Empty;
         public string? TextQuery { get; set; } = string.Empty;
         public DateTime? CreatedAtBefore { get; set; }

@@ -40,7 +40,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.ToggleArchived
             {
                 return new BaseResponse<int>(0, "Users are aloowed to olny manipulate feedbacks related to their company.");
             }
-            if (_currentUser.UserDetail.Id != feedback.DirectedToEmploteeId)
+            if (_currentUser.UserDetail.Id != feedback.DirectedToEmployeeId)
             {
                 return new BaseResponse<int>(0, "Users are aloowed to olny manipulate feedbacks which directed to them.");
             }

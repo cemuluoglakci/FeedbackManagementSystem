@@ -13,7 +13,8 @@ namespace InfrastructureFMSDB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            //base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(FMSDataContext).Assembly);
         }
         public DbSet<City> City { get; set; }
         public DbSet<Comment> Comment { get; set; }
