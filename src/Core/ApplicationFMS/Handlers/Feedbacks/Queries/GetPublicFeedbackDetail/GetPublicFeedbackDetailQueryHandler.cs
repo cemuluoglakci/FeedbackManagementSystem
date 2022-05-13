@@ -14,11 +14,13 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
     {
         private readonly IFMSDataContext _context;
         private readonly IMapper _mapper;
+        private readonly ICurrentUser? _currentUser;
 
         public GetPublicFeedbackDetailQueryHandler(IFMSDataContext context, IMapper mapper, ICurrentUser? currentUser)
         {
             _context = context;
             _mapper = mapper;
+            _currentUser = currentUser;
         }
 
         public async Task<BaseResponse<GetPublicFeedbackDetailVm>> Handle(GetPublicFeedbackDetailQuery request, CancellationToken cancellationToken)
@@ -31,6 +33,17 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
             if (vm == null)
             {
                 return BaseResponse<GetPublicFeedbackDetailVm>.Fail("No active feedback found.");
+            }
+
+            if (_currentUser?.UserDetail?.Id != null)
+            {
+                var userReaction = _context.ReactionFeedback
+                    .FirstOrDefault(x => x.IsActive && 
+                    x.UserId == _currentUser.UserDetail.Id &&
+                    x.FeedbackId == vm.Id);
+
+                vm.UserReaction = userReaction?.Sentiment;
+
             }
 
             return new BaseResponse<GetPublicFeedbackDetailVm>(vm);

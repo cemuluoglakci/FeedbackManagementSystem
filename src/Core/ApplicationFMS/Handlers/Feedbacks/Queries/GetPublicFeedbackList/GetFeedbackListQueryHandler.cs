@@ -187,9 +187,27 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 viewModel.FilteredCount = feedbackQuery.Count();
 
                 var dtoQuery = feedbackQuery.ProjectTo<PublicFeedbackDTO>(_mapper.ConfigurationProvider);
+
                 //Pagination and ordering
                 dtoQuery = Tools.ArrangeList(dtoQuery, request.SortColumn, request.IsAscending, request.ObjectsPerPage, request.PageNumber);
+
                 var feedbackList = await dtoQuery.ToListAsync();
+
+                if(_currentUser?.UserDetail?.Id != null)
+                {
+                    var userReactions = _context.ReactionFeedback
+                        .Where(x => x.IsActive && x.UserId == _currentUser.UserDetail.Id);
+                    var reactedFeedbackIds = userReactions.Select(x => x.FeedbackId).ToList();
+
+                    if (reactedFeedbackIds != null)
+                    {
+                        var reactedFeedbackList = feedbackList.Where(x => reactedFeedbackIds.Contains(x.Id)).ToList();
+                        reactedFeedbackList.ForEach(x => x.UserReaction = userReactions.FirstOrDefault(y => y.FeedbackId == x.Id).Sentiment);
+                    }
+                }
+                
+
+                //feedbackList.Where(x => x.re)
                 viewModel.PublicFeedbackList = feedbackList;
             }
 

@@ -2,6 +2,7 @@
 using AutoMapper;
 using CoreFMS.Entities;
 using System;
+using System.Linq;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {
@@ -25,6 +26,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 
         public int LikeCount { get; set; }
         public int DislikeCount { get; set; }
+        public bool? UserReaction { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public bool IsAnonym { get; set; }
@@ -63,6 +65,11 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                     opt.PreCondition(s => (s.SubType != null));
                     opt.MapFrom(s => s.SubType.SubTypeName);
                 })
+                //.ForMember(d => d.UserReaction, opt =>
+                //{
+                //    opt.PreCondition(s => (s.Reactions.Any(x => x.UserId == 1 && x.IsActive)));
+                //    opt.MapFrom(s => s.SubType.SubTypeName);
+                //})
                 ;
         }
 
