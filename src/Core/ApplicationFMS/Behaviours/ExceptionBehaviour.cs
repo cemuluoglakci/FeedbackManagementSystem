@@ -46,7 +46,7 @@ namespace ApplicationFMS.Behaviours
             if (exception is ValidatorException validatorException)
             {
                 code = HttpStatusCode.BadRequest;
-                var baseResponse = new BaseResponse<IDictionary<string, string[]>>
+                var baseResponse = new BaseResponse
                     (validatorException.Failures, validatorException.Message);
                 result = JsonSerializer.Serialize(baseResponse);
             }
@@ -57,7 +57,7 @@ namespace ApplicationFMS.Behaviours
             if (result == string.Empty)
             {
                 //result = JsonConvert.SerializeObject(new { error = exception.Message });
-                result = JsonSerializer.Serialize(BaseResponse<string>.Fail( exception.Message) );
+                result = JsonSerializer.Serialize(BaseResponse.Fail( exception.Message) );
 }
 
             SaveExceptionLog(context.Request, result);

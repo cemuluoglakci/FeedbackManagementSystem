@@ -13,7 +13,7 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize(Constants.AdminRole)]
-        public async Task<ActionResult<BaseResponse<int>>> Upsert([FromBody] UpsertComplaintTypeCommand request)
+        public async Task<ActionResult<BaseResponse>> Upsert([FromBody] UpsertComplaintTypeCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);

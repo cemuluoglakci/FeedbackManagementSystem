@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {
-    public class GetFeedbackListQueryHandler : IRequestHandler<GetFeedbackListQuery, BaseResponse<FeedbackListVm>>
+    public class GetFeedbackListQueryHandler : IRequestHandler<GetFeedbackListQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly IMapper _mapper;
@@ -30,12 +30,8 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<FeedbackListVm>> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
         {
-            
-            //GetFeedbackListQueryValidator validator = new GetFeedbackListQueryValidator();
-            //FluentValidation.Results.ValidationResult result = validator.Validate(request);
-
             IQueryable<Feedback>? feedbackQuery = _context.Feedback;
 
             // Instance count that current user is authorized to display
@@ -191,7 +187,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             {
                 feedbackQuery = feedbackQuery.Where(x => x.IsActive == true);
 
-                if(request.IsMine == true && _currentUser?.UserDetail?.Id != null)
+                if(request.IsMine == true && _currentUser?.UserDetail?.Id > 0)
                 {
                     feedbackQuery = feedbackQuery.Where(x => x.UserId == _currentUser.UserDetail.Id);
                 }
@@ -235,7 +231,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 viewModel.PublicFeedbackList = feedbackList;
             }
 
-            return new BaseResponse<FeedbackListVm>(viewModel);
+            return new BaseResponse(viewModel);
         }
 
     }

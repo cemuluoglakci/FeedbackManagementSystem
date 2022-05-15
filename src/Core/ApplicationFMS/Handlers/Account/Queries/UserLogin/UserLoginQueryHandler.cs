@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
 {
-    public class UserLoginQueryHandler : IRequestHandler<UserLoginQuery, BaseResponse<string>>
+    public class UserLoginQueryHandler : IRequestHandler<UserLoginQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly JwtSetting _jwtSettings;
@@ -23,23 +23,23 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
             _jwtSettings = JwtSettingOptions.Value;
         }
 
-        public async Task<BaseResponse<string>> Handle(UserLoginQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UserLoginQuery request, CancellationToken cancellationToken)
         {
             if (!_context.User.Any(x => x.Email == request.Email && x.IsActive))
             {
-                return BaseResponse<string>.Fail("This E-mail is not registered to the system!");
+                return BaseResponse.Fail("This E-mail is not registered to the system!");
             }
 
             var currentUser = await _context.User.Include(u => u.Role).FirstOrDefaultAsync(x => x.Email == request.Email && x.IsActive);
 
             if (!currentUser.IsVerified)
             {
-                return BaseResponse<string>.Fail("Please verify your email.");
+                return BaseResponse.Fail("Please verify your email.");
             }
 
             if (currentUser.LastFailedLoginAt > DateTime.Now.AddMinutes(accountLockPeriod) && currentUser.FailedLoginAttemptCount >= 3)
             {
-                return BaseResponse<string>.Fail("Your account is locked, please try again later.");
+                return BaseResponse.Fail("Your account is locked, please try again later.");
             }
 
             if (!Security.CheckPassword(request.Password, currentUser.Salt, currentUser.Hash))
@@ -48,7 +48,7 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
                 currentUser.FailedLoginAttemptCount ++;
 
                 await _context.SaveChangesAsync(cancellationToken);
-                return BaseResponse<string>.Fail("Incorrect password!");
+                return BaseResponse.Fail("Incorrect password!");
             }
             else
             {
@@ -59,7 +59,7 @@ namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
                 currentUser.FailedLoginAttemptCount = 0;
 
                 await _context.SaveChangesAsync(cancellationToken);
-                return new BaseResponse<string>(jwt);
+                return new BaseResponse(jwt);
                  
             }
 

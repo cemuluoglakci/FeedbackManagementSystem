@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetAdminFeedbackDetail
 {
-    public class GetAdminFeedbackDetailQuery : IRequest<BaseResponse<GetAdminFeedbackDetailVm>>
+    public class GetAdminFeedbackDetailQuery : IRequest<BaseResponse>
     {
         public int Id { get; set; }
     }

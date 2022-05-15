@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Reactions.Commands.DeleteFeedbackReaction
 {
-    public class DeleteFeedbackReactionCommandHandler : IRequestHandler<DeleteFeedbackReactionCommand, BaseResponse<int>>
+    public class DeleteFeedbackReactionCommandHandler : IRequestHandler<DeleteFeedbackReactionCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -19,11 +19,11 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.DeleteFeedbackReaction
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(DeleteFeedbackReactionCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(DeleteFeedbackReactionCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return new BaseResponse<int>(0, "Current User Identity was not defined.");
+                return new BaseResponse(0, "Current User Identity was not defined.");
             }
 
             ReactionFeedback? reactionFeedback = _context.ReactionFeedback
@@ -34,17 +34,17 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.DeleteFeedbackReaction
 
             if (reactionFeedback == null)
             {
-                return new BaseResponse<int>(0, "No active feedback reaction found.");
+                return new BaseResponse(0, "No active feedback reaction found.");
             }
             if (reactionFeedback.UserId != _currentUser.UserDetail.Id)
             {
-                return new BaseResponse<int>(0, "Only owner of the reaction can delete it.");
+                return new BaseResponse(0, "Only owner of the reaction can delete it.");
             }
 
             DeleteReaction(reactionFeedback.Id);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<int>(reactionFeedback.Id);
+            return new BaseResponse(reactionFeedback.Id);
         }
 
         public void DeleteReaction(int id)

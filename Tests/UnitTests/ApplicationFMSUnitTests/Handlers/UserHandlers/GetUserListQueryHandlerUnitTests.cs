@@ -43,7 +43,7 @@ namespace ApplicationFMSUnitTests.Handlers.UserHandlers
 
             //Assert
             result.ShouldNotBeNull();
-            result.ShouldBeOfType<BaseResponse<UserListVm>>();
+            result.ShouldBeOfType<BaseResponse>();
             result.Meta.SuccessStatus.ShouldBeTrue();
             result.data.ShouldNotBeNull();
             result.data.ShouldBeOfType<UserListVm>();

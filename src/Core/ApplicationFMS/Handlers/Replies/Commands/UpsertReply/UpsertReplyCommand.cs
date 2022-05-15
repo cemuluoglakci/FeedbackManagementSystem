@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
 {
-    public class UpsertReplyCommand : IRequest<BaseResponse<int>>
+    public class UpsertReplyCommand : IRequest<BaseResponse>
     {
         public int? Id { get; set; }
         public int FeedbackId { get; set; }

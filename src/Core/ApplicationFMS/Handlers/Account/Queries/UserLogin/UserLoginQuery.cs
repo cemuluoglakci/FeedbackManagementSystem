@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
 {
-    public class UserLoginQuery : IRequest<BaseResponse<string>>
+    public class UserLoginQuery : IRequest<BaseResponse>
     {
         
         public string Email { get; set; } = null!;

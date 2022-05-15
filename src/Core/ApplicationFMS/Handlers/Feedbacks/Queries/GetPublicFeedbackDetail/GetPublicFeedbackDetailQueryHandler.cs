@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 {
-    public class GetPublicFeedbackDetailQueryHandler : IRequestHandler<GetPublicFeedbackDetailQuery, BaseResponse<GetPublicFeedbackDetailVm>>
+    public class GetPublicFeedbackDetailQueryHandler : IRequestHandler<GetPublicFeedbackDetailQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<GetPublicFeedbackDetailVm>> Handle(GetPublicFeedbackDetailQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetPublicFeedbackDetailQuery request, CancellationToken cancellationToken)
         {
             var vmQuery = _context.Feedback.Where(e => e.Id == request.Id && e.IsActive);
 
@@ -32,7 +32,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 
             if (vm == null)
             {
-                return BaseResponse<GetPublicFeedbackDetailVm>.Fail("No active feedback found.");
+                return BaseResponse.Fail("No active feedback found.");
             }
 
             if (_currentUser?.UserDetail?.Id != null)
@@ -50,7 +50,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
                 }
             }
 
-            return new BaseResponse<GetPublicFeedbackDetailVm>(vm);
+            return new BaseResponse(vm);
 
         }
 

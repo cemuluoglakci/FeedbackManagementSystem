@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Products.Commands.UpsertProduct
 {
-    public class UpsertProductCommandHandler : IRequestHandler<UpsertProductCommand, BaseResponse<int>>
+    public class UpsertProductCommandHandler : IRequestHandler<UpsertProductCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -19,12 +19,12 @@ namespace ApplicationFMS.Handlers.Products.Commands.UpsertProduct
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(UpsertProductCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UpsertProductCommand request, CancellationToken cancellationToken)
         {
 
             if (_currentUser.NotInRole(Constants.CompanyRepresentativeRole))
             {
-                return BaseResponse<int>.Fail("Only company representatives can add products.");
+                return BaseResponse.Fail("Only company representatives can add products.");
             }
 
             Product entity;
@@ -35,7 +35,7 @@ namespace ApplicationFMS.Handlers.Products.Commands.UpsertProduct
 
                 if (_currentUser.UserDetail.CompanyId != entity.CompanyId)
                 {
-                    return BaseResponse<int>.Fail("Users can only edit their own company's products.");
+                    return BaseResponse.Fail("Users can only edit their own company's products.");
                 }
             }
             else
@@ -51,7 +51,7 @@ namespace ApplicationFMS.Handlers.Products.Commands.UpsertProduct
             entity.ProductName = request.ProductName;
 
             await _context.SaveChangesAsync(cancellationToken);
-            return new BaseResponse<int>(entity.Id);
+            return new BaseResponse(entity.Id);
         }
 
     }

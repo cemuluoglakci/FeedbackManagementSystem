@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
 {
-    public class UpsertCommentCommand : IRequest<BaseResponse<int>>
+    public class UpsertCommentCommand : IRequest<BaseResponse>
     {
         public int? Id { get; set; }
         public int FeedbackId { get; set; }

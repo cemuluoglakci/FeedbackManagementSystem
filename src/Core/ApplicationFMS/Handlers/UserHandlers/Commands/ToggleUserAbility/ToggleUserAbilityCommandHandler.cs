@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility
 {
-    public class ToggleUserAbilityCommandHandler : IRequestHandler<ToggleUserAbilityCommand, BaseResponse<int>>
+    public class ToggleUserAbilityCommandHandler : IRequestHandler<ToggleUserAbilityCommand, BaseResponse>
     {
 
         private readonly IFMSDataContext _context;
@@ -20,17 +20,17 @@ namespace ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(ToggleUserAbilityCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(ToggleUserAbilityCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return new BaseResponse<int>(0, "Current User Identity was not defined.");
+                return new BaseResponse(0, "Current User Identity was not defined.");
             }
 
             User? user = _context.User.FirstOrDefault(x => x.Id == request.Id);
             if (user == null)
             {
-                return new BaseResponse<int>(0, "User was not found.");
+                return new BaseResponse(0, "User was not found.");
             }
 
             //Company representatives will be allowed to display and manipulate only users related to their company.
@@ -38,19 +38,19 @@ namespace ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility
             {
                 if (user.CompanyId != _currentUser.UserDetail.CompanyId)
                 {
-                    return new BaseResponse<int>(0, "Company Representatives are only allowed to manage users from their own company.");
+                    return new BaseResponse(0, "Company Representatives are only allowed to manage users from their own company.");
                 }
             }
             else if (_currentUser.UserDetail.RoleName != "System Administrator")
             {
-                return new BaseResponse<int>(0, "User role is not authorized.");
+                return new BaseResponse(0, "User role is not authorized.");
             }
 
             user.IsActive = !user.IsActive;
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<int>(user.Id);
+            return new BaseResponse(user.Id);
         }
 
     }

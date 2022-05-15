@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
 {
-    public class RegisterUserCommand : IRequest<BaseResponse<User>>
+    public class RegisterUserCommand : IRequest<BaseResponse>
     {
         public string Email { get; set; } = null!;
         public int PhoneCode { get; set; }

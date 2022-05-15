@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Products.Commands.DeleteProduct
 {
-    public class DeleteProductCommand : IRequest<BaseResponse<int>>
+    public class DeleteProductCommand : IRequest<BaseResponse>
     {
         public int Id { get; set; }
 
-        public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, BaseResponse<int>>
+        public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, BaseResponse>
         {
             private readonly IFMSDataContext _context;
             private readonly ICurrentUser? _currentUser;
@@ -21,28 +21,28 @@ namespace ApplicationFMS.Handlers.Products.Commands.DeleteProduct
                 _context = context;
                 _currentUser = currentUser;
             }
-            public async Task<BaseResponse<int>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+            public async Task<BaseResponse> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
             {
                 var entity = await _context.Product.FindAsync(request.Id);
                 if (entity == null)
                 {
-                    return BaseResponse<int>.Fail("Related entity was not found.");
+                    return BaseResponse.Fail("Related entity was not found.");
                 }
 
                 if (_currentUser.NotInRole(Constants.CompanyRepresentativeRole))
                 {
-                    return BaseResponse<int>.Fail("Only company representatives can delete products.");
+                    return BaseResponse.Fail("Only company representatives can delete products.");
                 }
                 if (_currentUser.UserDetail.CompanyId != entity.CompanyId)
                 {
-                    return BaseResponse<int>.Fail("Users can only delete their own company's products.");
+                    return BaseResponse.Fail("Users can only delete their own company's products.");
                 }
 
                 entity.IsActive = false;
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new BaseResponse<int>(entity.Id);
+                return new BaseResponse(entity.Id);
             }
 
         }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 {
-    public class GetPublicFeedbackDetailQuery : IRequest<BaseResponse<GetPublicFeedbackDetailVm>>
+    public class GetPublicFeedbackDetailQuery : IRequest<BaseResponse>
     {
         public int Id { get; set; }
     }

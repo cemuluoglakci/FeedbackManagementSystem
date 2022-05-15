@@ -15,7 +15,7 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ReactFeedback([FromBody] ReactFeedbackCommand request)
+        public async Task<ActionResult<BaseResponse>> ReactFeedback([FromBody] ReactFeedbackCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
@@ -23,7 +23,7 @@ namespace FmsAPI.Controllers
 
         [HttpPost]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ReactComment([FromBody] ReactCommentCommand request)
+        public async Task<ActionResult<BaseResponse>> ReactComment([FromBody] ReactCommentCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
@@ -31,7 +31,7 @@ namespace FmsAPI.Controllers
 
         [HttpDelete]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> DeleteFeedbackReaction([FromBody] DeleteFeedbackReactionCommand request)
+        public async Task<ActionResult<BaseResponse>> DeleteFeedbackReaction([FromBody] DeleteFeedbackReactionCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
@@ -39,7 +39,7 @@ namespace FmsAPI.Controllers
 
         [HttpDelete]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> DeleteCommentReaction([FromBody] DeleteCommentReactionCommand request)
+        public async Task<ActionResult<BaseResponse>> DeleteCommentReaction([FromBody] DeleteCommentReactionCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);

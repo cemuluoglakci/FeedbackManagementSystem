@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.System.Commands.SetOperationalMode
 {
-    public class SetOperationalModeCommandHandler : IRequestHandler<SetOperationalModeCommand, BaseResponse<string>>
+    public class SetOperationalModeCommandHandler : IRequestHandler<SetOperationalModeCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
 
@@ -18,27 +18,27 @@ namespace ApplicationFMS.Handlers.System.Commands.SetOperationalMode
             _context = context;
         }
 
-        public async Task<BaseResponse<string>> Handle(SetOperationalModeCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(SetOperationalModeCommand request, CancellationToken cancellationToken)
         {
             OperationMode? operationalMode = _context.OperationMode.Find(request.ModeId);
 
             if (operationalMode == null)
             {
-                return BaseResponse<string>.Fail("Operation mode not found!");
+                return BaseResponse.Fail("Operation mode not found!");
             }
 
             CoreFMS.Entities.System? systemVariable = _context.System.FirstOrDefault(x => x.SystemVariable == Constants.SystemVariableModeName);
 
             if (systemVariable == null)
             {
-                return BaseResponse<string>.Fail("System error!");
+                return BaseResponse.Fail("System error!");
             }
 
             systemVariable.Value = request.ModeId;
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<string>("Operational mode set as " + operationalMode.ModeName);
+            return new BaseResponse("Operational mode set as " + operationalMode.ModeName);
         }
     }
 }

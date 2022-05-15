@@ -4,7 +4,7 @@ using System;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {
-    public class GetFeedbackListQuery : IRequest<BaseResponse<FeedbackListVm>>
+    public class GetFeedbackListQuery : IRequest<BaseResponse>
     {
         public int ObjectsPerPage { get; set; } = 10;
         public int PageNumber { get; set; } = 1;

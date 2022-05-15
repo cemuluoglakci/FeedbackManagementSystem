@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
 {
-    public class UpsertFeedbackCommand : IRequest<BaseResponse<int>>
+    public class UpsertFeedbackCommand : IRequest<BaseResponse>
     {
         public int? Id { get; set; }
         public string Title { get; set; } = null!;

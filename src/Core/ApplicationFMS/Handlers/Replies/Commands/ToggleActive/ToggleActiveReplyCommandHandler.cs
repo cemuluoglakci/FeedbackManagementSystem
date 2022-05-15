@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Replies.Commands.ToggleActive
 {
-    public class ToggleActiveReplyCommandHandler : IRequestHandler<ToggleActiveReplyCommand, BaseResponse<int>>
+    public class ToggleActiveReplyCommandHandler : IRequestHandler<ToggleActiveReplyCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -20,27 +20,27 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ToggleActive
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(ToggleActiveReplyCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(ToggleActiveReplyCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return new BaseResponse<int>(0, "Current User Identity was not defined.");
+                return new BaseResponse(0, "Current User Identity was not defined.");
             }
             if (_currentUser.UserDetail.RoleName != Constants.AdminRole)
             {
-                return new BaseResponse<int>(0, "Only administrators are allowed to activate / deactivate replies.");
+                return new BaseResponse(0, "Only administrators are allowed to activate / deactivate replies.");
             }
 
             Reply? reply = _context.Reply.FirstOrDefault(x => x.Id == request.Id);
             if (reply == null)
             {
-                return new BaseResponse<int>(0, "Reply was not found.");
+                return new BaseResponse(0, "Reply was not found.");
             }
 
             reply.IsActive = !reply.IsActive;
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<int>(reply.Id);
+            return new BaseResponse(reply.Id);
         }
 
 

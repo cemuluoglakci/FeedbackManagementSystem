@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
 {
-    public class UpsertFeedbackCommandHandler : IRequestHandler<UpsertFeedbackCommand, BaseResponse<int>>
+    public class UpsertFeedbackCommandHandler : IRequestHandler<UpsertFeedbackCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -20,11 +20,11 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(UpsertFeedbackCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UpsertFeedbackCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser.NotInRole(Constants.CustomerRole))
             {
-                return new BaseResponse<int>(0, "If you want to contribute to the system with feedbacks please create a 'Customer' account with a dedicated E-mail address.");
+                return new BaseResponse(0, "If you want to contribute to the system with feedbacks please create a 'Customer' account with a dedicated E-mail address.");
             }
 
             Feedback entity;
@@ -34,7 +34,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
                 entity = await _context.Feedback.FindAsync(request.Id.Value);
                 if (!_currentUser.HasSameId(entity.UserId))
                 {
-                    return BaseResponse<int>.Fail("Users can only edit their own posts");
+                    return BaseResponse.Fail("Users can only edit their own posts");
                 }
             }
             else
@@ -67,7 +67,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
             entity.SectorId = _context.Company.Find(entity.CompanyId).SectorId;
 
             await _context.SaveChangesAsync(cancellationToken);
-            return new BaseResponse<int>(entity.Id);
+            return new BaseResponse(entity.Id);
         }
     }
 }

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
 {
-    public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, BaseResponse<UserListVm>>
+    public class GetUserListQueryHandler : IRequestHandler<GetUserListQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly IMapper _mapper;
@@ -27,13 +27,13 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<UserListVm>> Handle(GetUserListQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetUserListQuery request, CancellationToken cancellationToken)
         {
             IQueryable<User>? userQuery = _context.User;
 
             if (_currentUser == null)
             {
-                return new BaseResponse<UserListVm>(null, "User Identity could not defined.");
+                return new BaseResponse(null, "User Identity could not defined.");
             }
 
             //Company representatives will be allowed to display only users related to their company.
@@ -43,7 +43,7 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
             }
             else if (_currentUser.UserDetail.RoleName != "System Administrator")
             {
-                return new BaseResponse<UserListVm>(null, "User role is not authorized.");
+                return new BaseResponse(null, "User role is not authorized.");
             }
 
             // Instance count that current user is authorized to display
@@ -122,7 +122,7 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
                 PageNumber = request.PageNumber,
             };
 
-            return new BaseResponse<UserListVm>(viewModel);
+            return new BaseResponse(viewModel);
         }
     }
 }

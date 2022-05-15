@@ -20,27 +20,27 @@ namespace FmsAPI.Controllers
     public class FeedbackController : BaseController
     {
         [HttpGet("{id}")]
-        public async Task<ActionResult<BaseResponse<GetPublicFeedbackDetailVm>>> GetDetail(int id)
+        public async Task<ActionResult<BaseResponse>> GetDetail(int id)
         {
             return Ok(await Mediator.Send(new GetPublicFeedbackDetailQuery { Id = id }));
         }
 
         [HttpGet("{id}")]
         [Authorize(Constants.CompanyRepresentativeRole, Constants.CompanyEmployeeRole)]
-        public async Task<ActionResult<BaseResponse<GetCompanyFeedbackDetailVm>>> GetCompanyFeedbackDetail(int id)
+        public async Task<ActionResult<BaseResponse>> GetCompanyFeedbackDetail(int id)
         {
             return Ok(await Mediator.Send(new GetCompanyFeedbackDetailQuery { Id = id }));
         }
 
         [HttpGet("{id}")]
         [Authorize(Constants.AdminRole)]
-        public async Task<ActionResult<BaseResponse<GetAdminFeedbackDetailVm>>> GetAdminFeedbackDetail(int id)
+        public async Task<ActionResult<BaseResponse>> GetAdminFeedbackDetail(int id)
         {
             return Ok(await Mediator.Send(new GetAdminFeedbackDetailQuery { Id = id }));
         }
 
         [HttpPost]
-        public async Task<ActionResult<BaseResponse<FeedbackListVm>>> GetList([FromBody] GetFeedbackListQuery request)
+        public async Task<ActionResult<BaseResponse>> GetList([FromBody] GetFeedbackListQuery request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
@@ -48,7 +48,7 @@ namespace FmsAPI.Controllers
 
         [HttpPost]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> UpsertFeedback([FromBody] UpsertFeedbackCommand request)
+        public async Task<ActionResult<BaseResponse>> UpsertFeedback([FromBody] UpsertFeedbackCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
@@ -56,7 +56,7 @@ namespace FmsAPI.Controllers
 
         [HttpPut]
         [Authorize(Constants.CompanyRepresentativeRole)]
-        public async Task<ActionResult<BaseResponse<int>>> DirectFeedback([FromBody] DirectFeedbackCommand request)
+        public async Task<ActionResult<BaseResponse>> DirectFeedback([FromBody] DirectFeedbackCommand request)
         {
             var vm = await Mediator.Send(request);
             return base.Ok(vm);
@@ -64,28 +64,28 @@ namespace FmsAPI.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Constants.AdminRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackAbility(int id)
+        public async Task<ActionResult<BaseResponse>> ToggleFeedbackAbility(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleActiveFeedbackCommand { Id = id }));
         }
 
         [HttpGet("{id}")]
         [Authorize(Constants.AdminRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackChecked(int id)
+        public async Task<ActionResult<BaseResponse>> ToggleFeedbackChecked(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleCheckedFeedbackCommand { Id = id }));
         }
 
         [HttpGet("{id}")]
         [Authorize(Constants.CustomerRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackSolved(int id)
+        public async Task<ActionResult<BaseResponse>> ToggleFeedbackSolved(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleSolvedFeedbackCommand { Id = id }));
         }
 
         [HttpGet("{id}")]
         [Authorize(Constants.CompanyEmployeeRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ToggleFeedbackArchived(int id)
+        public async Task<ActionResult<BaseResponse>> ToggleFeedbackArchived(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleArchivedFeedbackCommand { Id = id }));
         }

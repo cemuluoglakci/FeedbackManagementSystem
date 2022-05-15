@@ -50,7 +50,7 @@ namespace ApplicationFMS.Behaviours
             //if (result == string.Empty)
             //{
             //    //result = JsonConvert.SerializeObject(new { error = exception.Message });
-            //    result = JsonSerializer.Serialize(BaseResponse<string>.Fail(exception.Message));
+            //    result = JsonSerializer.Serialize(BaseResponse.Fail(exception.Message));
             //}
 
             ////SaveExceptionLog(context.Request, result);

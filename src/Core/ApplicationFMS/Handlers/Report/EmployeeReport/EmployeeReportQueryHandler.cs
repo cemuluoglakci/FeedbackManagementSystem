@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Report.EmployeeReport
 {
-    public class EmployeeReportQueryHandler : IRequestHandler<EmployeeReportQuery, BaseResponse<EmployeeReportVm>>
+    public class EmployeeReportQueryHandler : IRequestHandler<EmployeeReportQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -25,16 +25,16 @@ namespace ApplicationFMS.Handlers.Report.EmployeeReport
             _mapper = mapper;
         }
 
-        public async Task<BaseResponse<EmployeeReportVm>> Handle(EmployeeReportQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(EmployeeReportQuery request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return BaseResponse<EmployeeReportVm>.Fail("User Identity could not defined.");
+                return BaseResponse.Fail("User Identity could not defined.");
             }
 
             if (_currentUser.UserDetail.RoleName != Constants.CompanyManagerRole)
             {
-                return BaseResponse<EmployeeReportVm>.Fail("User role is not authorized.");
+                return BaseResponse.Fail("User role is not authorized.");
             }
 
             var companyEmployeeListQuery = _context.User
@@ -52,7 +52,7 @@ namespace ApplicationFMS.Handlers.Report.EmployeeReport
                 Count = dtoQuery.Count()
             };
 
-            return new BaseResponse<EmployeeReportVm>(viewModel);
+            return new BaseResponse(viewModel);
         }
     }
 }

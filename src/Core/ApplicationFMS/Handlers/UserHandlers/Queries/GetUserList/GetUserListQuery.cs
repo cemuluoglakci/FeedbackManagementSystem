@@ -4,7 +4,7 @@ using System;
 
 namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
 {
-    public class GetUserListQuery : IRequest<BaseResponse<UserListVm>>
+    public class GetUserListQuery : IRequest<BaseResponse>
     {
         public int ObjectsPerPage { get; set; } = 10;
         public int PageNumber { get; set; } = 1;

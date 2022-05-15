@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetCompanyFeedbackDetail
 {
-    public class GetCompanyFeedbackDetailQueryHandler : IRequestHandler<GetCompanyFeedbackDetailQuery, BaseResponse<GetCompanyFeedbackDetailVm>>
+    public class GetCompanyFeedbackDetailQueryHandler : IRequestHandler<GetCompanyFeedbackDetailQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetCompanyFeedbackDetail
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<GetCompanyFeedbackDetailVm>> Handle(GetCompanyFeedbackDetailQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetCompanyFeedbackDetailQuery request, CancellationToken cancellationToken)
         {
             var vm = await _context.Feedback
                 .Where(e => e.Id == request.Id && e.IsActive)
@@ -32,14 +32,14 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetCompanyFeedbackDetail
 
             if (vm == null)
             {
-                return BaseResponse<GetCompanyFeedbackDetailVm>.Fail("No active feedback found.");
+                return BaseResponse.Fail("No active feedback found.");
             }
             if (_currentUser.NotInCompany(vm.CompanyId))
             {
-                return BaseResponse<GetCompanyFeedbackDetailVm>.Fail("Feedback is not related with your company.");
+                return BaseResponse.Fail("Feedback is not related with your company.");
             }
 
-            return new BaseResponse<GetCompanyFeedbackDetailVm>(vm);
+            return new BaseResponse(vm);
 
         }
 

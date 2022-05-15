@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, BaseResponse<User>>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly IEmailSender _emailSender;
@@ -21,7 +21,7 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
             _emailSender = emailSender;
         }
 
-        public async Task<BaseResponse<User>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             string salt = Security.GenerateSalt();
             string hash = Security.SaltAndHashPassword(request.Password, salt);
@@ -47,7 +47,7 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
 
             if (request.RoleId == 0)
             {
-                return new BaseResponse<User>(null, "User can not register without 'Role' information.");
+                return BaseResponse.Fail ("User can not register without 'Role' information.");
             }
 
             string roleName = _context.Role.Find(request.RoleId).RoleName;
@@ -61,7 +61,7 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
 
             await _context.SaveChangesAsync(cancellationToken);
             await _emailSender.SendRegistrationMail(entity);
-            return new BaseResponse<User>(entity);
+            return new BaseResponse(entity);
         }
 
 

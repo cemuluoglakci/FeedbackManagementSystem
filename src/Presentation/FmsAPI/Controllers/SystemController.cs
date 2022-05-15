@@ -12,14 +12,14 @@ namespace FmsAPI.Controllers
     {
         [HttpPut]
         [Authorize(Constants.AdminRole)]
-        public async Task<ActionResult<BaseResponse<string>>> SetModeOfOperation([FromBody] SetOperationalModeCommand request)
+        public async Task<ActionResult<BaseResponse>> SetModeOfOperation([FromBody] SetOperationalModeCommand request)
         {
             return base.Ok(await Mediator.Send(request));
         }
 
         [HttpPut]
         [Authorize(Constants.AdminRole)]
-        public async Task<ActionResult<BaseResponse<string>>> SetTimeoutDuration([FromBody] SetTimeoutDurationCommand request)
+        public async Task<ActionResult<BaseResponse>> SetTimeoutDuration([FromBody] SetTimeoutDurationCommand request)
         {
             return base.Ok(await Mediator.Send(request));
         }
