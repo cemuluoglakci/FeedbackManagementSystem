@@ -25,9 +25,9 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 
         public async Task<BaseResponse<GetPublicFeedbackDetailVm>> Handle(GetPublicFeedbackDetailQuery request, CancellationToken cancellationToken)
         {
-            var vm = await _context.Feedback
-                .Where(e => e.Id == request.Id && e.IsActive)
-                .ProjectTo<GetPublicFeedbackDetailVm>(_mapper.ConfigurationProvider)
+            var vmQuery = _context.Feedback.Where(e => e.Id == request.Id && e.IsActive);
+
+            var vm = await vmQuery.ProjectTo<GetPublicFeedbackDetailVm>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (vm == null)
@@ -44,6 +44,10 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 
                 vm.UserReaction = userReaction?.Sentiment;
 
+                if(_currentUser.UserDetail.Id == vmQuery.First().UserId)
+                {
+                    vm.IsMine = true;
+                }
             }
 
             return new BaseResponse<GetPublicFeedbackDetailVm>(vm);

@@ -1,10 +1,12 @@
-﻿using ApplicationFMS.Helpers;
+﻿using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail;
+using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CoreFMS.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,6 +32,10 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 
         public async Task<BaseResponse<FeedbackListVm>> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
         {
+            
+            //GetFeedbackListQueryValidator validator = new GetFeedbackListQueryValidator();
+            //FluentValidation.Results.ValidationResult result = validator.Validate(request);
+
             IQueryable<Feedback>? feedbackQuery = _context.Feedback;
 
             // Instance count that current user is authorized to display
@@ -184,6 +190,12 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             else
             {
                 feedbackQuery = feedbackQuery.Where(x => x.IsActive == true);
+
+                if(request.IsMine == true && _currentUser?.UserDetail?.Id != null)
+                {
+                    feedbackQuery = feedbackQuery.Where(x => x.UserId == _currentUser.UserDetail.Id);
+                }
+
                 viewModel.FilteredCount = feedbackQuery.Count();
 
                 var dtoQuery = feedbackQuery.ProjectTo<PublicFeedbackDTO>(_mapper.ConfigurationProvider);
@@ -195,6 +207,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 
                 if(_currentUser?.UserDetail?.Id != null)
                 {
+                    //Add User reaction information of feedbacks
                     var userReactions = _context.ReactionFeedback
                         .Where(x => x.IsActive && x.UserId == _currentUser.UserDetail.Id);
                     var reactedFeedbackIds = userReactions.Select(x => x.FeedbackId).ToList();
@@ -204,10 +217,21 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                         var reactedFeedbackList = feedbackList.Where(x => reactedFeedbackIds.Contains(x.Id)).ToList();
                         reactedFeedbackList.ForEach(x => x.UserReaction = userReactions.FirstOrDefault(y => y.FeedbackId == x.Id).Sentiment);
                     }
-                }
-                
 
-                //feedbackList.Where(x => x.re)
+                    //Add "IsMine" information of feedbacks
+                    // ***Refactor later***
+                    
+                    var userFeedbackIds = _context.Feedback
+                        .Where(x => x.UserId == _currentUser.UserDetail.Id)
+                        .Select(x => x.Id).ToList();
+
+                    if (userFeedbackIds != null)
+                    {
+                        var postedFeedbackList = feedbackList.Where(x => userFeedbackIds.Contains(x.Id)).ToList();
+                        postedFeedbackList.ForEach(x => x.IsMine = true);
+                    }
+                }
+
                 viewModel.PublicFeedbackList = feedbackList;
             }
 

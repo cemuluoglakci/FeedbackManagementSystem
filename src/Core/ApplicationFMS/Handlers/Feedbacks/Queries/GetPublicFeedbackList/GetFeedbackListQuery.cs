@@ -22,6 +22,9 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
         public int? SubTypeId { get; set; }
         public int? UserId { get; set; }
 
+        //For Customers
+        public bool? IsMine { get; set; }
+
         //For Admins and Company Users
         public bool? IsDirected { get; set; }
         public bool? IsArchived { get; set; }

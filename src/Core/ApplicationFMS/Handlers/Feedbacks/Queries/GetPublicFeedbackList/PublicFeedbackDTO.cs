@@ -2,7 +2,6 @@
 using AutoMapper;
 using CoreFMS.Entities;
 using System;
-using System.Linq;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {
@@ -10,6 +9,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
     {
 
         public int Id { get; set; }
+        public int UserId { get; set; }
         public string? CustomerFirstName { get; set; }
         public string Title { get; set; } = null!;
         public string Text { get; set; } = null!;
@@ -32,10 +32,15 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
         public bool IsAnonym { get; set; }
         public bool? IsReplied { get; set; }
         public bool? IsSolved { get; set; }
+        public bool IsMine { get; set; } = false;
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Feedback, PublicFeedbackDTO>()
+                .ForMember(d => d.UserId, opt =>
+                {
+                    opt.MapFrom(s => s.IsAnonym ? 0 : s.UserId);
+                })
 
                 .ForMember(d => d.CustomerFirstName, opt =>
                 {
@@ -65,11 +70,6 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                     opt.PreCondition(s => (s.SubType != null));
                     opt.MapFrom(s => s.SubType.SubTypeName);
                 })
-                //.ForMember(d => d.UserReaction, opt =>
-                //{
-                //    opt.PreCondition(s => (s.Reactions.Any(x => x.UserId == 1 && x.IsActive)));
-                //    opt.MapFrom(s => s.SubType.SubTypeName);
-                //})
                 ;
         }
 
