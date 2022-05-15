@@ -1,6 +1,5 @@
 ﻿using ApplicationFMS.Behaviours;
 using MediatR;
-using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -14,11 +13,8 @@ namespace ApplicationFMS.Helpers
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggerBehaviour<,>));
-
-            //services.AddTransient(typeof(IRequestExceptionHandler<,>), typeof(ExceptionBehaviourTest<,,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehaviour<,>));           
-            
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));           
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehaviour<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             return services;
         }

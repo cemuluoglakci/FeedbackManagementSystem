@@ -1,5 +1,4 @@
 ﻿using ApplicationFMS.Models;
-using CoreFMS.Entities;
 using MediatR;
 using System;
 using System.Text.Json.Serialization;

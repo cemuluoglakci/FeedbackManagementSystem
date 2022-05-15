@@ -22,8 +22,6 @@ namespace ApplicationFMS.Behaviours
             catch (Exception ex)
             {
                 response = (TResponse)await HandleExceptionAsync(ex);
-                //response = (TResponse)BaseResponse.Fail(errorMessage);
-                //responseBase = new BaseResponseTest()
             }
 
 
@@ -33,28 +31,17 @@ namespace ApplicationFMS.Behaviours
 
         private async Task<BaseResponse> HandleExceptionAsync(Exception exception)
         {
-            var resultMessage = string.Empty;
-
-            BaseResponse baseResponse = new BaseResponse("");
+            BaseResponse baseResponse = BaseResponse.Fail("");
 
             if (exception is ValidatorException validatorException)
             {
-                resultMessage = validatorException.Message;
                 baseResponse = new BaseResponse(validatorException.Failures, validatorException.Message);
-                //var baseResponse = new BaseResponse<IDictionary<string, string[]>>
-                //    (validatorException.Failures, validatorException.Message);
-                //result = JsonSerializer.Serialize(validatorException.Failures);
             }
 
-
-
-            if (resultMessage == string.Empty)
+            if (baseResponse.Meta.Message == string.Empty)
             {
-                baseResponse = BaseResponse.Fail(exception.Message);
-                //result = JsonConvert.SerializeObject(new { error = exception.Message });
-                //result = JsonSerializer.Serialize(BaseResponse.Fail(exception.Message));
+                baseResponse.Meta.Message = exception.Message;
             }
-
 
             return baseResponse;
         }
