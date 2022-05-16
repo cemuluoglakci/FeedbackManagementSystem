@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Linq.Dynamic.Core;
 
 namespace ApplicationFMS.Helpers
@@ -18,6 +19,24 @@ namespace ApplicationFMS.Helpers
             query = query.Skip(skip).Take(take);
 
             return query;
+        }
+
+        public static bool BeAValidAge(DateTime? date)
+        {
+            if (date == null)
+            {
+                return true;
+            }
+
+            int currentYear = DateTime.Now.Year;
+            int dobYear = (int)date?.Year;
+
+            if (dobYear <= currentYear - 6 && dobYear > (currentYear - 120))
+            {
+                return true;
+            }
+
+            return false;
         }
 
     }

@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using ApplicationFMS.Helpers;
+using FluentValidation;
 using System;
 using System.Text.RegularExpressions;
 
@@ -22,31 +23,10 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
             RuleFor(x => x.LastName).NotNull().NotEmpty().Length(2, 20);
             RuleFor(x => x.RoleId).NotNull().NotEmpty().GreaterThan(0).LessThan(6);
 
-            RuleFor(x => x.BirthDate).Must(BeAValidAge).WithMessage("Invalid {PropertyName}").When(x => x.BirthDate != null);
+            RuleFor(x => x.BirthDate).Must(Tools.BeAValidAge).WithMessage("Invalid {PropertyName}").When(x => x.BirthDate != null);
             RuleFor(x => x.CityId).GreaterThanOrEqualTo(0).LessThan(100000000).When(x => x.CityId !=null);
             RuleFor(x => x.EducationId).GreaterThanOrEqualTo(0).LessThan(100000000).When(x => x.EducationId != null);
             RuleFor(x => x.CompanyId).GreaterThanOrEqualTo(0).LessThan(100000000).When(x => x.CompanyId != null);
         }
-
-
-
-        protected bool BeAValidAge(DateTime? date)
-        {
-            if(date == null)
-            {
-                return true;
-            }
-
-            int currentYear = DateTime.Now.Year;
-            int dobYear = (int)date?.Year;
-
-            if (dobYear <= currentYear - 6 && dobYear > (currentYear - 120))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
     }
 }

@@ -1,7 +1,7 @@
 ﻿using ApplicationFMS.Models;
 using MediatR;
 
-namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
+namespace ApplicationFMS.Handlers.Replies.Commands.UpsertReply
 {
     public class UpsertReplyCommand : IRequest<BaseResponse>
     {

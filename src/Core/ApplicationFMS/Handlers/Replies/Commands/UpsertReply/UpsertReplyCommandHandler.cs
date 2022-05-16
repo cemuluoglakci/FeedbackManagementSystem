@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
+namespace ApplicationFMS.Handlers.Replies.Commands.UpsertReply
 {
     public class UpsertReplyCommandHandler : IRequestHandler<UpsertReplyCommand, BaseResponse>
     {
