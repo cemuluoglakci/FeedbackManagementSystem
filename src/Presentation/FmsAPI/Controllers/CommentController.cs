@@ -1,5 +1,5 @@
 ﻿using ApplicationFMS.Handlers.Comments.Commands.DeleteComment;
-using ApplicationFMS.Handlers.Comments.Commands.PostComment;
+using ApplicationFMS.Handlers.Comments.Commands.UpsertComment;
 using ApplicationFMS.Handlers.Comments.Commands.ToggleActive;
 using ApplicationFMS.Handlers.Comments.Commands.ToggleChecked;
 using ApplicationFMS.Helpers;

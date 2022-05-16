@@ -1,7 +1,7 @@
 ﻿using ApplicationFMS.Models;
 using MediatR;
 
-namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
+namespace ApplicationFMS.Handlers.Comments.Commands.UpsertComment
 {
     public class UpsertCommentCommand : IRequest<BaseResponse>
     {

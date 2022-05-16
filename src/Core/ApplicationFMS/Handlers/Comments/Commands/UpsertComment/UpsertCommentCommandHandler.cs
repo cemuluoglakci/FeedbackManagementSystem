@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
+namespace ApplicationFMS.Handlers.Comments.Commands.UpsertComment
 {
     public class UpsertCommentCommandHandler : IRequestHandler<UpsertCommentCommand, BaseResponse>
     {

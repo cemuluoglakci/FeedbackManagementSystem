@@ -3,15 +3,19 @@ using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using FmsAPI.Helper;
 using FmsAPI.Middleware;
 using InfrastructureFMSDB;
 using InfrastructureFMSDB.EmailService;
+using MicroElements.Swashbuckle.FluentValidation;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -84,11 +88,30 @@ namespace FmsAPI
             services.AddHttpContextAccessor();
 
             services.AddControllers()
+                .AddFluentValidation(c =>
+                {
+                    c.RegisterValidatorsFromAssemblyContaining<IFMSDataContext>();
+                    // Optionally set validator factory if you have problems with scope resolve inside validators.
+                    c.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
+                })
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                 );
 
-            services.AddValidatorsFromAssemblyContaining<IFMSDataContext>();
+            services.AddFluentValidationRulesToSwagger
+                (options =>
+            {
+                options.SetNotNullableIfMinLengthGreaterThenZero = true;
+                options.UseAllOffForMultipleRules = true;
+            })
+                ;
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+            //services.AddValidatorsFromAssemblyContaining<IFMSDataContext>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options))

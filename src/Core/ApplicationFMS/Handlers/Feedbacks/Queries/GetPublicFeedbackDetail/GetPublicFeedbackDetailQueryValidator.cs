@@ -6,7 +6,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
     {
         public GetPublicFeedbackDetailQueryValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Id).NotNull().NotEmpty().GreaterThan(0).LessThan(100000000);
         }
     }
 }

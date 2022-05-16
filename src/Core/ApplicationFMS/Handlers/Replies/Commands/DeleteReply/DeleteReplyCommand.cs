@@ -1,4 +1,4 @@
-﻿using ApplicationFMS.Handlers.Comments.Commands.PostComment;
+﻿using ApplicationFMS.Handlers.Comments.Commands.UpsertComment;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
 using CoreFMS.Entities;
