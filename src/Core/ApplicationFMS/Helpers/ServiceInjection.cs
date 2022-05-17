@@ -14,6 +14,7 @@ namespace ApplicationFMS.Helpers
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggerBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ExceptionHandlingBehaviour<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ModeOfOperationBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             return services;

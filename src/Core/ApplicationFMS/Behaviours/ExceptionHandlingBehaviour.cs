@@ -23,9 +23,6 @@ namespace ApplicationFMS.Behaviours
             {
                 response = (TResponse)await HandleExceptionAsync(ex);
             }
-
-
-
             return response;
         }
 
