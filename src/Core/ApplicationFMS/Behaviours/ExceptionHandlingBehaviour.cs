@@ -9,9 +9,7 @@ namespace ApplicationFMS.Behaviours
     public class ExceptionHandlingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TResponse : BaseResponse
         where TRequest : MediatR.IRequest<TResponse>
-
     {
-
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             TResponse response;
@@ -40,7 +38,7 @@ namespace ApplicationFMS.Behaviours
                 baseResponse.Meta.Message = exception.Message;
             }
 
-            return baseResponse;
+            return await Task.FromResult(baseResponse);
         }
     }
 }

@@ -28,7 +28,8 @@ namespace ApplicationFMS.Handlers.LookUp.LookupEmployees
 
         public async Task<EmployeeListVm> Handle(LookupEmployeeListQuery request, CancellationToken cancellationToken)
         {
-            var lookupList = await _context.User.Where(x => x.CompanyId == _currentUser.UserDetail.CompanyId)
+            var lookupList = await _context.User.Where(x => x.IsActive &&
+                    x.CompanyId == _currentUser.UserDetail.CompanyId )
                 .ProjectTo<EmployeeDTO>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 

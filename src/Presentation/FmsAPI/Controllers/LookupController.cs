@@ -12,7 +12,6 @@ using ApplicationFMS.Handlers.LookUp.LookupSector;
 using ApplicationFMS.Handlers.LookUp.LookupSocialMedia;
 using ApplicationFMS.Helpers;
 using FmsAPI.Helper;
-//using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -91,7 +90,7 @@ namespace FmsAPI.Controllers
         }
 
         [HttpGet]
-        [Authorize(Constants.CompanyEmployeeRole)]
+        [Authorize(Constants.CompanyEmployeeRole, Constants.CompanyRepresentativeRole, Constants.CompanyManagerRole)]
         public async Task<ActionResult<EmployeeListVm>> Employee()
         {
             var vm = await Mediator.Send(new LookupEmployeeListQuery());
