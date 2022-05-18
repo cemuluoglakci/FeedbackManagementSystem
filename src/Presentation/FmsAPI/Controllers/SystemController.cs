@@ -7,6 +7,7 @@ using FmsAPI.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using ApplicationFMS.Handlers.System.Queries.GetTimeoutDuration;
+using ApplicationFMS.Handlers.System.Queries.GetLogs;
 
 namespace FmsAPI.Controllers
 {
@@ -25,6 +26,13 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<BaseResponse>> GetTimeoutDuration()
         {
             return base.Ok(await Mediator.Send(new GetTimeoutDurationQuery()));
+        }
+
+        [HttpPost]
+        [Authorize(Constants.AdminRole)]
+        public async Task<ActionResult<BaseResponse>> GetLogList([FromBody] GetLogListQuery request)
+        {
+            return base.Ok(await Mediator.Send(request));
         }
 
         [HttpPut]
