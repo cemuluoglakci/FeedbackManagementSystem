@@ -1,9 +1,12 @@
 ﻿using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
+using ApplicationFMS.Models.Exceptions;
 using CoreFMS.Entities;
 using MediatR;
 using System;
+using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,26 +26,47 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
 
         public async Task<BaseResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
+            
             string salt = Security.GenerateSalt();
             string hash = Security.SaltAndHashPassword(request.Password, salt);
 
-            var entity = new User
+            User? entity = null;
+
+            if (_context.User.Any(x => x.Email == request.Email))
             {
-                BirthDate = request.BirthDate,
-                CityId = request.CityId,
-                CompanyId = request.CompanyId,
-                EducationId = request.EducationId,
-                Email = request.Email,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                PhoneCode = request.PhoneCode,
-                Phone = request.Phone,
-                RoleId = request.RoleId,
-                Hash = hash,
-                Salt = salt,
-                IsVerified = false,
-                VerificationCode = Guid.NewGuid().ToString()
-            };
+                entity = _context.User.FirstOrDefault(x => x.Email == request.Email);
+                if (entity.IsActive & entity.IsVerified)
+                {
+                    return BaseResponse.Fail("This email is already registered to the system");
+                }
+                else if (!entity.IsActive & entity.IsVerified)
+                {
+                    entity = null;
+                }
+            }
+            
+            if(entity == null)
+            {
+                entity = new User
+                {
+                    Email = request.Email,
+                };
+                _context.User.Add(entity);
+            }
+
+            entity.BirthDate = request.BirthDate;
+            entity.CityId = request.CityId;
+            entity.CompanyId = request.CompanyId;
+            entity.EducationId = request.EducationId;
+            entity.FirstName = request.FirstName;
+            entity.LastName = request.LastName;
+            entity.PhoneCode = request.PhoneCode;
+            entity.Phone = request.Phone;
+            entity.RoleId = request.RoleId;
+            entity.Hash = hash;
+            entity.Salt = salt;
+            entity.IsVerified = false;
+            entity.VerificationCode = Guid.NewGuid().ToString();
             entity.RegisteredAt = DateTime.Now;
 
             if (request.RoleId == 0)
@@ -57,13 +81,25 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
             }
             else { entity.IsActive = false; }
 
-            _context.User.Add(entity);
+            
+            try
+            {
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                if (ex.InnerException.Message.Contains("UNIQUE"))
+                {
+                    throw new DatabaseDataNotFoundException("message");
+                }
+                string exceptionMessage = string.Empty;
+                exceptionMessage = ex?.InnerException?.Message;
+                var newException = new Exception ("can not save");
+                throw newException;
+            }
 
-            await _context.SaveChangesAsync(cancellationToken);
-            await _emailSender.SendRegistrationMail(entity);
-            return new BaseResponse(entity);
+            await _emailSender.SendRegistrationMailJetMail(entity);
+            return new BaseResponse(entity.Id);
         }
-
-
     }
 }

@@ -1,13 +1,13 @@
 ﻿using ApplicationFMS.Handlers.System.Commands.SetOperationalMode;
 using ApplicationFMS.Handlers.System.Commands.SetTimeoutDuration;
+using ApplicationFMS.Handlers.System.Queries.GetLogs;
 using ApplicationFMS.Handlers.System.Queries.GetOperationalMode;
+using ApplicationFMS.Handlers.System.Queries.GetTimeoutDuration;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
 using FmsAPI.Helper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using ApplicationFMS.Handlers.System.Queries.GetTimeoutDuration;
-using ApplicationFMS.Handlers.System.Queries.GetLogs;
 
 namespace FmsAPI.Controllers
 {

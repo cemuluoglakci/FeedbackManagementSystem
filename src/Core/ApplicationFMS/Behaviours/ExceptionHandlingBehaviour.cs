@@ -1,5 +1,6 @@
 ﻿using ApplicationFMS.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,10 @@ namespace ApplicationFMS.Behaviours
             try
             {
                 response = await next();
+            }
+            catch (DbUpdateException ex)
+            {
+                response = (TResponse)await HandleExceptionAsync(ex);
             }
             catch (Exception ex)
             {
@@ -36,6 +41,10 @@ namespace ApplicationFMS.Behaviours
             if (baseResponse.Meta.Message == string.Empty)
             {
                 baseResponse.Meta.Message = exception.Message;
+                if (exception.InnerException != null)
+                {
+                    baseResponse.Meta.Message = baseResponse.Meta.Message + ": " + exception.InnerException.Message;
+                }
             }
 
             return await Task.FromResult(baseResponse);

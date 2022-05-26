@@ -1,17 +1,13 @@
-﻿using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail;
-using ApplicationFMS.Helpers;
+﻿using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using CoreFMS.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -166,7 +162,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             }
             else if (Constants.CompanyRoles.Contains(_currentUser.UserDetail.RoleName))
             {
-                feedbackQuery = feedbackQuery.Where(x => x.IsActive && 
+                feedbackQuery = feedbackQuery.Where(x => x.IsActive &&
                     x.CompanyId == _currentUser.UserDetail.CompanyId);
 
                 //Company Employees can only display feedbacks directed to them
@@ -187,7 +183,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             {
                 feedbackQuery = feedbackQuery.Where(x => x.IsActive == true);
 
-                if(request.IsMine == true && _currentUser?.UserDetail?.Id > 0)
+                if (request.IsMine == true && _currentUser?.UserDetail?.Id > 0)
                 {
                     feedbackQuery = feedbackQuery.Where(x => x.UserId == _currentUser.UserDetail.Id);
                 }
@@ -201,7 +197,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 
                 var feedbackList = await dtoQuery.ToListAsync();
 
-                if(_currentUser?.UserDetail?.Id != null)
+                if (_currentUser?.UserDetail?.Id != null)
                 {
                     //Add User reaction information of feedbacks
                     var userReactions = _context.ReactionFeedback
@@ -216,7 +212,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 
                     //Add "IsMine" information of feedbacks
                     // ***Refactor later***
-                    
+
                     var userFeedbackIds = _context.Feedback
                         .Where(x => x.UserId == _currentUser.UserDetail.Id)
                         .Select(x => x.Id).ToList();

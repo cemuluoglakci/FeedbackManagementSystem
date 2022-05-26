@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CoreFMS.Entities.City">
+    <Position X="16" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAIAAAAAAAAAAAAAAAAAIQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\City.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Comment">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQDAAAAACAAAIAAECAOAAwAAAAAAAAAAAAAKCAAAAA=</HashCode>
+      <FileName>Entities\Comment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Company">
+    <Position X="1" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACQCAACAAAAAAAEAACAAAAAAAAAAAAAAAAAAAAAEQ=</HashCode>
+      <FileName>Entities\Company.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Country">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAACAAAACQBAAAABAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Country.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Education">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Entities\Education.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Feedback">
+    <Position X="3.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EhATAAAACCIAAUQAECAAQAwAACAAAAAggQACLDAAIEA=</HashCode>
+      <FileName>Entities\Feedback.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.FeedbackSubType">
+    <Position X="15" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASAAAAAAAAAAAAEAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\FeedbackSubType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.FeedbackType">
+    <Position X="7.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAACAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\FeedbackType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Log">
+    <Position X="19.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAABAQAAAAAAAEAAAAAAAgAAAAAAACAAAYAA=</HashCode>
+      <FileName>Entities\Log.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.OperationMode">
+    <Position X="11.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\OperationMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Product">
+    <Position X="1" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAIAAAAAEAACAAAAAAAAAAAAAAAABAAIAAA=</HashCode>
+      <FileName>Entities\Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.ReactionComment">
+    <Position X="6" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAEAAAAAAAAECAAAAgAAAAAAEAgAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ReactionComment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.ReactionFeedback">
+    <Position X="8.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAAECAKAAgAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ReactionFeedback.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Reply">
+    <Position X="11.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAACAAAAAAECAKAAgAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Entities\Reply.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Role">
+    <Position X="11" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Entities\Role.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Sector">
+    <Position X="1" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAACAACAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Sector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.Share">
+    <Position X="16.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAAACAKAAgAAAAAAAAEAAQAAAAAAAA=</HashCode>
+      <FileName>Entities\Share.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.System">
+    <Position X="9.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAgAAAAAAA=</HashCode>
+      <FileName>Entities\System.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CoreFMS.Entities.User">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABSAEIBESIAAAIIEAACAIQAEAAQAAAAAAAgJIAIIAw=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

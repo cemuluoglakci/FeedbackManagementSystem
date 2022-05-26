@@ -1,12 +1,15 @@
 ﻿using ApplicationFMS.Interfaces;
-using ApplicationFMS.Models;
-using CoreFMS.Entities;
-using MailKit.Net.Smtp;
+using Mailjet.Client;
+using Mailjet.Client.Resources;
+using Mailjet.Client.TransactionalEmails;
 using MimeKit;
 using System.IO;
 using System.Linq;
-//using System.Net.Mail;
+using System.Net;
+using System.Net.Mail;
+using System.Threading;
 using System.Threading.Tasks;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace InfrastructureFMSDB.EmailService
 {
@@ -19,30 +22,9 @@ namespace InfrastructureFMSDB.EmailService
             _emailConfig = emailConfig;
         }
 
-        public void SendEmail(Message message)
+        private ApplicationFMS.Models.Message CreateRegistrationMessage(CoreFMS.Entities.User user)
         {
-            var emailMessage = CreateEmailMessage(message);
-
-            Send(emailMessage);
-        }
-
-        public async Task SendEmailAsync(Message message)
-        {
-            var mailMessage = CreateEmailMessage(message);
-
-            await SendAsync(mailMessage);
-        }
-
-        public async Task SendRegistrationMail(User user)
-        {
-            MimeMessage mailMessage = CreateRegistrationMessage(user);
-            await SendAsync(mailMessage);
-        }
-
-        private MimeMessage CreateRegistrationMessage(User user)
-        {
-            Message message = Message.CreateRegistrationMessageBase(user);
-            //string FilePath = Directory.GetCurrentDirectory() + "\\..\\..\\Infrastructure\\InfrastructureFMSDB\\EmailService\\RegistrationMailTemplate.html";
+            ApplicationFMS.Models.Message message = ApplicationFMS.Models.Message.CreateRegistrationMessageBase(user);
             string FilePath = Directory.GetCurrentDirectory() + "\\RegistrationMailTemplate.html";
             StreamReader streamReader = new StreamReader(FilePath);
             string MailText = streamReader.ReadToEnd();
@@ -52,100 +34,36 @@ namespace InfrastructureFMSDB.EmailService
                 .Replace("[email]", user.Email)
                 .Replace("[verificationCode]", user.VerificationCode);
 
-            return CreateEmailMessage(message);
+            //return CreateEmailMessage(message);
+            return message;
         }
 
-        private MimeMessage CreateEmailMessage(Message message)
+        public async Task SendRegistrationMailJetMail(CoreFMS.Entities.User user)
         {
-            var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(_emailConfig.Name, _emailConfig.From));
-            emailMessage.To.AddRange(message.To);
-            emailMessage.Subject = message.Subject;
+            var mailMessage = CreateRegistrationMessage(user);
+            await RunMailJetAsync(mailMessage);
+        }
 
-            var bodyBuilder = new BodyBuilder { HtmlBody = message.Content };
+        public async Task RunMailJetAsync(ApplicationFMS.Models.Message message)
+        {
+            MailjetClient client = new MailjetClient(_emailConfig.ApiKey, _emailConfig.SecretKey);
 
-            if (message.Attachments != null && message.Attachments.Any())
+            MailjetRequest request = new MailjetRequest
             {
-                byte[] fileBytes;
-                foreach (var attachment in message.Attachments)
-                {
-                    using (var ms = new MemoryStream())
-                    {
-                        attachment.CopyTo(ms);
-                        fileBytes = ms.ToArray();
-                    }
+                Resource = Send.Resource
+            };
 
-                    bodyBuilder.Attachments.Add(attachment.FileName, fileBytes, ContentType.Parse(attachment.ContentType));
-                }
-            }
+            // construct your email with builder
+            var email = new TransactionalEmailBuilder()
+                .WithFrom(new SendContact(_emailConfig.From))
+                .WithSubject(message.Subject)
+                .WithHtmlPart(message.Content)
+                .WithTo(new SendContact(message.To[0].ToString()))
+                .Build();
 
-            emailMessage.Body = bodyBuilder.ToMessageBody();
-            return emailMessage;
-        }
-
-        private BodyBuilder BuildRegistrationMailBody()
-        {
-            string FilePath = Directory.GetCurrentDirectory() + "\\..\\..\\Infrastructure\\InfrastructureFMSDB\\EmailService\\RegistrationMailTemplate.html";
-            StreamReader streamReader = new StreamReader(FilePath);
-            string MailText = streamReader.ReadToEnd();
-            streamReader.Close();
-            MailText = MailText.Replace("[username]", "John Black").Replace("[email]", "johnblack@gmail.com");
-
-            var builder = new BodyBuilder();
-            builder.HtmlBody = MailText;
-
-            return builder;
-        }
-
-        private void Send(MimeMessage mailMessage)
-        {
-            using (var client = new SmtpClient())
-            {
-                try
-                {
-                    client.Connect(_emailConfig.SmtpServer, _emailConfig.Port, true);
-                    client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    client.Authenticate(_emailConfig.UserName, _emailConfig.Password);
-
-                    client.Send(mailMessage);
-                }
-                catch
-                {
-                    //log an error message or throw an exception, or both.
-                    throw;
-                }
-                finally
-                {
-                    client.Disconnect(true);
-                    client.Dispose();
-                }
-            }
-        }
-
-        private async Task SendAsync(MimeMessage mailMessage)
-        {
-            using (var client = new SmtpClient())
-            {
-                try
-                {
-                    client.CheckCertificateRevocation = false;
-                    await client.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.Port, false);
-                    //client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    //await client.AuthenticateAsync(_emailConfig.UserName, _emailConfig.Password);
-
-                    await client.SendAsync(mailMessage);
-                }
-                catch
-                {
-                    //log an error message or throw an exception, or both.
-                    throw;
-                }
-                finally
-                {
-                    await client.DisconnectAsync(true);
-                    client.Dispose();
-                }
-            }
+            // invoke API to send email
+            var response = await client.SendTransactionalEmailAsync(email);
         }
     }
+
 }

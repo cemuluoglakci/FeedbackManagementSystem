@@ -26,7 +26,7 @@ namespace FmsAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Constants.CompanyRepresentativeRole, Constants.CompanyEmployeeRole)]
+        [Authorize(Constants.CompanyRepresentativeRole, Constants.CompanyEmployeeRole, Constants.CompanyManagerRole)]
         public async Task<ActionResult<BaseResponse>> GetCompanyFeedbackDetail(int id)
         {
             return Ok(await Mediator.Send(new GetCompanyFeedbackDetailQuery { Id = id }));

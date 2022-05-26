@@ -124,9 +124,9 @@ namespace FmsAPI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                
             }
-
+app.UseDeveloperExceptionPage();
             //app.UseExceptionBehaviourHandler();
 
             app.UseSwagger();
