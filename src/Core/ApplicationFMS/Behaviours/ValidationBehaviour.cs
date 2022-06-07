@@ -17,7 +17,7 @@ namespace ApplicationFMS.Behaviours
             _validators = validators;
         }
 
-        public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var context = new ValidationContext<TRequest>(request);
 
@@ -31,7 +31,7 @@ namespace ApplicationFMS.Behaviours
             {
                 throw new ValidatorException(failures);
             }
-            return next();
+            return await next();
         }
     }
 }
