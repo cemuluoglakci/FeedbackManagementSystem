@@ -9,6 +9,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Content\css\CustomSwaggerStyle.css" />
+    <None Remove="Content\js\CustomSwaggerScript.js" />
+    <None Remove="Content\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Content\css\CustomSwaggerStyle.css" />
+    <EmbeddedResource Include="Content\js\CustomSwaggerScript.js" />
+    <EmbeddedResource Include="Content\logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="10.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.6.0" />

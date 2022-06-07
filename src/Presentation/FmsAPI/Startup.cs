@@ -18,8 +18,10 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.IO;
 
 namespace FmsAPI
 {
@@ -49,7 +51,8 @@ namespace FmsAPI
                 o.MemoryBufferThreshold = int.MaxValue;
             });
 
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen
+            (c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -126,14 +129,24 @@ namespace FmsAPI
             {
                 
             }
-app.UseDeveloperExceptionPage();
+            app.UseDeveloperExceptionPage();
             //app.UseExceptionBehaviourHandler();
+
+            app.UseStaticFiles(); // For the wwwroot folder if you need it
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Content")),
+                RequestPath = "/Content"
+            });
 
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "FmsAPI v1");
                 c.RoutePrefix = string.Empty;
+                c.InjectStylesheet( "/Content/css/CustomSwaggerStyle.css");
+                c.InjectJavascript("/Content/js/CustomSwaggerScript.js");
             });
 
             app.UseHttpsRedirection();
