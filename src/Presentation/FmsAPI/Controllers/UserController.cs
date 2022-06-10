@@ -1,5 +1,6 @@
 ﻿using ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility;
 using ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser;
+using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserDetail;
 using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
@@ -17,6 +18,12 @@ namespace FmsAPI.Controllers
         public async Task<ActionResult<BaseResponse>> GetList([FromBody] GetUserListQuery request)
         {
             return base.Ok(await Mediator.Send(request));
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<BaseResponse>> GetDetail(int id)
+        {
+            return base.Ok(await Mediator.Send(new GetUserDetailQuery { Id = id }));
         }
 
         [HttpPut]

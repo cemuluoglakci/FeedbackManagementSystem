@@ -60,6 +60,7 @@ namespace ApplicationFMS.Helpers
             claims.Add(new Claim("name", account.FirstName));
             claims.Add(new Claim("email", account.Email));
             claims.Add(new Claim("RoleName", account.Role.RoleName));
+            if(account?.CompanyId>0) claims.Add(new Claim("companyId", account?.CompanyId?.ToString()));
             return claims;
         }
         public int? ValidateJwtToken(string token)
