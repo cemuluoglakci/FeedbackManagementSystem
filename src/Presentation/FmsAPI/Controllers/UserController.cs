@@ -1,5 +1,6 @@
 ﻿using ApplicationFMS.Handlers.UserHandlers.Commands.ToggleUserAbility;
 using ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser;
+using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserDetail;
 using ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Models;
@@ -14,21 +15,27 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize(Constants.AdminRole, Constants.CompanyRepresentativeRole)]
-        public async Task<ActionResult<BaseResponse<UserListVm>>> GetList([FromBody] GetUserListQuery request)
+        public async Task<ActionResult<BaseResponse>> GetList([FromBody] GetUserListQuery request)
         {
             return base.Ok(await Mediator.Send(request));
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<BaseResponse>> GetDetail(int id)
+        {
+            return base.Ok(await Mediator.Send(new GetUserDetailQuery { Id = id }));
         }
 
         [HttpPut]
         [Authorize]
-        public async Task<ActionResult<BaseResponse<int>>> UpdateUser([FromBody] UpdateUserCommand request)
+        public async Task<ActionResult<BaseResponse>> UpdateUser([FromBody] UpdateUserCommand request)
         {
             return base.Ok(await Mediator.Send(request));
         }
 
         [HttpGet("{id}")]
         [Authorize(Constants.AdminRole, Constants.CompanyRepresentativeRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ToggleUserAbility(int id)
+        public async Task<ActionResult<BaseResponse>> ToggleUserAbility(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleUserAbilityCommand { Id = id }));
         }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Comments.Commands.DeleteComment
 {
-    public class DeleteCommentCommand : IRequest<BaseResponse<int>>
+    public class DeleteCommentCommand : IRequest<BaseResponse>
     {
         public int Id { get; set; }
 
-        public class DeleteCommentCommandHandler : IRequestHandler<DeleteCommentCommand, BaseResponse<int>>
+        public class DeleteCommentCommandHandler : IRequestHandler<DeleteCommentCommand, BaseResponse>
         {
             private readonly IFMSDataContext _context;
             private readonly ICurrentUser? _currentUser;
@@ -20,23 +20,23 @@ namespace ApplicationFMS.Handlers.Comments.Commands.DeleteComment
                 _context = context;
                 _currentUser = currentUser;
             }
-            public async Task<BaseResponse<int>> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
+            public async Task<BaseResponse> Handle(DeleteCommentCommand request, CancellationToken cancellationToken)
             {
                 var entity = await _context.Comment.FindAsync(request.Id);
                 if (entity == null)
                 {
-                    return BaseResponse<int>.Fail("Related entity was not found.");
+                    return BaseResponse.Fail("Related entity was not found.");
                 }
                 if (!_currentUser.HasSameId(entity.UserId))
                 {
-                    return BaseResponse<int>.Fail("Users can only delete their own posts");
+                    return BaseResponse.Fail("Users can only delete their own posts");
                 }
 
                 entity.IsActive = false;
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new BaseResponse<int>(entity.Id);
+                return new BaseResponse(entity.Id);
             }
 
         }

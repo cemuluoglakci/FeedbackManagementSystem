@@ -7,9 +7,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
+namespace ApplicationFMS.Handlers.Comments.Commands.UpsertComment
 {
-    public class UpsertCommentCommandHandler : IRequestHandler<UpsertCommentCommand, BaseResponse<int>>
+    public class UpsertCommentCommandHandler : IRequestHandler<UpsertCommentCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -20,22 +20,22 @@ namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(UpsertCommentCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UpsertCommentCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser.NotInRole(Constants.CustomerRole))
             {
-                return BaseResponse<int>.Fail("If you want to contribute to the system with comments please create a 'Customer' account with a dedicated E-mail address.");
+                return BaseResponse.Fail("If you want to contribute to the system with comments please create a 'Customer' account with a dedicated E-mail address.");
             }
 
             Feedback feedback = _context.Feedback.Find(request.FeedbackId);
             if (feedback == null)
             {
-                return BaseResponse<int>.Fail("Related feedback was not found.");
+                return BaseResponse.Fail("Related feedback was not found.");
             }
 
             if (ParentCommentIdIsInvalid(request.ParentCommentId, feedback.Id))
             {
-                BaseResponse<int>.Fail("Invalid parent comment");
+                BaseResponse.Fail("Invalid parent comment");
             }
 
             Comment entity;
@@ -45,7 +45,7 @@ namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
                 entity = await _context.Comment.FindAsync(request.Id.Value);
                 if (!_currentUser.HasSameId(entity.UserId))
                 {
-                    return BaseResponse<int>.Fail("Users can only edit their own posts");
+                    return BaseResponse.Fail("Users can only edit their own posts");
                 }
             }
             else
@@ -66,7 +66,7 @@ namespace ApplicationFMS.Handlers.Comments.Commands.PostComment
             entity.IsAnonym = request.IsAnonym;
 
             await _context.SaveChangesAsync(cancellationToken);
-            return new BaseResponse<int>(entity.Id);
+            return new BaseResponse(entity.Id);
         }
 
         private bool ParentCommentIdIsInvalid(int? parentCommentId, int feedbackId)

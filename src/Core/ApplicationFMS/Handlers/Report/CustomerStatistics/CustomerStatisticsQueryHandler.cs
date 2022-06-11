@@ -14,7 +14,7 @@ using System.IO;
 
 namespace ApplicationFMS.Handlers.Report.CustomerStatistics
 {
-    public class CustomerStatisticsQueryHandler : IRequestHandler<CustomerStatisticsQuery, BaseResponse<CustomerStatisticsVm>>
+    public class CustomerStatisticsQueryHandler : IRequestHandler<CustomerStatisticsQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -25,16 +25,16 @@ namespace ApplicationFMS.Handlers.Report.CustomerStatistics
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<CustomerStatisticsVm>> Handle(CustomerStatisticsQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(CustomerStatisticsQuery request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return BaseResponse<CustomerStatisticsVm>.Fail("User Identity could not defined.");
+                return BaseResponse.Fail("User Identity could not defined.");
             }
 
             if (_currentUser.UserDetail.RoleName != Constants.CompanyManagerRole)
             {
-                return BaseResponse<CustomerStatisticsVm>.Fail("User role is not authorized.");
+                return BaseResponse.Fail("User role is not authorized.");
             }
 
             IQueryable<Feedback>? feedbackQuery = _context.Feedback
@@ -102,7 +102,7 @@ namespace ApplicationFMS.Handlers.Report.CustomerStatistics
 
             viewModel.CustomerStatistics = customerStatistics;
 
-            return new BaseResponse<CustomerStatisticsVm>(viewModel);
+            return new BaseResponse(viewModel);
         }
 
 

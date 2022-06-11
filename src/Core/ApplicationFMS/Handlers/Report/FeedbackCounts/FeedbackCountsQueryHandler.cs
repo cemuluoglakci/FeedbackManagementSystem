@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Report.FeedbackCounts
 {
-    public class FeedbackCountsQueryHandler : IRequestHandler<FeedbackCountsQuery, BaseResponse<FeedbackCountsVm>>
+    public class FeedbackCountsQueryHandler : IRequestHandler<FeedbackCountsQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -21,16 +21,16 @@ namespace ApplicationFMS.Handlers.Report.FeedbackCounts
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<FeedbackCountsVm>> Handle(FeedbackCountsQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(FeedbackCountsQuery request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return BaseResponse<FeedbackCountsVm>.Fail("User Identity could not defined.");
+                return BaseResponse.Fail("User Identity could not defined.");
             }
 
             if (_currentUser.UserDetail.RoleName != Constants.CompanyManagerRole)
             {
-                return BaseResponse<FeedbackCountsVm>.Fail("User role is not authorized.");
+                return BaseResponse.Fail("User role is not authorized.");
             }
 
             IQueryable<Feedback>? feedbackQuery = _context.Feedback
@@ -77,7 +77,7 @@ namespace ApplicationFMS.Handlers.Report.FeedbackCounts
                     Count = x.Count()
                 }).ToListAsync();
 
-            return new BaseResponse<FeedbackCountsVm>(viewModel);
+            return new BaseResponse(viewModel);
         }
     }
 }

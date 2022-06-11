@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Commands.DeleteFeedback
 {
-    public class DeleteFeedbackCommand : IRequest<BaseResponse<int>>
+    public class DeleteFeedbackCommand : IRequest<BaseResponse>
     {
         public int Id { get; set; }
 
-        public class DeleteFeedbackCommandHandler : IRequestHandler<DeleteFeedbackCommand, BaseResponse<int>>
+        public class DeleteFeedbackCommandHandler : IRequestHandler<DeleteFeedbackCommand, BaseResponse>
         {
             private readonly IFMSDataContext _context;
             private readonly ICurrentUser? _currentUser;
@@ -20,23 +20,23 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.DeleteFeedback
                 _context = context;
                 _currentUser = currentUser;
             }
-            public async Task<BaseResponse<int>> Handle(DeleteFeedbackCommand request, CancellationToken cancellationToken)
+            public async Task<BaseResponse> Handle(DeleteFeedbackCommand request, CancellationToken cancellationToken)
             {
                 var entity = await _context.Feedback.FindAsync(request.Id);
                 if (entity == null)
                 {
-                    return BaseResponse<int>.Fail("Related entity was not found.");
+                    return BaseResponse.Fail("Related entity was not found.");
                 }
                 if (!_currentUser.HasSameId(entity.UserId))
                 {
-                    return BaseResponse<int>.Fail("Users can only delete their own posts");
+                    return BaseResponse.Fail("Users can only delete their own posts");
                 }
 
                 entity.IsActive = false;
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new BaseResponse<int>(entity.Id);
+                return new BaseResponse(entity.Id);
             }
 
         }

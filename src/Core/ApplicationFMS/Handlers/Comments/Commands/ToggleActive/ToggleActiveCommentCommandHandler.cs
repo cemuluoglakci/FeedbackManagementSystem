@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Comments.Commands.ToggleActive
 {
-    public class ToggleActiveCommentCommandHandler : IRequestHandler<ToggleActiveCommentCommand, BaseResponse<int>>
+    public class ToggleActiveCommentCommandHandler : IRequestHandler<ToggleActiveCommentCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -20,23 +20,23 @@ namespace ApplicationFMS.Handlers.Comments.Commands.ToggleActive
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(ToggleActiveCommentCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(ToggleActiveCommentCommand request, CancellationToken cancellationToken)
         {
             if (!_currentUser.IsInRole(Constants.AdminRole))
             {
-                return BaseResponse<int>.Fail("Only administrators are allowed to activate / deactivate comments.");
+                return BaseResponse.Fail("Only administrators are allowed to activate / deactivate comments.");
             }
 
             Comment? comment = _context.Comment.FirstOrDefault(x => x.Id == request.Id);
             if (comment == null)
             {
-                return BaseResponse<int>.Fail("Comment was not found.");
+                return BaseResponse.Fail("Comment was not found.");
             }
 
             comment.IsActive = !comment.IsActive;
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<int>(comment.Id);
+            return new BaseResponse(comment.Id);
         }
     }
 }

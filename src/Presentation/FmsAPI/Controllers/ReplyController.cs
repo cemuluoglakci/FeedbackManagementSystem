@@ -1,5 +1,5 @@
 ﻿using ApplicationFMS.Handlers.Replies.Commands.DeleteReply;
-using ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback;
+using ApplicationFMS.Handlers.Replies.Commands.UpsertReply;
 using ApplicationFMS.Handlers.Replies.Commands.ToggleActive;
 using ApplicationFMS.Handlers.Replies.Commands.ToggleChecked;
 using ApplicationFMS.Helpers;
@@ -15,21 +15,21 @@ namespace FmsAPI.Controllers
     {
         [HttpPost]
         [Authorize(Constants.CustomerRole, Constants.CompanyEmployeeRole)]
-        public async Task<ActionResult<BaseResponse<int>>> UpsertReply([FromBody] UpsertReplyCommand request)
+        public async Task<ActionResult<BaseResponse>> UpsertReply([FromBody] UpsertReplyCommand request)
         {
             return base.Ok(await Mediator.Send(request));
         }
 
         [HttpGet("{id}")]
         [Authorize(Constants.AdminRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ToggleReplyChecked(int id)
+        public async Task<ActionResult<BaseResponse>> ToggleReplyChecked(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleCheckedReplyCommand { Id = id }));
         }
 
         [HttpGet("{id}")]
         [Authorize(Constants.AdminRole)]
-        public async Task<ActionResult<BaseResponse<int>>> ToggleReplyAbility(int id)
+        public async Task<ActionResult<BaseResponse>> ToggleReplyAbility(int id)
         {
             return base.Ok(await Mediator.Send(new ToggleActiveReplyCommand { Id = id }));
         }

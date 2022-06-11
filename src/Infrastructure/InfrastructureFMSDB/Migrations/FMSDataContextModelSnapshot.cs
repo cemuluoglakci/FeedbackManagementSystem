@@ -280,6 +280,43 @@ namespace InfrastructureFMSDB.Migrations
                     b.ToTable("FeedbackType");
                 });
 
+            modelBuilder.Entity("CoreFMS.Entities.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("EndPoint")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Ip")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Request")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("RunningDuration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Log");
+                });
+
             modelBuilder.Entity("CoreFMS.Entities.OperationMode", b =>
                 {
                     b.Property<int>("Id")

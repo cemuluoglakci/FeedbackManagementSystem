@@ -9,7 +9,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
         public string CustomerEmail { get; set; } = null!;
         public string? CustomerPhone { get; set; }
         public string? CustomerLastName { get; set; }
-        public int? DirectedToEmploteeId { get; set; }
+        public int? DirectedToEmployeeId { get; set; }
         public bool IsArchived { get; set; } = false;
         public void Mapping(Profile profile)
         {

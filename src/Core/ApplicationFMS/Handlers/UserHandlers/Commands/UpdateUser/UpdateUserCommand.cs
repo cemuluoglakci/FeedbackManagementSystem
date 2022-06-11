@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser
 {
-    public class UpdateUserCommand : IRequest<BaseResponse<int>>
+    public class UpdateUserCommand : IRequest<BaseResponse>
     {
         public int Id { get; set; }
         public string? Email { get; set; } = null!;

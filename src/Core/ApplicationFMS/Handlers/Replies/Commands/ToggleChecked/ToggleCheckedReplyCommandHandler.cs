@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Replies.Commands.ToggleChecked
 {
-    public class ToggleCheckedReplyCommandHandler : IRequestHandler<ToggleCheckedReplyCommand, BaseResponse<int>>
+    public class ToggleCheckedReplyCommandHandler : IRequestHandler<ToggleCheckedReplyCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -20,27 +20,27 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ToggleChecked
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(ToggleCheckedReplyCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(ToggleCheckedReplyCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return new BaseResponse<int>(0, "Current User Identity was not defined.");
+                return new BaseResponse(0, "Current User Identity was not defined.");
             }
             if (_currentUser.UserDetail.RoleName != Constants.AdminRole)
             {
-                return new BaseResponse<int>(0, "Only administrators are allowed to activate / deactivate replies.");
+                return new BaseResponse(0, "Only administrators are allowed to activate / deactivate replies.");
             }
 
             Reply? reply = _context.Reply.FirstOrDefault(x => x.Id == request.Id);
             if (reply == null)
             {
-                return new BaseResponse<int>(0, "Reply was not found.");
+                return new BaseResponse(0, "Reply was not found.");
             }
 
             reply.IsChecked = !reply.IsChecked;
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<int>(reply.Id);
+            return new BaseResponse(reply.Id);
         }
 
 

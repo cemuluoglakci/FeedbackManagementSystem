@@ -6,9 +6,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
+namespace ApplicationFMS.Handlers.Replies.Commands.UpsertReply
 {
-    public class UpsertReplyCommandHandler : IRequestHandler<UpsertReplyCommand, BaseResponse<int>>
+    public class UpsertReplyCommandHandler : IRequestHandler<UpsertReplyCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -18,7 +18,7 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
             _context = context;
             _currentUser = currentUser;
         }
-        public async Task<BaseResponse<int>> Handle(UpsertReplyCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UpsertReplyCommand request, CancellationToken cancellationToken)
         {
             Feedback feedback = _context.Feedback.Find(request.FeedbackId);
             int currentUserId = _currentUser.UserDetail.Id;
@@ -32,7 +32,7 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
                     entity = await _context.Reply.FindAsync(request.Id.Value);
                     if (!_currentUser.HasSameId(entity.UserId))
                     {
-                        return BaseResponse<int>.Fail("Users can only edit their own posts");
+                        return BaseResponse.Fail("Users can only edit their own posts");
                     }
                 }
                 else
@@ -51,11 +51,11 @@ namespace ApplicationFMS.Handlers.Replies.Commands.ReplyFeedback
                 entity.Text = request.Text;
 
                 await _context.SaveChangesAsync(cancellationToken);
-                return new BaseResponse<int>(entity.Id);
+                return new BaseResponse(entity.Id);
             }
             else
             {
-                return BaseResponse<int>.Fail("Appointed company employees should reply feedbacks. Once feedback is replied, also original poster can post reply.");
+                return BaseResponse.Fail("Appointed company employees should reply feedbacks. Once feedback is replied, also original poster can post reply.");
             }
         }
     }

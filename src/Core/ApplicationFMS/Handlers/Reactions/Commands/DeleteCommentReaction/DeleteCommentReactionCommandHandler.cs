@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Reactions.Commands.DeleteCommentReaction
 {
-    public class DeleteCommentReactionCommandHandler : IRequestHandler<DeleteCommentReactionCommand, BaseResponse<int>>
+    public class DeleteCommentReactionCommandHandler : IRequestHandler<DeleteCommentReactionCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -19,11 +19,11 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.DeleteCommentReaction
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(DeleteCommentReactionCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(DeleteCommentReactionCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return new BaseResponse<int>(0, "Current User Identity was not defined.");
+                return new BaseResponse(0, "Current User Identity was not defined.");
             }
 
             ReactionComment? reactionComment = _context.ReactionComment
@@ -34,17 +34,17 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.DeleteCommentReaction
 
             if (reactionComment == null)
             {
-                return new BaseResponse<int>(0, "No active Comment reaction found.");
+                return new BaseResponse(0, "No active Comment reaction found.");
             }
             if (reactionComment.UserId != _currentUser.UserDetail.Id)
             {
-                return new BaseResponse<int>(0, "Only owner of the reaction can delete it.");
+                return new BaseResponse(0, "Only owner of the reaction can delete it.");
             }
 
             DeleteReaction(reactionComment.Id);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<int>(reactionComment.Id);
+            return new BaseResponse(reactionComment.Id);
         }
 
         public void DeleteReaction(int ReactionId)

@@ -35,6 +35,7 @@ namespace InfrastructureFMSDB
         public DbSet<SocialMedium> SocialMedia { get; set; }
         public DbSet<CoreFMS.Entities.System> System { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Log> Log { get; set; }
     }
 
 }

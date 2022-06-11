@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, BaseResponse<int>>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -19,15 +19,15 @@ namespace ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser
             _context = context;
             _currentUser = currentUser;
         }
-        public async Task<BaseResponse<int>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return new BaseResponse<int>(0, "User Identity could not defined.");
+                return new BaseResponse(0, "User Identity could not defined.");
             }
             if (_currentUser.UserDetail.Id != request.Id)
             {
-                return new BaseResponse<int>(0, "Users are only allowed to update their own account.");
+                return new BaseResponse(0, "Users are only allowed to update their own account.");
             }
 
             User entity = await _context.User.FindAsync(request.Id);
@@ -70,7 +70,7 @@ namespace ApplicationFMS.Handlers.UserHandlers.Commands.UpdateUser
             }
 
             await _context.SaveChangesAsync(cancellationToken);
-            return new BaseResponse<int>(entity.Id);
+            return new BaseResponse(entity.Id);
         }
     }
 }

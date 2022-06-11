@@ -1,19 +1,27 @@
+using ApplicationFMS.Behaviours;
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using FmsAPI.Helper;
 using FmsAPI.Middleware;
 using InfrastructureFMSDB;
 using InfrastructureFMSDB.EmailService;
+using MicroElements.Swashbuckle.FluentValidation;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.IO;
 
 namespace FmsAPI
 {
@@ -43,18 +51,8 @@ namespace FmsAPI
                 o.MemoryBufferThreshold = int.MaxValue;
             });
 
-            services.AddControllers()
-                .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-                );
-
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options))
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
-
-
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen
+            (c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
@@ -68,21 +66,19 @@ namespace FmsAPI
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\"",
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-        {
-            new OpenApiSecurityScheme {
+                {
+                    new OpenApiSecurityScheme {
                 Reference = new OpenApiReference {
                     Type = ReferenceType.SecurityScheme,
                         Id = "Bearer"
                 }
             },
-            new string[] {}
-        }
-});
+                    new string[] {}
+                }});
             });
-
 
             services.Configure<JwtSetting>(Configuration.GetSection("JwtSetting"));
 
@@ -93,6 +89,37 @@ namespace FmsAPI
             services.AddInfrastructureServices(Configuration);
             services.AddApplicationServices();
             services.AddHttpContextAccessor();
+
+            services.AddControllers()
+                .AddFluentValidation(c =>
+                {
+                    c.RegisterValidatorsFromAssemblyContaining<IFMSDataContext>();
+                    // Optionally set validator factory if you have problems with scope resolve inside validators.
+                    c.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
+                })
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
+
+            services.AddFluentValidationRulesToSwagger
+                (options =>
+            {
+                options.SetNotNullableIfMinLengthGreaterThenZero = true;
+                options.UseAllOffForMultipleRules = true;
+            })
+                ;
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+            //services.AddValidatorsFromAssemblyContaining<IFMSDataContext>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => Configuration.Bind("JwtSettings", options))
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -100,13 +127,26 @@ namespace FmsAPI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                
             }
+            app.UseDeveloperExceptionPage();
+            //app.UseExceptionBehaviourHandler();
+
+            app.UseStaticFiles(); // For the wwwroot folder if you need it
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Content")),
+                RequestPath = "/Content"
+            });
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "FmsAPI v1");
                 c.RoutePrefix = string.Empty;
+                c.InjectStylesheet( "/Content/css/CustomSwaggerStyle.css");
+                c.InjectJavascript("/Content/js/CustomSwaggerScript.js");
             });
 
             app.UseHttpsRedirection();

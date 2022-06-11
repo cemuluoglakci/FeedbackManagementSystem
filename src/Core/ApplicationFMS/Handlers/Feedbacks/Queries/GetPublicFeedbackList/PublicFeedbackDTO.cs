@@ -9,6 +9,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
     {
 
         public int Id { get; set; }
+        public int UserId { get; set; }
         public string? CustomerFirstName { get; set; }
         public string Title { get; set; } = null!;
         public string Text { get; set; } = null!;
@@ -23,14 +24,23 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
         public int? SubTypeId { get; set; }
         public string SubTypeName { get; set; }
 
+        public int LikeCount { get; set; }
+        public int DislikeCount { get; set; }
+        public bool? UserReaction { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public bool IsAnonym { get; set; }
         public bool? IsReplied { get; set; }
         public bool? IsSolved { get; set; }
+        public bool IsMine { get; set; } = false;
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Feedback, PublicFeedbackDTO>()
+                .ForMember(d => d.UserId, opt =>
+                {
+                    opt.MapFrom(s => s.IsAnonym ? 0 : s.UserId);
+                })
 
                 .ForMember(d => d.CustomerFirstName, opt =>
                 {

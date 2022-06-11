@@ -3,7 +3,7 @@ using MediatR;
 
 namespace ApplicationFMS.Handlers.System.Commands.SetOperationalMode
 {
-    public class SetOperationalModeCommand : IRequest<BaseResponse<string>>
+    public class SetOperationalModeCommand : IRequest<BaseResponse>
     {
         public int ModeId { get; set; }
     }

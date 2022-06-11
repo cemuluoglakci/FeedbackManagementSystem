@@ -1,13 +1,9 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ApplicationFMS.Models;
+using MediatR;
 
 namespace ApplicationFMS.Handlers.Account.Commands.VerifyEmail
 {
-    public class VerifyEmailCommand : IRequest<string>
+    public class VerifyEmailCommand : IRequest<BaseResponse>
     {
         public string Email { get; set; } = null!;
         public string VerificationCode { get; set; } = null!;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Reactions.Commands.ReactFeedback
 {
-    public class ReactFeedbackCommandHandler : IRequestHandler<ReactFeedbackCommand, BaseResponse<int>>
+    public class ReactFeedbackCommandHandler : IRequestHandler<ReactFeedbackCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -21,21 +21,21 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.ReactFeedback
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(ReactFeedbackCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(ReactFeedbackCommand request, CancellationToken cancellationToken)
         {
             if (_currentUser == null)
             {
-                return new BaseResponse<int>(0, "User Identity could not defined.");
+                return new BaseResponse(0, "User Identity could not defined.");
             }
             if (_currentUser.UserDetail.RoleName != Constants.CustomerRole)
             {
-                return new BaseResponse<int>(0, "If you want to contribute to the system with reactions please create a 'Customer' account with a dedicated E-mail address.");
+                return new BaseResponse(0, "If you want to contribute to the system with reactions please create a 'Customer' account with a dedicated E-mail address.");
             }
 
             Feedback? feedback = _context.Feedback.Find(request.FeedbackId);
             if (feedback == null)
             {
-                return new BaseResponse<int>(0, "Feedback was not found.");
+                return new BaseResponse(0, "Feedback was not found.");
             }
 
             ReactionFeedback? possibleReaction = _context.ReactionFeedback.FirstOrDefault(x
@@ -43,7 +43,7 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.ReactFeedback
 
             if (possibleReaction != null && possibleReaction.Sentiment == request.Sentiment)
             {
-                return new BaseResponse<int>(0, "Reaction already stored.");
+                return new BaseResponse(0, "Reaction already stored.");
             }
             else if (possibleReaction != null)
             {
@@ -70,7 +70,7 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.ReactFeedback
 
             _context.ReactionFeedback.Add(entity);
             await _context.SaveChangesAsync(cancellationToken);
-            return new BaseResponse<int>(entity.Id);
+            return new BaseResponse(entity.Id);
         }
 
         public void DeleteReaction(int id)

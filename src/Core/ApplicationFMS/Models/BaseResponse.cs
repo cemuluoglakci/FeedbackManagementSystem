@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ApplicationFMS.Models
+﻿namespace ApplicationFMS.Models
 {
-    public class BaseResponse<T>
+    public class BaseResponse
     {
         public BaseResponse(Meta meta)
         {
-            this.data = default(T);
+            this.data = null;
             this.Meta = meta;
         }
-        public BaseResponse(T data)
+        public BaseResponse(object data)
         {
             this.data = data;
             this.Meta = new Meta();
         }
-        public BaseResponse(T data, string message)
+        public BaseResponse(object data, string message)
         {
             this.data = data;
-            this.Meta = new Meta 
+            this.Meta = new Meta
             {
                 Message = message,
                 SuccessStatus = false
@@ -29,16 +23,16 @@ namespace ApplicationFMS.Models
         }
 
         public Meta Meta { get; set; }
-        public T? data { get; set; }
+        public object? data { get; set; }
 
-        public static BaseResponse<T> Fail(string failureMessage)
+        public static BaseResponse Fail(string failureMessage)
         {
-            Meta meta = new Meta() 
-            { 
+            Meta meta = new Meta()
+            {
                 Message = failureMessage,
                 SuccessStatus = false
             };
-            return new BaseResponse<T>(meta);
+            return new BaseResponse(meta);
         }
     }
 

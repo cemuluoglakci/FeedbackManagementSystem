@@ -1,16 +1,14 @@
 ﻿using ApplicationFMS.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace ApplicationFMS.Handlers.Account.Queries.UserLogin
 {
-    public class UserLoginQuery: IRequest<BaseResponse<string>>
+    public class UserLoginQuery : IRequest<BaseResponse>
     {
+        
         public string Email { get; set; } = null!;
+        [JsonIgnore]
         public string Password { get; set; } = null!;
     }
 }

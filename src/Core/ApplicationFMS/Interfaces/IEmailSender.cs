@@ -10,8 +10,9 @@ namespace ApplicationFMS.Interfaces
 {
     public interface IEmailSender
     {
-        void SendEmail(Message message);
-        Task SendEmailAsync(Message message);
-        Task SendRegistrationMail(User user);
+        //void SendEmail(Message message);
+        //Task SendEmailAsync(Message message);
+        //Task SendRegistrationMail(User user);
+        Task SendRegistrationMailJetMail(User user);
     }
 }

@@ -9,7 +9,7 @@ using ApplicationFMS.Helpers;
 
 namespace ApplicationFMS.Handlers.ComplaintTypes.Commands.UpsertComplaintType
 {
-    public class UpsertComplaintTypeCommandHandler : IRequestHandler<UpsertComplaintTypeCommand, BaseResponse<int>>
+    public class UpsertComplaintTypeCommandHandler : IRequestHandler<UpsertComplaintTypeCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly ICurrentUser? _currentUser;
@@ -20,12 +20,12 @@ namespace ApplicationFMS.Handlers.ComplaintTypes.Commands.UpsertComplaintType
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<int>> Handle(UpsertComplaintTypeCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(UpsertComplaintTypeCommand request, CancellationToken cancellationToken)
         {
 
             if (_currentUser.NotInRole(Constants.AdminRole))
             {
-                return BaseResponse<int>.Fail("Only administrators can add complaint types.");
+                return BaseResponse.Fail("Only administrators can add complaint types.");
             }
 
             FeedbackSubType entity;
@@ -46,7 +46,7 @@ namespace ApplicationFMS.Handlers.ComplaintTypes.Commands.UpsertComplaintType
             entity.SubTypeName = request.SubTypeName;
 
             await _context.SaveChangesAsync(cancellationToken);
-            return new BaseResponse<int>(entity.Id);
+            return new BaseResponse(entity.Id);
         }
 
     }

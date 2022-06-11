@@ -276,3 +276,5 @@ __pycache__/
 /src/Core/ApplicationFMS/Handlers/TestPurposesHandler.cs
 /src/Infrastructure/InfrastructureFMSDB/remoteMigration
 /src/Infrastructure/InfrastructureFMSDB/localMigration
+*.DotSettings
+/FmsClassDiagram.png

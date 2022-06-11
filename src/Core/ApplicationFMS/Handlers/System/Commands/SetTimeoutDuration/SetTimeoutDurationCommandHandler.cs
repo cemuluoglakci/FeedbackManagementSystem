@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.System.Commands.SetTimeoutDuration
 {
-    public class SetTimeoutDurationCommandHandler : IRequestHandler<SetTimeoutDurationCommand, BaseResponse<string>>
+    public class SetTimeoutDurationCommandHandler : IRequestHandler<SetTimeoutDurationCommand, BaseResponse>
     {
         private readonly IFMSDataContext _context;
 
@@ -18,20 +18,20 @@ namespace ApplicationFMS.Handlers.System.Commands.SetTimeoutDuration
             _context = context;
         }
 
-        public async Task<BaseResponse<string>> Handle(SetTimeoutDurationCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(SetTimeoutDurationCommand request, CancellationToken cancellationToken)
         {
             CoreFMS.Entities.System? systemVariable = _context.System.FirstOrDefault(x => x.SystemVariable == Constants.SystemVariableTimeoutName);
 
             if (systemVariable == null)
             {
-                return BaseResponse<string>.Fail("System error!");
+                return BaseResponse.Fail("System error!");
             }
 
             systemVariable.Value = request.Value;
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new BaseResponse<string>("Timeout duration set as " + Convert.ToString(systemVariable.Value));
+            return new BaseResponse("Timeout duration set as " + Convert.ToString(systemVariable.Value));
         }
     }
 }

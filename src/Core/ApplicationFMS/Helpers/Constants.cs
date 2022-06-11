@@ -13,5 +13,11 @@ namespace ApplicationFMS.Helpers
 
         public const string SystemVariableModeName = "ModeOfOperation";
         public const string SystemVariableTimeoutName = "TimeoutDuration";
+
+        public const string OperationalModeName = "Operational Mode";
+        public const string DegradedModeName = "Degraded Mode";
+        public const string MaintananceModeName = "Maintenance Mode";
+
+        public const string LoginRequestPath = "/Account/UserLogin";
     }
 }

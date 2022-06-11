@@ -7,15 +7,13 @@ using CoreFMS.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {
-    public class GetFeedbackListQueryHandler : IRequestHandler<GetFeedbackListQuery, BaseResponse<FeedbackListVm>>
+    public class GetFeedbackListQueryHandler : IRequestHandler<GetFeedbackListQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly IMapper _mapper;
@@ -28,7 +26,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<FeedbackListVm>> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetFeedbackListQuery request, CancellationToken cancellationToken)
         {
             IQueryable<Feedback>? feedbackQuery = _context.Feedback;
 
@@ -82,6 +80,14 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             if ((request.SubTypeId ?? 0) != 0)
             {
                 feedbackQuery = feedbackQuery.Where(x => x.SubTypeId == request.SubTypeId);
+            }
+            if (request.UserId > 0)
+            {
+                feedbackQuery = feedbackQuery.Where(x => x.UserId == request.UserId);
+                if (_currentUser.UserDetail.Id != request.UserId)
+                {
+                    feedbackQuery = feedbackQuery.Where(x => x.IsAnonym == false);
+                }
             }
             if (request.IsReplied != null)
             {
@@ -156,7 +162,8 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             }
             else if (Constants.CompanyRoles.Contains(_currentUser.UserDetail.RoleName))
             {
-                feedbackQuery = feedbackQuery.Where(x => x.IsActive == request.IsActive);
+                feedbackQuery = feedbackQuery.Where(x => x.IsActive &&
+                    x.CompanyId == _currentUser.UserDetail.CompanyId);
 
                 //Company Employees can only display feedbacks directed to them
                 if (_currentUser.UserDetail.RoleName == Constants.CompanyEmployeeRole)
@@ -175,16 +182,52 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
             else
             {
                 feedbackQuery = feedbackQuery.Where(x => x.IsActive == true);
+
+                if (request.IsMine == true && _currentUser?.UserDetail?.Id > 0)
+                {
+                    feedbackQuery = feedbackQuery.Where(x => x.UserId == _currentUser.UserDetail.Id);
+                }
+
                 viewModel.FilteredCount = feedbackQuery.Count();
 
                 var dtoQuery = feedbackQuery.ProjectTo<PublicFeedbackDTO>(_mapper.ConfigurationProvider);
+
                 //Pagination and ordering
                 dtoQuery = Tools.ArrangeList(dtoQuery, request.SortColumn, request.IsAscending, request.ObjectsPerPage, request.PageNumber);
+
                 var feedbackList = await dtoQuery.ToListAsync();
+
+                if (_currentUser?.UserDetail?.Id != null)
+                {
+                    //Add User reaction information of feedbacks
+                    var userReactions = _context.ReactionFeedback
+                        .Where(x => x.IsActive && x.UserId == _currentUser.UserDetail.Id);
+                    var reactedFeedbackIds = userReactions.Select(x => x.FeedbackId).ToList();
+
+                    if (reactedFeedbackIds != null)
+                    {
+                        var reactedFeedbackList = feedbackList.Where(x => reactedFeedbackIds.Contains(x.Id)).ToList();
+                        reactedFeedbackList.ForEach(x => x.UserReaction = userReactions.FirstOrDefault(y => y.FeedbackId == x.Id).Sentiment);
+                    }
+
+                    //Add "IsMine" information of feedbacks
+                    // ***Refactor later***
+
+                    var userFeedbackIds = _context.Feedback
+                        .Where(x => x.UserId == _currentUser.UserDetail.Id)
+                        .Select(x => x.Id).ToList();
+
+                    if (userFeedbackIds != null)
+                    {
+                        var postedFeedbackList = feedbackList.Where(x => userFeedbackIds.Contains(x.Id)).ToList();
+                        postedFeedbackList.ForEach(x => x.IsMine = true);
+                    }
+                }
+
                 viewModel.PublicFeedbackList = feedbackList;
             }
 
-            return new BaseResponse<FeedbackListVm>(viewModel);
+            return new BaseResponse(viewModel);
         }
 
     }

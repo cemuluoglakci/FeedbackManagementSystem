@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetAdminFeedbackDetail
 {
-    public class GetAdminFeedbackDetailQueryHandler : IRequestHandler<GetAdminFeedbackDetailQuery, BaseResponse<GetAdminFeedbackDetailVm>>
+    public class GetAdminFeedbackDetailQueryHandler : IRequestHandler<GetAdminFeedbackDetailQuery, BaseResponse>
     {
         private readonly IFMSDataContext _context;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetAdminFeedbackDetail
             _currentUser = currentUser;
         }
 
-        public async Task<BaseResponse<GetAdminFeedbackDetailVm>> Handle(GetAdminFeedbackDetailQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponse> Handle(GetAdminFeedbackDetailQuery request, CancellationToken cancellationToken)
         {
             var vm = await _context.Feedback
                 .Where(e => e.Id == request.Id)
@@ -32,10 +32,10 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetAdminFeedbackDetail
 
             if (vm == null)
             {
-                return BaseResponse<GetAdminFeedbackDetailVm>.Fail("No active feedback found.");
+                return BaseResponse.Fail("No active feedback found.");
             }
 
-            return new BaseResponse<GetAdminFeedbackDetailVm>(vm);
+            return new BaseResponse(vm);
         }
     }
 }
