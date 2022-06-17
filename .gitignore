@@ -278,3 +278,7 @@ __pycache__/
 /src/Infrastructure/InfrastructureFMSDB/localMigration
 *.DotSettings
 /FmsClassDiagram.png
+/src/Presentation/FmsWebUI/Content
+/src/Presentation/FmsWebUI/wwwroot
+/src/Presentation/FmsWebUI/Views/Feedback/SearchInputForTestDeleteLater.cshtml
+/src/Presentation/FmsWebUI/Views/Feedback/List - Copy.cshtml

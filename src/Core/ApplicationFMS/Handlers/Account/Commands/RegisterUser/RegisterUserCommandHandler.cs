@@ -39,10 +39,6 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
                 {
                     return BaseResponse.Fail("This email is already registered to the system");
                 }
-                else if (!entity.IsActive & entity.IsVerified)
-                {
-                    entity = null;
-                }
             }
             
             if(entity == null)

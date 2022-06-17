@@ -1,0 +1,41 @@
+﻿@model ApplicationFMS.Handlers.Account.Commands.VerifyEmail.VerifyEmailCommand
+
+
+@{
+    ViewData["Title"] = "E-posta Doğrula";
+}
+
+<div class="row justify-content-center">
+
+
+<div class="d-flex col-lg-4 align-items-center  px-2 p-lg-5">
+                <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+                  <h2 class="card-title fw-bold mb-1">FMS Sistemine Hoşgeldiniz!</h2>
+                    <p class="card-text mb-2">Lütfen e-posta hesabınıza gönderilmiş olan bağlantıyı açın ya da aşağıdaki alana doğrulama kodunu giriniz.</p>
+
+                  <form class="form" enctype="application/json" asp-controller="User" asp-action="Verify" method="POST" novalidate="novalidate">
+                      <div class="mb-1">
+                          <label class="form-label" for="login-email">Email</label>
+                          <input asp-for="Email" class="form-control" id="login-email" type="email" placeholder="john@example.com" aria-describedby="login-email" autofocus="" tabindex="1">
+                      </div>
+
+                    <div class="mb-1">
+                      <div class="d-flex justify-content-between">
+                          <label class="form-label" for="login-password">Doğrulama Kodu</label>
+
+                      </div>
+                      <div class="input-group input-group-merge form-password-toggle">
+                          <input asp-for="VerificationCode" class="form-control"  type="text" placeholder="XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX" >
+
+                      </div>
+                    </div>
+                    <div class="mb-1">
+
+                    </div>
+                    <button class="btn btn-primary w-100 waves-effect waves-float waves-light" tabindex="4">Doğrula</button>
+                  </form>
+                  <p class="text-center mt-2"><span>Henüz bir FMS hesabınız yok mu?</span><a asp-action="Register"><span>Hemen yeni bir hesap oluşturun!</span></a></p>
+                 </div>
+              </div>
+              
+</div>

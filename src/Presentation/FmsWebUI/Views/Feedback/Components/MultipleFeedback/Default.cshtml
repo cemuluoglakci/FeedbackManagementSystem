@@ -1,0 +1,9 @@
+﻿
+@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList.FeedbackListVm
+
+@foreach (var feedback in Model.PublicFeedbackList)
+{
+    @await Component.InvokeAsync("SingleFeedback", feedback)
+
+}
+

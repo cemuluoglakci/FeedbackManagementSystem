@@ -1,0 +1,201 @@
+﻿@model ApplicationFMS.Handlers.Account.Commands.RegisterUser.RegisterUserCommand
+@{
+    ViewData["Title"] = "Kullanıcı Kayıt";
+}
+
+
+
+<section id="multiple-column-form">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Yeni Kullanıcı</h4>
+                </div>
+                <div class="card-body">
+                    <form class="form" method="post" enctype="application/json" asp-controller="User" asp-action="Register">
+                        <div class="row">
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="first-name-column">Ad</label>
+                                    <input id="first-name-column" class="form-control" placeholder="Ad" asp-for="FirstName">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="last-name-column">Soyad</label>
+                                    <input id="last-name-column" class="form-control" placeholder="Soyad" asp-for="LastName">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="email-id-column">E-Posta</label>
+                                    <input type="email" id="email-id-column" class="form-control" placeholder="E-Posta" asp-for="Email">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label">Parola</label>
+                                    <input type="password" class="form-control" placeholder="Parola" asp-for="Password">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label"> Telefon Numarası</label>
+                                    <input type="hidden" class="form-control" asp-for="PhoneCode" value="90">
+                                    <input type="text" id="city-column" class="form-control" placeholder="Telefon Numarası" asp-for="Phone">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label">Doğum Tarihi</label>
+                                    <input type="datetime" class="form-control" placeholder="Doğum Tarihi" asp-for="BirthDate">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label">Öğrenim Durumu</label>
+                                    
+                                    <select type="text" class="form-control" id="educationSelector" asp-for="EducationId">
+                                        <option>---Öğrenim Durumu Seçiniz---</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label">Şehir</label>
+                                    <select type="text" class="form-control" id="citySelector" asp-for="CityId">
+                                        <option>---Şehir Seçiniz---</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-12">
+                                <div class="mb-1">
+                                    <label class="form-label">Rol</label>
+                                    <input type="hidden" class="form-control" asp-for="RoleId" value="2">
+                                    <input type="text" disabled="true" class="form-control" value="Müşteri" asp-for="RoleId">
+                                </div>
+                            </div>
+
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary me-1 waves-effect waves-float waves-light">Kayıt Ol</button>
+                                <button type="reset" class="btn btn-outline-secondary waves-effect">Formu Temizle</button>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="text-center mt-2"><span>Zaten bir hesabınız var mı?</span><a asp-action="Login"><span>Hemen sisteme giriş yapın.</span></a></p>
+                     
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("Education", "Lookup")',
+            type: "GET",
+            success: function (json, textStatus) {
+                json = json || {};
+                for (var i = 0; i < json.length; i++) {
+                    $("#educationSelector").append(`<option value="${json[i].id}">${json[i].name}</option>`);
+                }
+            },
+            error: function () {
+                alert("Data Not Found");
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("City", "Lookup")',
+            type: "GET",
+            success: function (json, textStatus) {
+                json = json || {};
+                for (var i = 0; i < json.length; i++) {
+                    $("#citySelector").append(`<option value="${json[i].id}">${json[i].cityName}</option>`);
+                }
+            },
+            error: function () {
+                alert("Data Not Found");
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("#selectCompany").prop("disabled", true);
+        $("#selectSector").change(function () {
+            var id = $("#selectSector").val();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("Company", "Lookup")',
+                data: { "id": id },
+                success: function (json, textStatus) {
+                    $("#selectCompany").empty();
+                    $("#selectCompany").append(`<option value="">---Şirket Seçiniz---</option>`);
+                    json = json || {};
+                    for (var i = 0; i < json.length; i++) {
+                        $("#selectCompany").append(`<option value="${json[i].id}">${json[i].name}</option>`);
+                    }
+                    $("#selectCompany").prop("disabled", false);
+                },
+                error: function () {
+                    alert("Data Not Found");
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#selectProduct").prop("disabled", true);
+        $("#selectCompany").change(function () {
+            var id = $("#selectCompany").val();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("Product", "Lookup")',
+                data: { "id": id },
+                success: function (json, textStatus) {
+                    $("#selectProduct").empty();
+                    $("#selectProduct").append(`<option value="">---Ürün Seçiniz---</option>`);
+                    json = json || {};
+                    for (var i = 0; i < json.length; i++) {
+                        $("#selectProduct").append(`<option value="${json[i].id}">${json[i].name}</option>`);
+                    }
+                    $("#selectProduct").prop("disabled", false);
+                },
+                error: function () {
+                    alert("Data Not Found");
+                }
+            });
+        });
+    });
+
+</script>
+
+
+
+
+
+}
