@@ -1,69 +1,97 @@
 ﻿@{
     ViewData["Title"] = "Feedback Detail";
+    ViewData["Breadcrumb"] = "GERİBİLDİRİM DETAYI";
 }
 @using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
 @model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail.GetPublicFeedbackDetailVm
 
 <div class="row match-height">
 
-    <div class="col-lg-6 col-md-6 col-12">
-        <div class="card card-apply-job">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <div class="d-flex flex-row">
-                        <div class="avatar me-1">
-                            <img src="../../Content/images/portrait/small/user.png" alt="Avatar" width="42" height="42">
+
+    <div class="card col-12">
+        @if (Model.IsMine)
+        {
+
+
+
+            <div class="d-flex justify-content-around my-2 pt-30">
+
+                <a type="button" class=" btn btn-outline-warning ms-1" style="display: inline-block;" onclick="@("window.location.href='" + @Url.Action("Upsert", "Feedback", new { id = @Model.Id }) + "'");">
+
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+
+                @if (Model.IsSolved == false)
+                {
+                    <a type="button" class="swal2-cancel btn btn-outline-success ms-1" style="display: inline-block;" data-toggle="modal" data-target="#toggleCheckedModal">
+                        <i class="fas fa-check"></i>
+                    </a>
+                }
+                else
+                {
+                    <a type="button" class="swal2-cancel btn btn-relief-success ms-1" style="display: inline-block;" data-toggle="modal" data-target="#toggleCheckedModal">
+                        <i class="fas fa-check"></i>
+                    </a>
+                }
+
+
+                <button type="button" class="swal2-cancel btn btn-outline-danger ms-1" style="display: inline-block;" data-toggle="modal" data-target="#deleteModal">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+
+            </div>
+
+            <!-- Modal for Toggle Checked -->
+            <div class="modal fade" id="toggleCheckedModal" tabindex="-1" aria-labelledby="toggleCheckedModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="toggleCheckedModalLabel">Geribildiriminize işlem yapıldı mı?</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                         </div>
-                        <div class="user-info">
-                            <h5 class="mb-0">@Model.CustomerFirstName</h5>
-                            <small class="text-muted">Gönderim Zamanı: @Model.CreatedAt</small>
+                        <div class="modal-body">
+                            Onalarsanız, geribildiriminiz çözülme durumuna ilişkin etiket değiştirilecektir.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("ToggleSolved", "Feedback", new { id = @Model.Id }) + "'");">Onayla</button>
                         </div>
                     </div>
-                    <span class="badge rounded-pill badge-light-primary">@Model.TypeName</span>
-                </div>
-                <h4 class="apply-job-title">@Model.Title</h4>
-                <p class="card-text mb-2">
-                    @Model.Text
-                </p>
-                <div class="d-flex justify-content-around my-2 pt-75">
-
-                    <button type="button" class="swal2-confirm btn btn-primary" aria-label="Thumbs up, great!" style="display: inline-block; " onclick="@("window.location.href='" + @Url.Action("Index", "Home", new { id = "0" }) + "'");">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up font-medium-1 me-50">
-                            <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3">
-
-                            </path>
-                        </svg>@Model.LikeCount
-                    </button>
-
-                    <button type="button" class="swal2-cancel btn btn-outline-danger ms-1" aria-label="Thumbs down" style="display: inline-block; " onclick="@("window.location.href='" + @Url.Action("Index", "Home", new { id = "0" }) + "'");">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-down font-medium-1">
-                            <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
-                        </svg>@Model.DislikeCount
-                    </button>
-
-                </div>
-
-
-                <div class="col-12">
-                    <button type="button" class="btn btn-primary waves-effect waves-float waves-light col-12" , onclick="@("window.location.href='" + @Url.Action("Index", "Home", new { id = "0" }) + "'");">
-                        Yorum Yap!
-                    </button>
                 </div>
             </div>
-        </div>
+
+            <!-- Modal for Delete -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Geribildiriminiz silinsin mi?</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+                        </div>
+                        <div class="modal-body">
+                            Onalarsanız, geribildiriminiz silinecektir.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("Delete", "Feedback", new { id = @Model.Id }) + "'");">Sil</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
     </div>
 
-    <div class="col-lg-6 col-md-6 col-12">
+
+    @await Component.InvokeAsync("SingleFeedback", Model)
+
+    <div class="col-lg-8 col-md-6 col-12">
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Firmanın Cevapları</h4>
-                <div class="heading-elements">
-                    <ul class="list-inline mb-0">
-                        <li><a data-action="collapse"><i data-feather="chevron-down"></i></a></li>
-                        <li><a data-action="reload"><i data-feather="rotate-cw"></i></a></li>
-                        <li><a data-action="close"><i data-feather="x"></i></a></li>
-                    </ul>
-                </div>
+
             </div>
             <div class="card-content collapse show" aria-expanded="true">
                 <div class="card-body">
@@ -85,15 +113,15 @@
                     }
                 </div>
             </div>
-            <div class="card-footer">
-                <span class="text-muted">FMS</span>
-            </div>
+
         </div>
     </div>
 
 </div>
 
-<div class="col-12">
+
+
+<div class="col-lg-12 col-md-12 col-12">
     <div class="card card-user-timeline">
         <div class="card-header">
             <div class="d-flex align-items-center">

@@ -7,7 +7,7 @@ namespace ApplicationFMS.Handlers.Reactions.Commands.ReactFeedback
         public ReactFeedbackCommandValidator()
         {
             RuleFor(x => x.FeedbackId).NotNull().NotEmpty().GreaterThan(0).LessThan(100000000);
-            RuleFor(x => x.Sentiment).NotNull().NotEmpty();
+            RuleFor(x => x.Sentiment).NotNull();
         }
     }
 }

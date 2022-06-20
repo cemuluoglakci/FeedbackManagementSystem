@@ -1,12 +1,9 @@
 ﻿using ApplicationFMS.Handlers.Account.Commands.RegisterUser;
-using ApplicationFMS.Handlers.LookUp.LookupEducation;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using ApplicationFMS.Handlers.Account.Commands.VerifyEmail;
 using ApplicationFMS.Handlers.Account.Queries.UserLogin;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Org.BouncyCastle.Asn1.Ocsp;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace FmsWebUI.Controllers
 {
@@ -27,7 +24,7 @@ namespace FmsWebUI.Controllers
             if (response.Meta.SuccessStatus)
             {
                 HttpContext.Response.Cookies.Append("Authorization", response.data.ToString(), new CookieOptions { HttpOnly = true });
-                return RedirectToAction("List",  "Feedback");
+                return RedirectToAction("List", "Feedback");
             }
             return View();
         }

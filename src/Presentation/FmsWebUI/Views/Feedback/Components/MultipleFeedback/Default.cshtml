@@ -1,5 +1,4 @@
-﻿
-@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList.FeedbackListVm
+﻿@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList.FeedbackListVm
 
 @foreach (var feedback in Model.PublicFeedbackList)
 {
@@ -7,3 +6,9 @@
 
 }
 
+<script>
+    $(document).ready(function () {
+        document.getElementById('filteredCountString').innerHTML ='<div>@(Model.FilteredCount)</div>'
+    });
+
+</script>

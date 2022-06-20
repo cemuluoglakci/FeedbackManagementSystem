@@ -45,6 +45,11 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetCompanyFeedbackDetail
                     opt.PreCondition(s => (s.SubType != null));
                     opt.MapFrom(s => s.SubType.SubTypeName);
                 })
+                                .ForMember(d => d.DirectedToEmployeeName, opt =>
+                {
+                    opt.PreCondition(s => (s.DirectedCompanyEmployee != null));
+                    opt.MapFrom(s => s.DirectedCompanyEmployee.FirstName);
+                })
                 .ForMember(d => d.ReplyList, opts => opts.MapFrom(s => s.Reply.Where(i => i.IsActive)))
                 .ForMember(d => d.CommentList, opts =>
                     opts.MapFrom(s => s.Comments.Where(i => i.IsActive && i.ParentComment == null)))

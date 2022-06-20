@@ -24,7 +24,7 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
         public string EducationName { get; set; }
         //public int RoleId { get; set; }
         public string RoleName { get; set; }
-        //public int? CompanyId { get; set; }
+        public int? CompanyId { get; set; }
         public string CompanyName { get; set; }
         public bool IsActive { get; set; }
         public bool IsTwoFactorAuth { get; set; }

@@ -61,6 +61,8 @@ namespace FmsWebUI
             services.AddApplicationServices();
             services.AddHttpContextAccessor();
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews()
                 .AddFluentValidation(c =>
                 {

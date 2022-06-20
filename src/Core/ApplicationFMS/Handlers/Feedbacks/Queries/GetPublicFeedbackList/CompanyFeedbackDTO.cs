@@ -10,6 +10,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
         public string? CustomerPhone { get; set; }
         public string? CustomerLastName { get; set; }
         public int? DirectedToEmployeeId { get; set; }
+        public string? DirectedToEmployeeName { get; set; }
         public bool IsArchived { get; set; } = false;
         public void Mapping(Profile profile)
         {
@@ -42,6 +43,11 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
                 {
                     opt.PreCondition(s => (s.SubType != null));
                     opt.MapFrom(s => s.SubType.SubTypeName);
+                })
+                .ForMember(d => d.DirectedToEmployeeName, opt =>
+                {
+                    opt.PreCondition(s => (s.DirectedCompanyEmployee != null));
+                    opt.MapFrom(s => s.DirectedCompanyEmployee.FirstName);
                 })
                 ;
         }

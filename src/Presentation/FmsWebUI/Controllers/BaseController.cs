@@ -9,6 +9,7 @@ using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using AutoMapper;
 
 namespace FmsWebUI.Controllers
 {
