@@ -1,0 +1,365 @@
+﻿@using ApplicationFMS.Models
+@using ApplicationFMS.Helpers
+
+@{
+    var currentUser = (ContextUser)Context.Items["User"];
+}
+
+
+<!DOCTYPE html>
+
+<html class="loading" lang="tr" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+
+    <title>@ViewBag.Title</title>
+    <link rel="apple-touch-icon" href="../../Content/images/ico/apple-icon-120.png">
+    <link rel="shortcut icon" type="image/x-icon" href="../../Content/images/logo.png">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600" rel="stylesheet">
+
+    <!-- BEGIN: Vendor JS-->
+    <script src="../../Content/vendors/js/vendors.min.js"></script>
+    @*<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+
+        <script src="../../Content/js/scripts/datatables/datatable.min.js"></script>*@
+
+
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="../../Content/vendors/css/vendors.min.css">
+    <link href="../../Content/vendors/css/tables/datatable/datatables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../../Content/vendors/css/ui/prism.min.css">
+    <!-- END: Vendor CSS-->
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="../../Content/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/css/bootstrap-extended.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/css/colors.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/css/components.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/css/themes/dark-layout.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/css/themes/semi-dark-layout.css">
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="../../Content/css/core/menu/menu-types/vertical-menu.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/css/core/colors/palette-gradient.min.css">
+    <!-- END: Page CSS-->
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="../../Content/assets/css/style.css">
+
+
+    <link href="../../Content/fonts/fontawesome-free/css/all.min.css" rel="stylesheet" />
+
+    <style type="text/css" media="screen">
+        .big-icon {
+            font-size: 20px !important;
+        }
+
+        .btn {
+            font-size: 15px
+        }
+    </style>
+
+    <!-- END: Custom CSS-->
+
+    <title>@ViewData["Title"] - FMS</title>
+
+    @RenderSection("CustomScripts", required: false)
+    
+    <!-- Open Graph tags -->
+    <meta property="og:url"           content="@ViewBag.OgUrl" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="The Feedback Management System!" />
+    <meta property="og:description"   content="Arkadaşlar, şu geribildirime bakar mısınız: '@ViewBag.FeedbackTitle' İnanılmaz!!!" />
+    <meta property="og:image"         content="http://fms.uluoglakci.com/Content/images/logo.png" />
+
+</head>
+<!-- END: Head-->
+<!-- BEGIN: Body-->
+
+<body class="vertical-layout vertical-menu-modern semi-dark-layout 2-columns  navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="semi-dark-layout">
+
+    <!-- BEGIN: Header-->
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <nav class="header-navbar navbar-expand-lg navbar navbar-with-menu floating-nav navbar-light navbar-shadow">
+        <div class="navbar-wrapper">
+            <div class="navbar-container content">
+                <div class="navbar-collapse" id="navbar-mobile">
+                    <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon feather icon-menu"></i></a></li>
+                        </ul>
+
+                        <div class="content-header-left col-md-12">
+                            <div class="row breadcrumbs-top" href="/Home/Index">
+                                <div class="col-12">
+
+                                    <div class="breadcrumb-wrapper col-12">
+                                        <ol class="breadcrumb">
+                                            <a href="" class="font-weight-bolder"> @ViewData["Breadcrumb"]</a>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <ul class="nav navbar-nav float-right">
+                        <li class="dropdown dropdown-user nav-item">
+                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                <div class="user-nav d-sm-flex d-none">
+                                    @if (currentUser?.Email != null)
+                                    {
+                                        <span class="user-name text-bold-600">
+                                            @currentUser.FirstName @currentUser.LastName
+                                        </span>
+                                        <span class="user-status">
+                                            @currentUser.Email -  @currentUser.RoleName
+                                        </span>
+                                    }
+
+                                    <span class="user-status"></span>
+                                </div>
+                                <span>
+                                    <img class="round" src="../../Content/images/portrait/small/user.png" alt="avatar" height="40" width="40">
+
+                                </span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                                @if (currentUser?.Id != null)
+                                {
+                                    <a class="dropdown-item" href="../../../User/Login">
+                                        <i class="feather icon-user"></i> Profilim
+                                    </a>
+                                    <a class="dropdown-item" href="../../../User/LogOut"><i class="feather icon-power"></i> Çıkış Yap</a>
+                                }
+                                else
+                                {
+                                    <a class="dropdown-item" href="../../../User/Register">
+                                        <i class="feather icon-user-plus"></i> Kayıt Ol
+                                    </a>
+                                    <a class="dropdown-item" href="../../../User/Login">
+                                        <i class="feather icon-user"></i> Giriş Yap
+                                    </a>
+                                }
+
+                            </div>
+                        </li>
+                        <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand"><i class="ficon feather icon-maximize"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- END: Header-->
+    <!-- BEGIN: Main Menu-->
+    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+
+
+
+
+
+        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+
+
+
+            <li class=" nav-item">
+                <a href="#">
+                    <i></i>
+                    <span class="menu-title">
+                        <img src="../../Content/images/miniLogo.png" />
+                    </span>
+                </a>
+            </li>
+
+        </ul>
+
+
+
+
+
+
+
+        <div class="navbar-header">
+            <ul class="nav navbar-nav flex-row">
+                <li class="nav-item mr-auto">
+                    <a class="navbar-brand" href="#">
+
+                        <h2 class="brand-text mb-0">FMS</h2>
+                    </a>
+                </li>
+                <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"></i><i class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block primary" data-ticon="icon-disc"></i></a></li>
+            </ul>
+        </div>
+        <div class="shadow-bottom"></div>
+        <div class="main-menu-content">
+            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+
+
+                <li class=" nav-item">
+                    <a href="#">
+                        <i class="feather icon-home"></i><span class="menu-title">
+                            Ana Sayfa
+                        </span>
+                    </a>
+                </li>
+
+
+
+                <li class=" nav-item">
+                    <a href="../../../Feedback/List">
+                        <i class="far fa-list-alt"></i>
+                        <span class="menu-title">Geribildirim Listesi</span>
+                    </a>
+                </li>
+
+                @if (currentUser?.RoleName == "Customer")
+                {
+                    <li class=" nav-item">
+                        <a href="../../../Feedback/Upsert">
+                            <i class="fas fa-pencil-alt"></i>
+                            <span class="menu-title">Geribildirim Gönder</span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item">
+                        <a  asp-action="List" asp-controller="Feedback" asp-route-userId="@currentUser.Id" >
+                            <i class="fas fa-comments"></i>
+                            <span class="menu-title">Geribildirimlerim</span>
+                        </a>
+                    </li>
+
+
+                    <li class=" nav-item">
+                        <a asp-for-action="" asp-action="OwnPosts" asp-controller="Comment">
+                            <i class="far fa-comment"></i>
+                            <span class="menu-title">Yorumlarım</span>
+                        </a>
+                    </li>
+
+                }
+
+                @if (currentUser?.RoleName == Constants.AdminRole)
+                {
+                    <li class=" nav-item">
+                        <a  asp-action="System" asp-controller="Admin" >
+                            <i class="fas fa-cog"></i>
+                            <span class="menu-title">Sistem Ayarları</span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item">
+                        <a href="../../../Admin/UserList">
+                            <i class="fas fa-user-check"></i>
+                            <span class="menu-title">Kullanıcı Listesi</span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item">
+                        <a  asp-action="FeedbackList" asp-controller="Admin" >
+                            <i class="fas fa-tasks"></i>
+                            <span class="menu-title">Geribildirim Onay</span>
+                        </a>
+                    </li>
+
+
+                    <li class=" nav-item">
+                        <a asp-for-action="" asp-action="CommentList" asp-controller="Admin">
+                            <i class="far fa-comment"></i>
+                            <span class="menu-title">Yorum Onay</span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item">
+                        <a asp-for-action="" asp-action="ReplyList" asp-controller="Admin">
+                            <i class="far fa-comments"></i>
+                            <span class="menu-title">Yanıt Onay</span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item">
+                        <a asp-for-action="" asp-action="LogList" asp-controller="Admin">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span class="menu-title">Log Listesi</span>
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+    <!-- END: Main Menu-->
+    <!-- BEGIN: Content-->
+    <div class="app-content content">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="content-wrapper">
+
+
+
+            <div class="content-body">
+
+
+                @if (@TempData["Message"] != null)
+                {
+                    <section id="multiple-column-form">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 style="color: red">@TempData["Message"]</h4>
+                                        @Html.Raw(@TempData["ValidationMessage"])
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                }
+
+
+                @RenderBody()
+
+            </div>
+        </div>
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+
+    <!-- BEGIN: Footer-->
+    <footer class="footer footer-static footer-light">
+        <p class="clearfix blue-grey lighten-2 mb-0">
+            <span class="float-md-left d-block d-md-inline-block mt-25">
+                COPYRIGHT &copy; @DateTime.Now.Year.ToString()
+                <a class="text-bold-800 grey darken-2" href="#" target="_blank">FMS</a>
+                Tüm hakları saklıdır.
+            </span>
+            <button class="btn btn-primary btn-icon scroll-top" type="button"><i class="feather icon-arrow-up"></i></button>
+        </p>
+    </footer>
+    <!-- END: Footer-->
+
+    <script src="../../Content/vendors/js/forms/select/select2.full.min.js"></script>
+    <!-- BEGIN Vendor JS-->
+    <!-- BEGIN: Page Vendor JS-->
+    <script src="../../Content/vendors/js/ui/prism.min.js"></script>
+    <!-- END: Page Vendor JS-->
+    <!-- BEGIN: Theme JS-->
+    <script src="../../Content/js/core/app-menu.js"></script>
+    <script src="../../Content/js/core/app.js"></script>
+    <!-- END: Theme JS-->
+    <!-- BEGIN: Page JS-->
+    <!-- END: Page JS-->
+    @RenderSection("scripts", required: false)
+
+</body>
+<!-- END: Body-->
+
+</html>

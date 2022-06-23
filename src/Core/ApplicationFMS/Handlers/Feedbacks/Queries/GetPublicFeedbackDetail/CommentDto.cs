@@ -9,6 +9,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
     public class CommentDto : IMapFrom<Comment>
     {
         public int Id { get; set; }
+        public int FeedbackId { get; set; }
         public int UserId { get; set; }
         public string? UserName { get; set; }
         public int? ParentCommentId { get; set; }
@@ -16,6 +17,8 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
         public int LikeCount { get; set; }
         public int DislikeCount { get; set; }
         public bool IsAnonym { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsChecked { get; set; }
         public DateTime CreatedAt { get; set; }
         public virtual ICollection<CommentDto> ChildComment { get; set; }
         public void Mapping(Profile profile)

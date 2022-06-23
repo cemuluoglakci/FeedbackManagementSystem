@@ -16,7 +16,8 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
         public string UserRole { get; set; }
         public string? CompanyName { get; set; }
         public DateTime CreatedAt { get; set; }
-
+        public bool IsActive { get; set; }
+        public bool IsChecked { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Reply, ReplyDto>()

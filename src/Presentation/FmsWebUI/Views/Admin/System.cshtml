@@ -1,0 +1,82 @@
+﻿@model SystemSettings
+@{
+    ViewData["Title"] = "System Settings";
+    ViewData["Breadcrumb"] = "SİSTEM AYARLARI";
+}
+
+<section id="multiple-column-form">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Sistem Ayarları</h4>
+
+                </div>
+                <div style="">
+                    <div class="card-body">
+                        <form class="form" id="feedbackSearchForm" method="post" asp-action="System">
+                            <div class="row">
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Operasyon Modu</label>
+                                        <select class="form-control" asp-for="ModeOfOperation" id="selectType">
+
+                                            <option value="1">Operasyonel Mod</option>
+                                            <option value="2">Kısıtlı Mod</option>
+                                            <option value="3">Bakım Modu</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <div>
+                                            <label class="form-label" for="basicSelect">Zaman Aşımı Süresi</label>
+                                        </div>
+                                        <div class="input-group">
+                                            <input type="text" class="touchspin" name="touchspin" id="touchspin" asp-for="TimeOutDuration"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary me-1 waves-effect waves-float waves-light">Kaydet</button>
+                                </div>
+
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+                <div><br /></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script src="../../Content/vendors/js/forms/spinner/jquery.bootstrap-touchspin.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('.touchspin').TouchSpin({
+                min: 10,
+                max: 200,
+                step: 1,
+                decimals: 0,
+                buttondown_class: 'btn btn-primary',
+                buttonup_class: 'btn btn-primary'
+            });
+        });
+    </script>
+}
+
+@section CustomScripts{
+    
+    <link rel="stylesheet" type="text/css" href="../../Content/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css">
+}

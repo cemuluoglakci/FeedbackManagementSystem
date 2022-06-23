@@ -56,11 +56,11 @@ namespace ApplicationFMS.Helpers
         private IEnumerable<Claim> SetClaims(User account)
         {
             var claims = new List<Claim>();
-            claims.Add(new Claim("Id", account.Id.ToString()));
+            claims.Add(new Claim("Id", account.Id.ToString(), ClaimValueTypes.Integer32));
             claims.Add(new Claim("name", account.FirstName));
             claims.Add(new Claim("email", account.Email));
             claims.Add(new Claim("RoleName", account.Role.RoleName));
-            if(account?.CompanyId>0) claims.Add(new Claim("companyId", account?.CompanyId?.ToString()));
+            if(account?.CompanyId>0) claims.Add(new Claim("companyId", account?.CompanyId?.ToString(), ClaimValueTypes.Integer32));
             return claims;
         }
         public int? ValidateJwtToken(string token)

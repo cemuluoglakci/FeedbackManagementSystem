@@ -1,0 +1,194 @@
+﻿@using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
+@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail.GetPublicFeedbackDetailVm
+@{
+    ViewData["Title"] = "Feedback Detail";
+    ViewData["Breadcrumb"] = "GERİBİLDİRİM DETAYI";
+    ViewData["OgUrl"] = "http://fms.uluoglakci.com/Feedback/GetDetail/" + @Model.Id;
+    ViewData["FeedbackTitle"] = @Model.Title;
+}
+
+
+<div class="row match-height">
+
+
+    <div class="card col-12">
+        @if (Model.IsMine)
+        {
+
+
+
+            <div class="d-flex justify-content-around my-2 pt-30">
+
+                <a type="button" class=" btn btn-outline-warning ms-1" style="display: inline-block;" onclick="@("window.location.href='" + @Url.Action("Upsert", "Feedback", new { id = @Model.Id }) + "'");">
+
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+
+                @if (Model.IsSolved == false)
+                {
+                    <a type="button" class="swal2-cancel btn btn-outline-success ms-1" style="display: inline-block;" data-toggle="modal" data-target="#toggleCheckedModal">
+                        <i class="fas fa-check"></i>
+                    </a>
+                }
+                else
+                {
+                    <a type="button" class="swal2-cancel btn btn-relief-success ms-1" style="display: inline-block;" data-toggle="modal" data-target="#toggleCheckedModal">
+                        <i class="fas fa-check"></i>
+                    </a>
+                }
+
+
+                <button type="button" class="swal2-cancel btn btn-outline-danger ms-1" style="display: inline-block;" data-toggle="modal" data-target="#deleteModal">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+
+            </div>
+
+            <!-- Modal for Toggle Checked -->
+            <div class="modal fade" id="toggleCheckedModal" tabindex="-1" aria-labelledby="toggleCheckedModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="toggleCheckedModalLabel">Geribildiriminize işlem yapıldı mı?</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+                        </div>
+                        <div class="modal-body">
+                            Onalarsanız, geribildiriminiz çözülme durumuna ilişkin etiket değiştirilecektir.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("ToggleSolved", "Feedback", new { id = @Model.Id }) + "'");">Onayla</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for Delete -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Geribildiriminiz silinsin mi?</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+                        </div>
+                        <div class="modal-body">
+                            Onalarsanız, geribildiriminiz silinecektir.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-danger" onclick="@("window.location.href='" + @Url.Action("Delete", "Feedback", new { id = @Model.Id }) + "'");">Sil</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+
+    <div class="col-lg-4 col-md-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                @await Component.InvokeAsync("SingleFeedbackInner", @Model)
+                <div class="d-flex justify-content-around my-2 pt-75">
+                    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="medium" data-text="Arkadaşlar, şu geribildirime bakar mısınız: '@Model.Title' İnanılmaz!!!" data-url="http://fms.uluoglakci.com/Feedback/GetDetail/@Model.Id" data-hashtags="FMS" data-dnt="true" data-show-count="false">Tweet</a>
+                    <div class="fb-share-button"
+                         data-href="http://fms.uluoglakci.com/Feedback/GetDetail/@Model.Id"
+                         data-layout="button_count">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="col-lg-8 col-md-6 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Firmanın Cevapları</h4>
+
+            </div>
+            <div class="card-content collapse show" aria-expanded="true">
+                <div class="card-body">
+                    @if (Model.ReplyList.Count > 0)
+                    {
+                        foreach (ReplyDto reply in Model.ReplyList)
+                        {
+                            <p class="card-text font-weight-bolder">
+                                @reply.UserName @(reply?.CompanyName != null ? ( "(" + reply.CompanyName + ")") : string.Empty)
+                            </p>
+                            <small class="text-muted">Gönderim Zamanı: @reply.CreatedAt</small>
+                            <p class="card-text">@reply.Text</p>
+                            <br />
+                        }
+                    }
+                    else
+                    {
+                        <p class="card-text">Henüz cevap yok.</p>
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<div class="col-lg-12 col-md-12 col-12">
+    <div class="card card-user-timeline">
+        <div class="card-header">
+            <div class="d-flex align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list user-timeline-title-icon"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                <h4 class="card-title"> Yorumlar</h4>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical font-medium-3 cursor-pointer"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+        </div>
+        <div class="card-body">
+            <ul class="timeline ms-50">
+                @if (Model.CommentList.Count > 0)
+                {
+                    foreach (var commentDto in Model.CommentList)
+                    {
+                        if (commentDto.IsActive)
+                        {
+                            @await Component.InvokeAsync("SingleComment", commentDto)
+                        }
+                    }
+
+                }
+                else
+                {
+                    <p class="card-text">Henüz yorum yok.</p>
+                }
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+@section CustomScripts{
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+}
+
+
+@section Scripts{
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+}

@@ -1,0 +1,15 @@
+﻿@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList.PublicFeedbackDTO
+
+
+
+    <div class="card">
+        <div class="card-body">
+
+            @await Component.InvokeAsync("SingleFeedbackInner", @Model)
+
+        </div>
+    </div>
+
+
+
+

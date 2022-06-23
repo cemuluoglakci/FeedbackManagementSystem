@@ -11,7 +11,7 @@ namespace ApplicationFMS.Handlers.Account.Commands.RegisterUser
         {
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
             RuleFor(x => x.Phone)
-                .Length(9, 12).WithMessage("PhoneNumber must not be between 9-12 characters.").When(x => !string.IsNullOrEmpty(x.Phone))
+                .Length(9, 12).WithMessage("PhoneNumber must be between 9-12 characters.").When(x => !string.IsNullOrEmpty(x.Phone))
                 .Matches(@"\d+").When(x => !string.IsNullOrEmpty(x.Phone));
             RuleFor(x => x.Password).NotEmpty().WithMessage("Your password cannot be empty")
                 .MinimumLength(8).WithMessage("Your password length must be at least 8.")

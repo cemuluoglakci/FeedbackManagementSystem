@@ -1,0 +1,455 @@
+﻿@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList.GetFeedbackListQuery
+@{
+    ViewData["Title"] = "Feedback List";
+    ViewData["Breadcrumb"] = "GERİBİLDİRİM LİSTESİ";
+}
+
+<section id="multiple-column-form">
+    <div class="row">
+        <div class="col-12">
+            <div id="layout-collapsed-menu-css" class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Filtrele: </h4>
+                    <div class="row">
+                        <div id="filteredCountString" style="padding-right:5px; ">
+                            <div>
+                            0 
+                            </div>
+                            </div>
+                        <div> adet geribildirim filtrelendi.</div>
+                    </div>
+                    <span></span>
+
+                    <div class="heading-elements">
+                        <a data-action="collapse" class="">
+                            <i class="ficon feather icon-arrow-down-circle"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="card-content collapse hide" style="">
+                    <div class="card-body">
+                        <form class="form" id="feedbackSearchForm">
+                            <div class="row">
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Geribildirim Türü</label>
+
+                                        <input id="typeId" type="hidden" name="typeId" asp-for="TypeId" />
+                                        <select class="form-control" id="selectType">
+                                            <option value="">---Tür Seçiniz---</option>
+                                            <option value="1">Şikayet</option>
+                                            <option value="2">Öneri</option>
+                                            <option value="3">Memnuniyet</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Şikayet Türü</label>
+                                        <select class="form-control" asp-for="SubTypeId" id="selectSubType">
+                                            <option value="">---Tür Seçiniz---</option>
+                                            <option value="1">Arızalı</option>
+                                            <option value="2">Sağlığa zararlı</option>
+                                            <option value="3">Diğer</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="fp-range">Tarih Aralığı</label>
+                                        <input type="text" id="feedbackDateRange" class="form-control flatpickr-range flatpickr-input active" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly">
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Sektör</label>
+
+                                        <input id="sectorId" type="hidden" name="sectorId" asp-for="SectorId" />
+                                        <select class="form-control" asp-items=@ViewBag.Sectors id="selectSector">
+                                            <option value="">---Sektör Seçiniz---</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Şirket</label>
+
+                                        <input id="companyId" type="hidden" name="companyId" asp-for="CompanyId" />
+                                        <select class="form-control" asp-items=@ViewBag.Companies id="selectCompany">
+                                            <option value="">---Şirket Seçiniz---</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Ürün</label>
+
+                                        <input id="productId" type="hidden" name="productId" asp-for="ProductId" />
+                                        <select class="form-control" asp-items=@ViewBag.Products id="selectProduct">
+                                            <option value="">---Ürün Seçiniz---</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Cevaplanma Durumu</label>
+                                        <select class="form-control" asp-for="IsReplied" id="isReplied">
+                                            <option value="">---Cevaplanma Durumu---</option>
+                                            <option value="true">Cevaplandı</option>
+                                            <option value="false">Cevaplanmadı</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Firma Müdahalesi</label>
+                                        <select class="form-control" asp-for="IsSolved" id="isSolved">
+                                            <option value="">---Firma Müdahalesi---</option>
+                                            <option value="true">Çözüldü</option>
+                                            <option value="false">Çözülmedi</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label">Başlık</label>
+                                        <input type="text" id="title" class="form-control" placeholder="Başlık" asp-for="TitleQuery">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label">Metin</label>
+                                        <input type="text" id="text" class="form-control" placeholder="Metin" asp-for="TextQuery">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Sıralama Kriteri</label>
+
+                                        <select class="form-control" asp-for="SortColumn" id="sortColumn">
+                                            <option value="">---Sıralama Kriteri---</option>
+                                            <option value="SectorName">Sektör Adı</option>
+                                            <option value="CompanyName">Şirket Adı</option>
+                                            <option value="ProductName">Ürün Adı</option>
+                                            <option value="LikeCount">Beğeni Sayısı</option>
+                                            <option value="TypeName">Tür</option>
+                                            <option value="CreatedAt">Gönderim zamanı</option>
+                                            <option value="CustomerFirstName">Gönderen Adı</option>
+                                            <option value="Title">Başlık</option>
+                                            <option value="Text">Metin</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Sıralama Yönü</label>
+                                        <select class="form-control" asp-for="IsAscending" id="isAscending">
+                                            <option value="">---Sıralama Yönü---</option>
+                                            <option value="true">Artan</option>
+                                            <option value="false">Azalan</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div><br /></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div id="viewAllFeedback" class="row match-height">
+</div>
+
+<input id="createdAtAfter" name="createdAtAfter" value="" type="hidden" asp-for="CreatedAtBefore" />
+<input id="createdAtBefore" name="createdAtBefore" value="" type="hidden" asp-for="CreatedAtAfter" />
+<input id="pageNumber" name="pageNumber" value="1" type="hidden" asp-for="PageNumber" />
+<input id="userId" name="userId" value=@Model.UserId type="hidden" asp-for="UserId" />
+<button id="loadMoreFeedback" type="button" class="btn btn-relief-info btn-block">Daha Fazla!</button>
+
+@section CustomScripts
+{
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="../../Content/vendors/css/pickers/pickadate/pickadate.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+}
+
+
+@section Scripts{
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#selectSubType").prop("disabled", true);
+        $("#selectType").change(function () {
+            if($("#selectType").val() == 1){
+                $("#selectSubType").prop("disabled", false);
+            }
+            else{
+                $("#selectSubType").val("");
+                $("#selectSubType").prop("disabled", true);
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("Sector", "Lookup")',
+            type: "GET",
+            success: function (json, textStatus) {
+                json = json || {};
+                for (var i = 0; i < json.length; i++) {
+                    $("#selectSector").append(`<option value="${json[i].id}">${json[i].name}</option>`);
+                }
+            },
+            error: function () {
+                alert("Data Not Found");
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("#selectCompany").prop("disabled", true);
+        $("#selectSector").change(function () {
+
+            $("#selectCompany").val("");
+            $("input[name=companyId]").val("");
+
+            $("#selectProduct").val("");
+            $("input[name=productId]").val("");
+            $("#selectProduct").prop("disabled", true);
+
+            var id = $("#selectSector").val();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("Company", "Lookup")',
+                data: { "id": id },
+                success: function (json, textStatus) {
+                    $("#selectCompany").empty();
+                    $("#selectCompany").append(`<option value="">---Şirket Seçiniz---</option>`);
+                    json = json || {};
+                    for (var i = 0; i < json.length; i++) {
+                        $("#selectCompany").append(`<option value="${json[i].id}">${json[i].name}</option>`);
+                    }
+                    $("#selectCompany").prop("disabled", false);
+                },
+                error: function () {
+                    alert("Data Not Found");
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        $("#selectProduct").prop("disabled", true);
+        $("#selectCompany").change(function () {
+
+            $("#selectProduct").val("");
+            $("input[name=productId]").val("");
+
+            var id = $("#selectCompany").val();
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("Product", "Lookup")',
+                data: { "id": id },
+                success: function (json, textStatus) {
+                    $("#selectProduct").empty();
+                    $("#selectProduct").append(`<option value="">---Ürün Seçiniz---</option>`);
+                    json = json || {};
+                    for (var i = 0; i < json.length; i++) {
+                        $("#selectProduct").append(`<option value="${json[i].id}">${json[i].name}</option>`);
+                    }
+                    $("#selectProduct").prop("disabled", false);
+                },
+                error: function () {
+                    alert("Data Not Found");
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#feedbackDateRange').flatpickr(
+        {
+            mode: "range",
+            onChange: function(selectedDates, dateStr){
+
+                if (selectedDates.length == 2) {
+                    var stringDateArray = dateStr.split(/(\s+)/);
+                    console.log(stringDateArray);
+                    $("input[name=createdAtAfter]").val(stringDateArray[0]);
+                    $("input[name=createdAtBefore]").val(stringDateArray[stringDateArray.length-1]);
+                    refreshSearch();
+                }
+            }
+        }
+        );
+
+
+        $('.form-select').select2();
+
+        var url = '@Url.Action("LoadFeedback", "Feedback")';
+
+        function getModelObject() {
+            return {
+                TitleQuery: $("#title").val(),
+                TextQuery: $("#text").val(),
+                SectorId: $("#sectorId").val(),
+                CompanyId: $("#companyId").val(),
+                ProductId: $("#productId").val(),
+                TypeId: $("#typeId").val(),
+                PageNumber : $("#pageNumber").val(),
+                SortColumn :  $("#sortColumn").val(),
+                IsAscending :  $("#isAscending").val(),
+                UserId :  $("#userId").val(),
+                SubTypeId :  $("#selectSubType").val(),
+                IsReplied :  $("#isReplied").val(),
+                IsSolved :  $("#isSolved").val(),
+                CreatedAtAfter :  $("#createdAtAfter").val(),
+                CreatedAtBefore :  $("#createdAtBefore").val(),
+                ObjectsPerPage : 6
+            }
+        }
+
+        function getData() {
+            return JSON.stringify(getModelObject());
+        }
+
+        function clearFeedbackArea () {
+            $("#viewAllFeedback").empty();
+        }
+
+        function callLoadFeedback() {
+            $.ajax({
+                type: "Post",
+                url: url,
+                contentType: "application/json",
+                data: getData(),
+                dataType: "text",
+                success: function (result) {
+                    $("#viewAllFeedback").append(result);
+                },
+                error: function(data) {
+                    var message = 'Daha fazla geribildirim bulunamadı! '; 
+                    if (data.responseText) {
+                        message = message + data.responseText;
+                    }
+                    alert(message);
+                }
+            });
+        }
+
+        callLoadFeedback();
+
+        function incrementPageNumber() {
+            var currentPageNumber = parseInt($("input[name=pageNumber]").val());
+            $("input[name=pageNumber]").val(currentPageNumber + 1);
+        }
+
+        function resetPageNumber() {
+            $("input[name=pageNumber]").val(1);
+        }
+
+        function refreshSearch() {
+            clearFeedbackArea();
+            resetPageNumber();
+            callLoadFeedback();
+            
+        }
+
+        $('#loadMoreFeedback').click(function () {
+            incrementPageNumber();
+            callLoadFeedback();
+        });
+
+        $("body").on("change", "#selectSector", function () {
+            $("input[name=sectorId]").val($(this).find("option:selected").val());
+            refreshSearch();
+        });
+
+        $("body").on("change", "#selectCompany", function () {
+            $("input[name=companyId]").val($(this).find("option:selected").val());
+            refreshSearch();
+        });
+
+        $("body").on("change", "#selectProduct", function () {
+            $("input[name=productId]").val($(this).find("option:selected").val());
+            refreshSearch();
+        });
+
+        $("body").on("change", "#selectType", function () {
+            $("input[name=typeId]").val($(this).find("option:selected").val());
+            refreshSearch();
+        });
+        $("body").on("change", "#selectSubType", function () {
+            refreshSearch();
+        });
+        $("body").on("change", "#sortColumn", function () {
+            refreshSearch();
+        });
+        $("body").on("change", "#isAscending", function () {
+            refreshSearch();
+        });
+        $("body").on("change", "#isReplied", function () {
+            refreshSearch();
+        });
+
+        $("body").on("input", "#title", function () {
+            refreshSearch();
+        });
+        $("body").on("input", "#text", function () {
+            refreshSearch();
+        });
+
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+}
+
+

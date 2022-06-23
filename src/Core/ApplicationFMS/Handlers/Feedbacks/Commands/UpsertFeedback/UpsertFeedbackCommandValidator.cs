@@ -7,7 +7,7 @@ namespace ApplicationFMS.Handlers.Feedbacks.Commands.UpsertFeedback
         public UpsertFeedbackCommandValidator()
         {
             RuleFor(x => x.Id).GreaterThanOrEqualTo(0).LessThan(100000000).When(x => x.Id != null);
-            RuleFor(x => x.Title).NotNull().NotEmpty().Length(3, 20);
+            RuleFor(x => x.Title).NotNull().NotEmpty().Length(3, 50);
             RuleFor(x => x.Text).NotNull().NotEmpty().Length(10, 500);
             RuleFor(x => x.ProductId).NotNull().NotEmpty().GreaterThan(0).LessThan(100000000);
             RuleFor(x => x.TypeId).NotNull().NotEmpty().GreaterThan(0).LessThan(10);

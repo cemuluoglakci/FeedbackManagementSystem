@@ -1,0 +1,32 @@
+﻿
+@model ApplicationFMS.Handlers.Comments.Queries.GetOwnCommentList.GetOwnCommentListVm
+@{
+    ViewData["Title"] = "Own Comments";
+    ViewData["Breadcrumb"] = "KENDİ YORUMLARIM";
+}
+
+
+
+
+@if(Model.CommentList.Count > 0)
+{
+    <div class="card col-12">
+        <div class="card-body">
+            @Model.Count Adet aktif yorumunuz bulunmaktadır.
+        </div>
+    </div>
+
+    foreach(var commentDetail in Model.CommentList)
+    {
+        @await Component.InvokeAsync("CommentDetail", commentDetail)
+    }
+}
+else
+{
+    <div class="card col-12">
+        <div class="card-body">
+            Henüz yorumunuz bulunmamaktadır.
+        </div>
+    </div>
+
+}

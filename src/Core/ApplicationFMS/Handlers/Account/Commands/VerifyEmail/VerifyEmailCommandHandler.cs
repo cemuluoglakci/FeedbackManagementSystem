@@ -35,7 +35,7 @@ namespace ApplicationFMS.Handlers.Account.Commands.VerifyEmail
             }
             else
             {
-                return BaseResponse.Fail(String.Format("E-mail address {0} was not verified", user.Email));
+                return BaseResponse.Fail(String.Format("E-mail address {0} could not verified", user.Email));
             }
         }
     }

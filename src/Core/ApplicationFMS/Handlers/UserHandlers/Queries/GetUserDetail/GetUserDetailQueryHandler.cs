@@ -37,7 +37,7 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserDetail
 
             if (vm == null) throw new NotFoundException("Entity not found.");
 
-            CheckCurrentUserEligibility();
+            CheckCurrentUserEligibility(vm);
 
             return new BaseResponse(vm);
 
@@ -51,9 +51,12 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserDetail
                 _searchUserId = _currentUser.UserDetail.Id;
         }
 
-        private void CheckCurrentUserEligibility()
+        private void CheckCurrentUserEligibility(UserDTO userDTO)
         {
-            if (_currentUser.NotInRole(Constants.AdminRole) && _currentUser.UserDetail.Id != _searchUserId)
+            if (_currentUser.NotInRole(Constants.AdminRole) 
+                && _currentUser.UserDetail.Id != _searchUserId
+                && !(_currentUser.IsInRole(Constants.CompanyRepresentativeRole) 
+                &&  _currentUser.UserDetail.CompanyId == userDTO.CompanyId))
                 throw new UnauthorizedException();
         }
     }
