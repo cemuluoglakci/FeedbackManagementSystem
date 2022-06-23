@@ -39,9 +39,9 @@ namespace ApplicationFMS.Handlers.System.Queries.GetLogs
             if (!String.IsNullOrEmpty(request.Query))
             {
                 logQuery = logQuery.Where(x =>
-                    x.Ip.Contains(request.Query) &&
-                    x.UserEmail.Contains(request.Query) &&
-                    x.Request.Contains(request.Query) &&
+                    x.Ip.Contains(request.Query) ||
+                    x.UserEmail.Contains(request.Query) ||
+                    x.Request.Contains(request.Query) ||
                     x.EndPoint.Contains(request.Query)
                     );
             }

@@ -1,26 +1,21 @@
 using ApplicationFMS.Helpers;
 using ApplicationFMS.Interfaces;
 using ApplicationFMS.Models;
+using FluentValidation.AspNetCore;
+using FmsWebUI.Helper;
+using FmsWebUI.Middleware;
 using InfrastructureFMSDB;
 using InfrastructureFMSDB.EmailService;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FmsWebUI.Helper;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
 using System.IO;
-using FmsWebUI.Middleware;
 
 namespace FmsWebUI
 {
@@ -36,7 +31,7 @@ namespace FmsWebUI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
 
             var emailConfig = Configuration
                 .GetSection("EmailConfiguration")
@@ -67,8 +62,6 @@ namespace FmsWebUI
                 .AddFluentValidation(c =>
                 {
                     c.RegisterValidatorsFromAssemblyContaining<IFMSDataContext>();
-                    // Optionally set validator factory if you have problems with scope resolve inside validators.
-                    //c.ValidatorFactoryType = typeof(HttpContextServiceProviderValidatorFactory);
                 })
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -82,18 +75,16 @@ namespace FmsWebUI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseDeveloperExceptionPage();
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();
             //}
             //else
-            //{
-            //    app.UseExceptionHandler("/Home/Error");
-            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            //    app.UseHsts();
-            //}
-            //app.UseHttpsRedirection();
+            //{}
+                app.UseExceptionHandler("/Error/Index");
+                app.UseHsts();
+            
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {

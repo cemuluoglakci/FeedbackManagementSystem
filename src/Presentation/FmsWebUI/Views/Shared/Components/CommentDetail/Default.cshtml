@@ -1,0 +1,98 @@
+﻿@model ApplicationFMS.Handlers.Comments.Queries.GetCommentDetail.CommentDetailDTO
+
+<section id="multiple-column-form">
+    <div class="row match-height">
+        <div class="col-lg-8 col-md-6 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Yorumunuz</h4>
+
+                </div>
+                <div style="">
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class=" col-12">
+                                <div class="mb-1">
+                                    <label class="form-label">Metin:</label>
+
+                                    <div>
+                                        @Html.DisplayFor(model => model.Text)
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-1">
+                                    <label class="form-label" for="basicSelect">Kullanıcı Adı:</label>
+                                    <select class="form-control" asp-for="IsAnonym" id="isAnonym" disabled>
+                                        <option value="false">Belirtilmiş</option>
+                                        <option value="true">Anonim</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <input id="id" type="hidden" name="id" asp-for="Id" />
+                            <input id="feedbackId" type="hidden" name="feedbackId" asp-for="FeedbackDTO.Id" />
+                            <input id="parentCommentId" type="hidden" name="parentCommentId" asp-for="ParentCommentId" />
+
+
+                            <div class="d-flex justify-content-around my-2 pt-30 col-12">
+
+                                <a type="button" class=" btn btn-outline-warning ms-1" style="display: inline-block;" asp-action="Upsert" asp-controller="Comment" asp-route-commentId="@Model.Id" asp-route-feedbackId="@Model.FeedbackId">
+
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+
+                                @if (Model.IsActive)
+                                {
+                                    <button type="button" class="swal2-cancel btn btn-outline-danger ms-1" style="display: inline-block;" data-toggle="modal" data-target="#Modal_@Model.Id">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="swal2-cancel btn btn-relief-danger ms-1" style="display: inline-block;" data-toggle="modal" data-target="#Modal_@Model.Id">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                }
+
+
+
+                            </div>
+
+
+                            <!-- Modal for Delete -->
+                            <div class="modal fade" id="Modal_@Model.Id" tabindex="-1" aria-labelledby="Label_@Model.Id" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="Label_@Model.Id">Yorumunuz silinsin mi?</h5>
+                                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Onalarsanız, yorumunuz silinecektir.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                                            <a type="button" class="btn btn-danger" asp-action="Delete" asp-controller="Comment" asp-route-id="@Model.Id">Sil</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+            @await Component.InvokeAsync("SingleFeedback", @Model.FeedbackDTO)
+        </div>
+
+    </div>
+</section>
+
+

@@ -1,15 +1,16 @@
-﻿using ApplicationFMS.Models;
+﻿using ApplicationFMS.Interfaces;
+using ApplicationFMS.Models;
 using MediatR;
 using System;
 
 namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList
 {
-    public class GetFeedbackListQuery : IRequest<BaseResponse>
+    public class GetFeedbackListQuery : IPostSearchQuery, IRequest<BaseResponse>
     {
         public int ObjectsPerPage { get; set; } = 10;
         public int PageNumber { get; set; } = 1;
         public string? SortColumn { get; set; } = "Id";
-        public bool? IsAscending { get; set; } = false;
+        public bool IsAscending { get; set; } = false;
         public string? TitleQuery { get; set; } = string.Empty;
         public string? TextQuery { get; set; } = string.Empty;
         public DateTime? CreatedAtBefore { get; set; }

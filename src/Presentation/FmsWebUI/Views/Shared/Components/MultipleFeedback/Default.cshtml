@@ -1,0 +1,28 @@
+﻿@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList.FeedbackListVm
+
+@if (Model?.PublicFeedbackList != null)
+{
+
+
+    @foreach (var feedback in Model?.PublicFeedbackList)
+    {
+        <div class="col-lg-4 col-md-6 col-12">
+            @await Component.InvokeAsync("SingleFeedback", feedback)
+        </div>
+    }
+}
+else if (Model?.AdminFeedbackList != null)
+{
+    @foreach (var feedback in Model?.AdminFeedbackList)
+    {
+        <div class="col-lg-4 col-md-6 col-12">
+            @await Component.InvokeAsync("SingleFeedback", feedback)
+        </div>
+    }
+}
+<script>
+    $(document).ready(function () {
+        document.getElementById('filteredCountString').innerHTML = '<div>@(Model.FilteredCount)</div>';
+    });
+
+</script>

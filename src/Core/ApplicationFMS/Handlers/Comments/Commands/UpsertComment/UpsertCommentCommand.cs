@@ -1,4 +1,5 @@
-﻿using ApplicationFMS.Models;
+﻿using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackList;
+using ApplicationFMS.Models;
 using MediatR;
 
 namespace ApplicationFMS.Handlers.Comments.Commands.UpsertComment
@@ -10,6 +11,7 @@ namespace ApplicationFMS.Handlers.Comments.Commands.UpsertComment
         public int? ParentCommentId { get; set; }
         public string Text { get; set; } = null!;
         public bool IsAnonym { get; set; }
+        
 
     }
 }

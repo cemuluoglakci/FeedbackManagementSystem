@@ -1,15 +1,16 @@
-﻿using ApplicationFMS.Models;
+﻿using ApplicationFMS.Interfaces;
+using ApplicationFMS.Models;
 using MediatR;
 using System;
 
 namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
 {
-    public class GetUserListQuery : IRequest<BaseResponse>
+    public class GetUserListQuery : ISearchQuery, IRequest<BaseResponse>
     {
         public int ObjectsPerPage { get; set; } = 10;
         public int PageNumber { get; set; } = 1;
         public string SortColumn { get; set; } = "Id";
-        public bool IsAscending { get; set; } = true;
+        public bool IsAscending { get; set; } = false;
         public string? EmailQuery { get; set; } = string.Empty;
         public string? FirstNameQuery { get; set; } = string.Empty;
         public string? LastNameQuery { get; set; } = string.Empty;

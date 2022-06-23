@@ -13,6 +13,7 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
         public string? Phone { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public string? FullName { get; set; }
         public DateTime? BirthDate { get; set; }
         public DateTime? RegisteredAt { get; set; }
         public DateTime? LastLoginAt { get; set; }
@@ -36,7 +37,8 @@ namespace ApplicationFMS.Handlers.UserHandlers.Queries.GetUserList
                 .ForMember(d => d.RoleName, opt => opt.MapFrom(s => s.Role.RoleName))
                 .ForMember(d => d.CityName, opt => opt.MapFrom(s => s.City.CityName))
                 .ForMember(d => d.EducationName, opt => opt.MapFrom(s => s.Education.EducationName))
-                .ForMember(d => d.CompanyName, opt => opt.MapFrom(s => s.Company.CompanyName));
+                .ForMember(d => d.CompanyName, opt => opt.MapFrom(s => s.Company.CompanyName))
+                .ForMember(d => d.FullName, opt => opt.MapFrom(s => s.FirstName + " "+ s.LastName));
         }
     }
 }

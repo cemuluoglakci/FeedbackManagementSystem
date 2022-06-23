@@ -1,0 +1,62 @@
+﻿@model ApplicationFMS.Handlers.Comments.Queries.GetCommentDetail.CommentDetailDTO
+
+@{
+    ViewData["Title"] = "Upsert Comment";
+    ViewData["Breadcrumb"] = "YORUM GÖNDER / DÜZENLE";
+}
+
+
+<section id="multiple-column-form">
+    <div class="row match-height">
+        <div class="col-lg-8 col-md-6 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Yorumunuz</h4>
+
+                </div>
+                <div style="">
+                    <div class="card-body">
+                        <form class="form" id="commentUpsertForm" method="post" asp-action="Upsert">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label">Metin</label>
+                                        <input type="text" id="text" class="form-control" placeholder="Metin" asp-for="Text">
+                                    </div>
+                                </div>
+                                <div class=" col-12">
+                                    <div class="mb-1">
+                                        <label class="form-label" for="basicSelect">Kullanıcı Adı</label>
+                                        <select class="form-control" asp-for="IsAnonym" id="isAnonym">
+                                            <option value="false">Belirtilmiş</option>
+                                            <option value="true">Anonim</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input id="Id" name="Id" asp-for="Id" type="hidden" value="@Model.Id" />
+                                <input id="feedbackId" type="hidden" name="feedbackId" asp-for="FeedbackId" />
+                                <input id="parentCommentId" type="hidden" name="parentCommentId" asp-for="ParentCommentId" />
+
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary me-1 waves-effect waves-float waves-light">Gönder</button>
+                                    <button type="reset" class="btn btn-outline-secondary waves-effect">Formu Temizle</button>
+                                </div>
+
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+                <div><br /></div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-12">
+            @await Component.InvokeAsync("SingleFeedback", @Model.FeedbackDTO)
+        </div>
+    </div>
+</section>
+
+

@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Http;
-@using ApplicationFMS.Models
+﻿@using ApplicationFMS.Models
+@using ApplicationFMS.Helpers
 
 @{
     var currentUser = (ContextUser)Context.Items["User"];
@@ -67,6 +67,14 @@
     <title>@ViewData["Title"] - FMS</title>
 
     @RenderSection("CustomScripts", required: false)
+    
+    <!-- Open Graph tags -->
+    <meta property="og:url"           content="@ViewBag.OgUrl" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="The Feedback Management System!" />
+    <meta property="og:description"   content="Arkadaşlar, şu geribildirime bakar mısınız: '@ViewBag.FeedbackTitle' İnanılmaz!!!" />
+    <meta property="og:image"         content="http://fms.uluoglakci.com/Content/images/logo.png" />
+
 </head>
 <!-- END: Head-->
 <!-- BEGIN: Body-->
@@ -222,14 +230,14 @@
 
                     <li class=" nav-item">
                         <a  asp-action="List" asp-controller="Feedback" asp-route-userId="@currentUser.Id" >
-                            <i class="fas fa-comment-dots"></i>
+                            <i class="fas fa-comments"></i>
                             <span class="menu-title">Geribildirimlerim</span>
                         </a>
                     </li>
 
 
                     <li class=" nav-item">
-                        <a asp-for-action="" href="#">
+                        <a asp-for-action="" asp-action="OwnPosts" asp-controller="Comment">
                             <i class="far fa-comment"></i>
                             <span class="menu-title">Yorumlarım</span>
                         </a>
@@ -237,7 +245,51 @@
 
                 }
 
+                @if (currentUser?.RoleName == Constants.AdminRole)
+                {
+                    <li class=" nav-item">
+                        <a  asp-action="System" asp-controller="Admin" >
+                            <i class="fas fa-cog"></i>
+                            <span class="menu-title">Sistem Ayarları</span>
+                        </a>
+                    </li>
 
+                    <li class=" nav-item">
+                        <a href="../../../Admin/UserList">
+                            <i class="fas fa-user-check"></i>
+                            <span class="menu-title">Kullanıcı Listesi</span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item">
+                        <a  asp-action="FeedbackList" asp-controller="Admin" >
+                            <i class="fas fa-tasks"></i>
+                            <span class="menu-title">Geribildirim Onay</span>
+                        </a>
+                    </li>
+
+
+                    <li class=" nav-item">
+                        <a asp-for-action="" asp-action="CommentList" asp-controller="Admin">
+                            <i class="far fa-comment"></i>
+                            <span class="menu-title">Yorum Onay</span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item">
+                        <a asp-for-action="" asp-action="ReplyList" asp-controller="Admin">
+                            <i class="far fa-comments"></i>
+                            <span class="menu-title">Yanıt Onay</span>
+                        </a>
+                    </li>
+
+                    <li class=" nav-item">
+                        <a asp-for-action="" asp-action="LogList" asp-controller="Admin">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span class="menu-title">Log Listesi</span>
+                        </a>
+                    </li>
+                }
 
             </ul>
         </div>

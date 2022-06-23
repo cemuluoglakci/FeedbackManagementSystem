@@ -43,7 +43,7 @@ namespace ApplicationFMS.Behaviours
                 }
                 else
                 {
-                    throw new ModeOfOperationException("Feedback Management System is currently in Maintanance Mode. Please try again later. Meanwhile you can still display feedbacks.");
+                    throw new ModeOfOperationException("Feedback Management System is currently in Maintenance Mode. Please try again later. Meanwhile you can still display feedback after logging out.");
                 }
             }
             else

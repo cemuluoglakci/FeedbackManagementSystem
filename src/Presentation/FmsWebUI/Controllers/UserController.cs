@@ -20,7 +20,7 @@ namespace FmsWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginQuery request)
         {
-            var response = await Mediate(request);
+            var response = await MediateWithoutException(request);
             if (response.Meta.SuccessStatus)
             {
                 HttpContext.Response.Cookies.Append("Authorization", response.data.ToString(), new CookieOptions { HttpOnly = true });
@@ -46,7 +46,7 @@ namespace FmsWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterUserCommand request)
         {
-            var response = await Mediate(request);
+            var response = await MediateWithoutException(request);
             if (response.Meta.SuccessStatus)
                 return RedirectToAction("Verify");
             return View();
@@ -61,7 +61,7 @@ namespace FmsWebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Verify(VerifyEmailCommand request)
         {
-            var response = await Mediate(request);
+            var response = await MediateWithoutException(request);
             if (response.Meta.SuccessStatus)
             {
                 return RedirectToAction("Verified");
@@ -72,7 +72,7 @@ namespace FmsWebUI.Controllers
         [HttpGet]
         public IActionResult VerifyFromMail(string email, string verificationCode)
         {
-            var response = Mediate(new VerifyEmailCommand() { Email = email, VerificationCode = verificationCode }).Result;
+            var response = MediateWithoutException(new VerifyEmailCommand() { Email = email, VerificationCode = verificationCode }).Result;
             if (response.Meta.SuccessStatus)
             {
                 return RedirectToAction("Verified");

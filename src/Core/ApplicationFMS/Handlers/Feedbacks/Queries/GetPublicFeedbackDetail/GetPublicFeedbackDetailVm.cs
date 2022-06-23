@@ -48,7 +48,8 @@ namespace ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
                 })
                 .ForMember(d => d.ReplyList, opts => opts.MapFrom(s => s.Reply.Where(i => i.IsActive)))
                 .ForMember(d => d.CommentList, opts =>
-                    opts.MapFrom(s => s.Comments.Where(i => i.IsActive && i.ParentComment == null)))
+                    opts.MapFrom(s => s.Comments.Where(i => i.IsActive))
+                    )
                 ;
         }
     }

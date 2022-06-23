@@ -1,9 +1,12 @@
-﻿@{
+﻿@using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
+@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail.GetPublicFeedbackDetailVm
+@{
     ViewData["Title"] = "Feedback Detail";
     ViewData["Breadcrumb"] = "GERİBİLDİRİM DETAYI";
+    ViewData["OgUrl"] = "http://fms.uluoglakci.com/Feedback/GetDetail/" + @Model.Id;
+    ViewData["FeedbackTitle"] = @Model.Title;
 }
-@using ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail
-@model ApplicationFMS.Handlers.Feedbacks.Queries.GetPublicFeedbackDetail.GetPublicFeedbackDetailVm
+
 
 <div class="row match-height">
 
@@ -84,8 +87,24 @@
 
     </div>
 
+    <div class="col-lg-4 col-md-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                @await Component.InvokeAsync("SingleFeedbackInner", @Model)
+                <div class="d-flex justify-content-around my-2 pt-75">
+                    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="medium" data-text="Arkadaşlar, şu geribildirime bakar mısınız: '@Model.Title' İnanılmaz!!!" data-url="http://fms.uluoglakci.com/Feedback/GetDetail/@Model.Id" data-hashtags="FMS" data-dnt="true" data-show-count="false">Tweet</a>
+                    <div class="fb-share-button"
+                         data-href="http://fms.uluoglakci.com/Feedback/GetDetail/@Model.Id"
+                         data-layout="button_count">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    @await Component.InvokeAsync("SingleFeedback", Model)
+
+
+
 
     <div class="col-lg-8 col-md-6 col-12">
         <div class="card">
@@ -136,17 +155,10 @@
                 {
                     foreach (var commentDto in Model.CommentList)
                     {
-                        <li class="timeline-item">
-                            <span class="timeline-point timeline-point-warning timeline-point-indicator"></span>
-                            <div class="timeline-event">
-                                <div class="d-flex justify-content-between flex-sm-row flex-column mb-sm-0 mb-1">
-                                    <h6>@commentDto.UserName</h6>
-                                    <span class="timeline-event-time me-1">@commentDto.CreatedAt</span>
-                                </div>
-                                <p>@commentDto.Text</p>
-
-                            </div>
-                        </li>
+                        if (commentDto.IsActive)
+                        {
+                            @await Component.InvokeAsync("SingleComment", commentDto)
+                        }
                     }
 
                 }
@@ -160,3 +172,23 @@
     </div>
 </div>
 
+
+@section CustomScripts{
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+}
+
+
+@section Scripts{
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+}

@@ -39,13 +39,15 @@ namespace FmsWebUI.Controllers
             return View(new GetFeedbackListQuery{UserId = userId});
         }
 
-        //[HttpGet]
-        //public ActionResult List() => View();
 
         [HttpPost]
-        public async Task<ViewComponentResult> LoadFeedback([FromBody] GetFeedbackListQuery request)
+        public async Task<IActionResult> LoadFeedback([FromBody] GetFeedbackListQuery request)
         {
-            var feedbackList = (FeedbackListVm)(await Mediate(request)).data;
+            var response = await MediateWithoutException(request);
+
+            if (!response.Meta.SuccessStatus) return Unauthorized( TempData["Message"] );
+
+            var feedbackList = (FeedbackListVm)response.data;
             TempData["filteredCountString"] = feedbackList.FilteredCount;
             return ViewComponent("MultipleFeedback", feedbackList);
         }

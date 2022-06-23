@@ -4,9 +4,9 @@ namespace FmsWebUI.Controllers
 {
     public class ErrorController : BaseController
     {
-        public IActionResult Index()
+        public IActionResult Index(string errorMessage)
         {
-            return View();
+            return View((object)errorMessage);
         }
 
 
